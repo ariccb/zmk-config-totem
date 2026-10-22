@@ -1,0 +1,80 @@
+/*
+ * Mac/Windows mode and the System conditional layer.
+ *
+ * Included from totem.keymap. The keymap editor keeps this include and the
+ * &os_* references. Do not delete the include.
+ *
+ * Mac is the default. Windows mode swaps Ctrl and GUI (Cmd) as each report
+ * goes out, including home-row mods and LG() shortcuts. The nodes below are
+ * the shortcuts that are not that swap:
+ *   redo    Mac Cmd+Shift+Z,  Windows Ctrl+Y
+ *   clip    Mac Alt+Shift+Cmd+Space,  Windows Win+V
+ *   fwd     Nav browser forward: Mac Cmd+Right,  Windows Alt+Right
+ *   back    Raise browser back: Mac Cmd+[,  Windows Alt+Left
+ *   fwd_br  Raise browser forward: Mac Cmd+],  Windows Alt+Right
+ *
+ * System comes on while Num and Raise are both held (the inner thumbs).
+ * Nothing else toggles that layer.
+ */
+
+/ {
+    behaviors {
+        os_mac: os_mac {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_MAC";
+            #binding-cells = <0>;
+            command = "mac";
+        };
+
+        os_win: os_win {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_WIN";
+            #binding-cells = <0>;
+            command = "win";
+        };
+
+        os_redo: os_redo {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_REDO";
+            #binding-cells = <0>;
+            command = "redo";
+        };
+
+        os_clip: os_clip {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_CLIP";
+            #binding-cells = <0>;
+            command = "clip";
+        };
+
+        os_fwd: os_fwd {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_FWD";
+            #binding-cells = <0>;
+            command = "fwd";
+        };
+
+        os_back: os_back {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_BACK";
+            #binding-cells = <0>;
+            command = "back";
+        };
+
+        os_fwd_br: os_fwd_br {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_FWD_BR";
+            #binding-cells = <0>;
+            command = "fwd_br";
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        sys_tri {
+            if-layers = <NUM RSE>;
+            then-layer = <SYS>;
+        };
+    };
+};

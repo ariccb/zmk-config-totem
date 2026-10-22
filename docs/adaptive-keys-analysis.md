@@ -180,6 +180,8 @@ module up with the QMK engine:
 - While Ctrl, Alt, or GUI is an explicit mod, the behavior sends its
   default key and does not record a new prior. The listener also ignores
   key-down events in that state, so a shortcut cannot replace the prior.
+  Windows mode swaps Ctrl and GUI in the report, but both stay in this
+  mask, so a shortcut still suppresses a substitution in either mode.
 - After the chosen binding is sent, the prior is set from the default
   binding (`V`), not from the key that was emitted (`C`). The stock module
   records the emitted keycode, which would make `SV` then `X` look like

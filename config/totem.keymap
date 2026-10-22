@@ -11,9 +11,10 @@
  *  20 and 31 are the outer pinky keys. 32-34 are the left thumbs
  *  (outer, middle, inner). 35-37 are the right thumbs (inner, middle, outer).
  *
- * Adaptive keys live in adaptive.dtsi. Do not remove the include below.
- * The keymap editor keeps this include and the &ak_* bindings; it does not
- * edit the trigger nodes. See docs/adaptive-keys-analysis.md.
+ * Adaptive keys live in adaptive.dtsi. OS mode and the System conditional
+ * layer live in os.dtsi. Do not remove either include. The keymap editor
+ * keeps the includes and the &ak_* / &os_* bindings.
+ * See docs/adaptive-keys-analysis.md and the readme.
  */
 
 #include <behaviors.dtsi>
@@ -31,6 +32,9 @@
 #define NAV    4
 #define RSE    5
 #define ADJ    6
+#define SYS    7
+
+#include "os.dtsi"
 
 /* Layer thumbs: balanced, so a quick tap stays the letter/space/tab. */
 &lt {
@@ -567,7 +571,7 @@
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
             key-positions = <2 3>;
-            bindings = <&kp LG(LS(Z))>;
+            bindings = <&os_redo>;
         };
         combo_cut {
             timeout-ms = <50>;
@@ -591,7 +595,7 @@
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
             key-positions = <22 24>;
-            bindings = <&kp LA(LS(LG(SPACE)))>;
+            bindings = <&os_clip>;
         };
         combo_paste_txt {
             timeout-ms = <50>;
@@ -826,7 +830,7 @@
                 &kp F6  &kp F7  &kp F8  &kp F9  &kp F10
                 &cmd_stab  &kp LEFT  &kp DOWN  &kp RIGHT  &cmd_tab
                 &trans  &kp F11  &kp F12  &kp C_BRI_DN  &kp C_BRI_UP  &key_repeat
-                &ctrl_tab  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &kp LG(RIGHT)  &sk LGUI
+                &ctrl_tab  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &os_fwd  &sk LGUI
                 &trans  &trans  &kp SPACE
                 &kp RET  &kp BSPC  &kp DEL
             >;
@@ -838,7 +842,7 @@
                 &mkp MB3  &mkp MB2  &mmv MOVE_UP  &mkp MB1  &kp C_MUTE
                 &kp C_VOL_UP  &mkp LCLK  &mkp MCLK  &mkp RCLK  &tog RSE
                 &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &kp LC(LA(LG(M)))
-                &selword  &kp LA(LC(LS(RIGHT)))  &kp LG(LBKT)  &kp LG(RBKT)  &kp C_PP
+                &selword  &kp LA(LC(LS(RIGHT)))  &os_back  &os_fwd_br  &kp C_PP
                 &trans  &kp LG(MINUS)  &msc SCRL_UP  &msc SCRL_DOWN  &kp LG(EQUAL)  &selline
                 &kp C_VOL_DN  &brc2_morph  &brc_morph  &arrow_morph  &kp C_NEXT  &kp LG(N0)
                 &trans  &kp TAB  &kp SPACE
@@ -857,6 +861,25 @@
                 &kp INS  &kp PSCRN  &kp SLCK  &kp KP_NUMLOCK  &caps_word  &trans
                 &trans  &kp TAB  &kp SPACE
                 &kp RET  &trans  &kp DEL
+            >;
+        };
+
+        /*
+         * On while both inner thumbs are held (Num and Raise). The two
+         * held positions stay transparent. Bluetooth, boot, and reset are
+         * duplicated from Adjust so either path still works.
+         */
+        sys_layer {
+            label = "System";
+            bindings = <
+                &os_mac  &os_win  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
+                &bt BT_CLR  &kp LG(S)  &kp LG(F)  &none  &none
+                &bootloader  &sys_reset  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
+                &none  &none  &none  &none  &kp SYS_SLEEP
+                &none  &none  &none  &none  &none  &none
+                &none  &none  &none  &none  &none  &none
+                &none  &none  &trans
+                &trans  &none  &none
             >;
         };
     };

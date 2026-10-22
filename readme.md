@@ -27,7 +27,8 @@ Hardware and the build guide: <https://github.com/GEIGEIGEIST/totem>
 This firmware enables mouse keys, which changes the Bluetooth HID report.
 Forget the keyboard on the host and pair it again after flashing. There is
 no XIAO settings-reset image; clearing bonds from the host plus `&bt BT_CLR`
-on Adjust is the reset path.
+on Adjust or System is the reset path. Clearing bonds does not clear the
+saved Mac/Windows choice.
 
 The keymap editor at <https://nickcoutsos.github.io/keymap-editor/> can edit
 `config/totem.keymap`. Leave the `#include "adaptive.dtsi"` line in place.
@@ -128,9 +129,11 @@ The pinkies are not Esc/Hyper on this layer. The left one is `\`, the right
 one is keypad `+`, so `+` then `0` still has a key. Other layers leave the
 pinkies transparent and keep Esc/Hyper.
 
-Terminal chords, this layer only: `8+9` opens a terminal (`Ctrl+Grave`),
-`7+8` next, `9+0` previous, `7+8+9` new terminal. `7+8` is a subset of
-`7+8+9`; hit all three inside the 70 ms window.
+Terminal chords, this layer only: `8+9` opens a terminal (`Ctrl+Grave` on
+Mac, `Win+Grave` in Windows mode), `7+8` next, `9+0` previous, `7+8+9` new
+terminal. `7+8` is a subset of `7+8+9`; hit all three inside the 70 ms
+window. Next and previous are Shift+Cmd+[ / ] on Mac and Shift+Ctrl+[ / ]
+in Windows mode.
 
 ## Nav
 
@@ -139,15 +142,18 @@ Hold the Tab thumb.
 ```
  F1  F2  F3  F4  F5       C-PgUp  Home  Up   End  (unlock)
  F6  F7  F8  F9  F10      Cmd-S-Tab Left Down Right Cmd-Tab
-Esc F11 F12 Bri- Bri+ Rep  C-Tab  PgUp  AddCur PgDn Cmd-Right  sticky Cmd
+Esc F11 F12 Bri- Bri+ Rep  C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
    (held)  (held)  Space       Enter  Backspace  Delete
 ```
 
-`AddCur` is Cmd+Alt+Down (VS Code add cursor). `Cmd-Right` is browser
-forward. Cmd-Tab, Cmd-Shift-Tab, and Ctrl-Tab hold the modifier until the
-key is released. The Leeloo's 800 ms app-switch timer and the encoder
-super-tab are not reproduced; sticky Cmd on the right pinky of this layer
-is the way to tap Tab repeatedly.
+`AddCur` is Cmd+Alt+Down (VS Code add cursor). `Fwd` is browser forward
+(Cmd+Right on Mac, Alt+Right on Windows). Cmd-Tab, Cmd-Shift-Tab, and
+Ctrl-Tab hold the modifier until the key is released. In Windows mode those
+follow the Ctrl/Cmd swap, so Cmd-Tab becomes Ctrl-Tab and Ctrl-Tab becomes
+Win-Tab. Alt-Tab is not substituted. The Leeloo's 800 ms app-switch timer
+and the encoder super-tab are not reproduced; sticky Cmd on the right pinky
+of this layer is the way to tap Tab repeatedly. Windows mode makes that
+sticky key Ctrl.
 
 The `(unlock)` key turns Nav off after it was toggled on from Adjust. Holding
 this layer and tapping it does not lock the layer. ZMK keeps one bit per
@@ -160,14 +166,19 @@ Hold the Enter thumb.
 
 ```
  MClk RClk  Up  LClk Mute     Vol+  LClk MClk RClk (unlock)
-      Left Down Right MicMute SelWd SelPart Cmd-[ Cmd-] Play
+      Left Down Right MicMute SelWd SelPart Back Fwd Play
 Esc  Zoom- ScrlUp ScrlDn Zoom+ Line  Vol-  Brackets Parens Arrow Next Zoom0
    (held)   Tab   Space          (held)  Backspace  Delete
 ```
 
-`MicMute` is Ctrl+Alt+Cmd+M. `SelWd` is Alt+Shift+Right (repeat extends the
-selection). `SelPart` is Alt+Ctrl+Shift+Right. `Line` is Cmd+Left then
-Cmd+Shift+Right. `Zoom0` is Cmd+0. Brackets, parens, and the arrow snippet
+`MicMute` is Ctrl+Alt+Cmd+M, so swapping Ctrl and Cmd does not change it.
+`SelWd` is Alt+Shift+Right (repeat extends the selection). `SelPart` is
+Alt+Ctrl+Shift+Right, which becomes Alt+Win+Shift+Right in Windows mode.
+`Back` and `Fwd` are browser back and forward: Cmd+[ and Cmd+] on Mac,
+Alt+Left and Alt+Right on Windows. `Line` is Cmd+Left then Cmd+Shift+Right
+(Ctrl+Left then Ctrl+Shift+Right in Windows mode). `Zoom0` is Cmd+0
+(Ctrl+0 in Windows mode), and the zoom-out / zoom-in keys next to the
+scroll keys follow the same swap. Brackets, parens, and the arrow snippet
 follow Shift the way the Leeloo macros did: unshifted is `[]` / `()` / `() =>`,
 shifted is `{}` / `<>` / the longer arrow snippet. Quotes from the `H+,`
 combo do the same (`"` unshifted, `'` shifted).
@@ -194,14 +205,124 @@ that layer stays up. `&to Base` (or QWERTY / Canary) turns the toggled
 layers off. The Leeloo's 120 second layer-lock idle timeout is not ported.
 
 `Boot` is the bootloader. Reset-by-combo is not ported, on purpose.
+These Bluetooth, boot, and reset keys are duplicated on System. Adjust
+keeps them so one thumb is still enough.
+
+## System
+
+Hold Num and Raise together. Those are the two inner thumbs: Space/Num on
+the left, Enter/Raise on the right. Each is already a layer key, and they
+sit under the resting position, one hand each. Nav stays on the middle Tab
+thumb and Adjust stays on the Backspace thumb, so those remain one-thumb
+layers.
+
+ZMK turns System on only while both of those layers are held
+(`conditional_layers` on Num + Raise). System is not also bound to its own
+hold or toggle. Let go of either thumb and System drops. While it is up it
+covers Num and Raise.
+
+```
+ Mac  Win  Out  BT0  BT1       Clear  Save  Find
+ Boot Rst  BT2  BT3  BT4                            Sleep
+
+           (held Num)              (held Raise)
+```
+
+The outer pinkies are blank on this layer, so the chord does not fire
+Esc/Hyper or Num's `\` and `+`.
+
+| Key | What it sends |
+| --- | --- |
+| Mac | Mac shortcut mode. Cmd is Cmd, and this is the boot default |
+| Win | Windows shortcut mode. Ctrl and Cmd swap, including the home-row mods |
+| Out | Toggle USB and Bluetooth output |
+| BT0–BT4 | Select Bluetooth profile 0 through 4 |
+| Clear | `&bt BT_CLR`, clear the current profile |
+| Boot | Bootloader |
+| Rst | `&sys_reset` |
+| Save | Cmd+S, or Ctrl+S in Windows mode |
+| Find | Cmd+F, or Ctrl+F in Windows mode |
+| Sleep | System sleep |
+
+Save and Find were not Leeloo combos. They live here so both modes have
+them. ZMK Studio is not enabled in this build, so there is no
+`&studio_unlock` key.
+
+Release Ctrl and Cmd before pressing Mac or Win. A modifier that is already
+down is released with the other mode's code and can stick on the host.
+
+## Mac and Windows
+
+The keymap is written for Mac. Home-row pinkies are GUI (Cmd), home-row
+middles are Ctrl, and the shortcut combos are Cmd chords. Windows mode does
+not replace those nodes and does not add a second set of hold-taps, so the
+timing properties on `hrm_l` and `hrm_r` apply to both modes.
+
+A listener on the central half rewrites the report after sticky key, caps
+word, and key repeat have seen the original code, and before USB/BLE HID
+sends it. Left Ctrl and Left GUI trade places, and the same for the right
+side. Shift and Alt stay put. A chord that already contains both Ctrl and
+Cmd (Hyper, mic mute) is unchanged.
+
+The listener is not a layer, so switching alpha layout with `&to` does not
+clear it. The choice is stored in ZMK settings (`totem/os/win`) and comes
+back after a reboot. On a fresh board, before either key has been pressed,
+the mode is Mac. Uncomment `CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS` in
+`config/totem.conf` to make that first boot Windows instead. After a Mac or
+Windows key press, the saved value wins over that setting. `&bt BT_CLR`
+does not erase it. There is no XIAO settings-reset firmware; press the other
+mode key to change it back.
+
+A straight swap is wrong for a few Leeloo shortcuts, so those are their own
+behaviors in `config/os.dtsi` and do not get swapped a second time:
+
+| Key | Mac | Windows |
+| --- | --- | --- |
+| Redo (F P) | Cmd+Shift+Z | Ctrl+Y |
+| Clipboard history (X D) | Alt+Shift+Cmd+Space | Win+V |
+| Nav `Fwd` | Cmd+Right | Alt+Right |
+| Raise `Back` | Cmd+[ | Alt+Left |
+| Raise `Fwd` | Cmd+] | Alt+Right |
+
+Everything else that is Cmd in the keymap becomes Ctrl, and a bare Ctrl
+becomes Win. That includes undo, cut, copy, paste, paste-without-formatting,
+select-all, save, find, zoom, add-cursor, select-line, the HTML tag's
+Cmd+D, and the home-row mods. Terminal chords on Num follow the same rule:
+Ctrl+Grave becomes Win+Grave, and Shift+Cmd+[ / ] become Shift+Ctrl+[ / ].
+
+The Leeloo did this differently. `guess_os.h` picks Mac or not when the
+firmware is compiled (`MAC_HOTKEYS` when the host OS is macOS or iOS). That
+is not a key. The compiled Mac set sends GUI for undo, cut, copy, paste,
+select-all, and paste-plain, redo is GUI+Shift+Z, clipboard history is
+Alt+Shift+GUI+Space, browser back/forward and zoom use GUI, and search is
+GUI+F. The Windows compile uses Ctrl for those, redo is Ctrl+Y, clipboard
+history is Win+V, and browser back/forward are Alt+Left / Alt+Right. Some
+mod-taps are also compiled the other way around (Enter's hold is Ctrl
+instead of GUI, Z's hold is GUI instead of Alt). On top of that, Raise has
+QMK's `CG_NORM` and `CG_SWAP` magic keycodes, which swap Ctrl and GUI in
+the report at runtime and are stored in EEPROM. Those magic keys do not
+switch the compiled shortcut set, so a Mac build with `CG_SWAP` turns
+Cmd+Shift+Z into Ctrl+Shift+Z rather than Ctrl+Y. There is no runtime key
+that flips the whole `MAC_HOTKEYS` block. The Leeloo also has no home-row
+Ctrl/Cmd: those modifiers are thumbs and outer keys (GUI on the Enter
+thumb, Ctrl on another thumb, right Ctrl on quote, Alt on Z).
+
+This port's home-row mods are new. Before this toggle, every shortcut on
+the Totem was the Mac chord, and Windows meant editing `LG` to `LC` by
+hand. `CG_SWAP` / `CG_NORM` were not ported; Mac and Win on System replace
+them and also cover the shortcuts the magic swap gets wrong.
 
 ## Home-row mods
 
 Positional hold-taps, the timeless setup from the ZMK hold-tap docs.
 
+Mac mode is drawn below. Windows mode swaps pinky and middle on both
+hands (pinky becomes Ctrl, middle becomes Win) and leaves Alt and Shift
+where they are.
+
 | | Left | Right |
 | --- | --- | --- |
-| Pinky | GUI | GUI |
+| Pinky | GUI / Cmd | GUI / Cmd |
 | Ring | Alt | Alt |
 | Middle | Ctrl | Ctrl |
 | Index | Shift | Shift |
@@ -243,35 +364,38 @@ If Esc still turns into Hyper, raise `tapping-term-ms`. If Hyper is hard to
 reach, lower `require-prior-idle-ms` or remove that line. The node is `eh`
 in `config/totem.keymap`.
 
-Num replaces the pinkies, as drawn above. Every other layer keeps them.
+Num replaces the pinkies, as drawn above. System leaves them blank. Every
+other layer keeps Esc/Hyper.
 
 ## Combos
 
 50 ms, alpha layers only (Base, QWERTY, Canary). Positions follow Colemak-DH,
-including while QWERTY or Canary is active. Shortcuts are Mac: GUI is Cmd.
+including while QWERTY or Canary is active. Mac mode is the default.
+Windows mode is the System-layer `Win` key, described above.
 
-| Chord | Result |
-| --- | --- |
-| W F | Undo |
-| F P | Redo |
-| Z X | Cut |
-| X C | Copy |
-| C D | Paste |
-| X D | Clipboard history (Alt+Shift+Cmd+Space) |
-| X V | Paste without formatting |
-| Z D | Select all |
-| . / | ? |
-| , . | _ |
-| U Y | - (a roll is the adaptive `UE` instead) |
-| E I | = |
-| T G | @ |
-| H , | `"` , or `'` if Shift is held |
-| T N | Caps word (the two index Shift mods) |
-| L U Y | Num Lock |
-| letter + `.` | The Leeloo HTML / snippet macros (div, p, title, href, img, style, the generic tag, `console.log`, `() =>`) |
+| Chord | Mac | Windows |
+| --- | --- | --- |
+| W F | Undo, Cmd+Z | Ctrl+Z |
+| F P | Redo, Cmd+Shift+Z | Ctrl+Y |
+| Z X | Cut, Cmd+X | Ctrl+X |
+| X C | Copy, Cmd+C | Ctrl+C |
+| C D | Paste, Cmd+V | Ctrl+V |
+| X D | Clipboard history, Alt+Shift+Cmd+Space | Win+V |
+| X V | Paste without formatting, Cmd+Shift+V | Ctrl+Shift+V |
+| Z D | Select all, Cmd+A | Ctrl+A |
+| . / | ? | same |
+| , . | _ | same |
+| U Y | - (a roll is the adaptive `UE` instead) | same |
+| E I | = | same |
+| T G | @ | same |
+| H , | `"` , or `'` if Shift is held | same |
+| T N | Caps word (the two index Shift mods) | same |
+| L U Y | Num Lock | same |
+| letter + `.` | The Leeloo HTML / snippet macros (div, p, title, href, img, style, the generic tag, `console.log`, `() =>`) | same, except the generic tag's Cmd+D becomes Ctrl+D |
 
-Not ported as combos: reset (bootloader key on Adjust), the four-key sleep
-chord (Sleep is a key on Adjust), F11/F12 (those keys are on Nav),
+Not ported as combos: reset (bootloader key on Adjust and System), the
+four-key sleep chord (Sleep is a key on Adjust and System), F11/F12 (those
+keys are on Nav),
 exclamation from slash+backslash, and the O+quote double-quote chord.
 Quote is not on the base alpha row; `H+,` covers quotes.
 
@@ -296,10 +420,17 @@ column, and both encoders had to move.
   mute, play/pause, next track.
 - Three alpha layouts stay. Switching them is `&to` on Adjust.
 - Bluetooth profile select, clear, next/previous, output toggle, bootloader,
-  and sleep are on Adjust.
-- Shortcuts are Mac. For Windows, change `LG` to `LC` on the shortcut combos
-  and the GUI home-row mods, and change word-select `LA` to `LC`. There is
-  no `CG_SWAP`.
+  and sleep are on Adjust. System repeats profile select, clear, output
+  toggle, bootloader, reset, and sleep, and adds Save and Find. Adjust's
+  copies stay, so one thumb still reaches Bluetooth.
+- Shortcuts start as Mac. System's Mac and Win keys swap Ctrl and Cmd at
+  runtime, including home-row mods and the shortcut combos, and they keep
+  the Leeloo exceptions (redo is Ctrl+Y on Windows, clipboard history is
+  Win+V, browser back/forward are Alt+arrows). The Leeloo's compile-time
+  `MAC_HOTKEYS` block and its `CG_SWAP` / `CG_NORM` magic keys are that
+  story on the QMK side; see Mac and Windows above. The choice is saved
+  across reboots. `config/totem.conf` can select the default for a board
+  that has never pressed either key.
 - The TVPaint layers from the previous Totem keymap are not in the Leeloo
   map and are not in this one.
 - Autocorrect is not ported.
@@ -327,7 +458,10 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 5. Tab on the middle left thumb, Nav while it is held. Space/Num, Enter/Raise,
    Backspace/Adjust.
 6. A same-hand roll (`as`) stays letters. A cross-hand chord (`a` held, then
-   a right-hand key) is Cmd.
+   a right-hand key) is Cmd in Mac mode and Ctrl in Windows mode.
 7. Caps word from the two index Shift keys, then a shifted bigram.
 8. `U` and `Y` together produce `-`. A roll produces `UE`.
 9. Hold Adjust, tap Num, release Adjust. Num should stay. `&to Base` clears it.
+10. Hold Space/Num and Enter/Raise together. System should come up. `Win`,
+    then W+F is Ctrl+Z and F+P is Ctrl+Y. `Mac` puts those back to Cmd+Z and
+    Cmd+Shift+Z. Power-cycle and the last choice should still be selected.

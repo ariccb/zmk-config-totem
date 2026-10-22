@@ -1,4 +1,5 @@
-# Adaptive-key behavior compiled with this config.
+# In-tree behaviors compiled with this config: adaptive keys and the
+# Mac/Windows shortcut listener.
 # dts/bindings is picked up automatically. dts_root is intentionally unset:
 # this directory is already the ZMK config root, and a second dts root would
 # scan the Totem shield twice.
