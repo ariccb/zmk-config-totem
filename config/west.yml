@@ -1,3 +1,5 @@
+# Adaptive keys are an in-tree Zephyr module (config/zephyr/module.yml),
+# not a separate west project. config/ is already this manifest's self path.
 manifest:
   remotes:
     - name: zmkfirmware

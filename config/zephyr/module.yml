@@ -1,0 +1,8 @@
+# Adaptive-key behavior compiled with this config.
+# dts/bindings is picked up automatically. dts_root is intentionally unset:
+# this directory is already the ZMK config root, and a second dts root would
+# scan the Totem shield twice.
+name: totem_adaptive_key
+build:
+  cmake: .
+  kconfig: Kconfig
