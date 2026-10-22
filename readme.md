@@ -229,7 +229,7 @@ If mods fire while typing, raise `require-prior-idle-ms` (try 200) or
 
 ## Esc / Hyper
 
-Both outer pinkies use `&eh`.
+Both outer pinkies use `&eh 0 ESC`. Hold-taps always take two parameters, and the `0` is unused because Hyper takes none.
 
 | Property | Value | Effect |
 | --- | --- | --- |
