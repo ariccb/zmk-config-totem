@@ -21,8 +21,8 @@ Hardware and the build guide: <https://github.com/GEIGEIGEIST/totem>
 
 - On GitHub, open Actions and download the latest `firmware.zip`.
 - Connect the left half, press reset twice, and copy
-  `totem_left-seeeduino_xiao_ble-zmk.uf2` onto the drive that appears.
-- Repeat with the right half and `totem_right-seeeduino_xiao_ble-zmk.uf2`.
+  `totem_left-xiao_ble__zmk-zmk.uf2` onto the drive that appears.
+- Repeat with the right half and `totem_right-xiao_ble__zmk-zmk.uf2`.
 
 This firmware enables mouse keys, which changes the Bluetooth HID report.
 Forget the keyboard on the host and pair it again after flashing. There is
