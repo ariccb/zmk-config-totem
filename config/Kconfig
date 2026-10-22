@@ -36,7 +36,7 @@ config TOTEM_OS_MODE_DEFAULT_WINDOWS
     depends on ZMK_BEHAVIOR_OS_MODE
     default n
     help
-      Mac is the default. Pressing the Mac or Windows key on the System
-      layer stores the choice. That saved choice is used on later boots
-      and overrides this setting. Set this to y to make a fresh keyboard
-      start in Windows mode.
+      When unset, a fresh board boots in Mac mode. config/totem.conf sets
+      this so a fresh Totem boots in Windows mode. Pressing the Mac or
+      Windows key on the System layer stores the choice. That saved choice
+      is used on later boots and overrides this setting.

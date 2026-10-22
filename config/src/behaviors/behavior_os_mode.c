@@ -1,9 +1,9 @@
 /*
  * Mac/Windows shortcut mode for the Totem keymap.
  *
- * The keymap is written as Mac: GUI is Cmd, home-row pinkies are GUI, home-row
- * middles are Ctrl, and shortcut combos are LG(...). Windows mode does not
- * change those nodes. A listener rewrites Ctrl and GUI on the keycode event
+ * The keymap is written as Mac: GUI is Cmd on the inner home-row column,
+ * Ctrl is the index finger, and shortcut combos are LG(...). Windows mode
+ * does not change those nodes. A listener rewrites Ctrl and GUI on the keycode event
  * after the other behaviors have seen the original code and before HID sends
  * the report. Hold-tap timing is therefore the same in both modes.
  *
@@ -20,6 +20,9 @@
  * The choice is stored in ZMK settings (totem/os/win) when settings are
  * enabled, which they are on this BLE keyboard. Until a Mac or Windows key
  * has been pressed, the boot value is CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS.
+ * config/totem.conf sets that, so a fresh board boots in Windows mode.
+ * A saved value overrides it. Press Win to store Windows again, or flash
+ * settings_reset to drop the saved value.
  * Release Ctrl and Cmd before changing mode. A modifier that is already down
  * is released with the other mode's code and can stick on the host.
  */

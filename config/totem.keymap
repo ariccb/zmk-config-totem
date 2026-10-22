@@ -30,7 +30,7 @@
 #define CANARY 2
 #define NUM    3
 #define NAV    4
-#define RSE    5
+#define SYM    5
 #define ADJ    6
 #define SYS    7
 
@@ -89,10 +89,66 @@
         };
 
         /*
+         * Inner-column Cmd (Colemak G/M, QWERTY G/H, Canary G/M).
+         * These letters are rolled constantly, including cross-hand rolls
+         * such as "ng", so the prior-idle and tapping term are stricter
+         * than the other home-row mods. A real Cmd chord needs a short
+         * pause, then a hold with the other hand. Hold-trigger positions
+         * stay the whole other hand: carving out roll partners would also
+         * block real shortcuts on those keys, and the partners differ on
+         * QWERTY and Canary.
+         */
+        hrm_in_l: hrm_in_l {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_IN_L";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <320>;
+            quick-tap-ms = <200>;
+            require-prior-idle-ms = <200>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 35 36 37>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        hrm_in_r: hrm_in_r {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_IN_R";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <320>;
+            quick-tap-ms = <200>;
+            require-prior-idle-ms = <200>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25 32 33 34>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        /*
+         * Left home pinky: tap the letter, hold Nav.
+         * Same timing family as the home-row mods, but the layer turns on
+         * when the other key is pressed, not when it is released, so an
+         * arrow on the Nav layer can repeat while this key is held.
+         * Hold-trigger is the right hand only, so a same-hand roll stays
+         * the letter. Usage: &a_nav NAV A
+         */
+        a_nav: a_nav {
+            compatible = "zmk,behavior-hold-tap";
+            label = "A_NAV";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 35 36 37>;
+            bindings = <&mo>, <&kp>;
+        };
+
+        /*
          * QWERTY puts F, J, and L on home-row-mod keys that are also adaptive.
          * Hold-taps always take two parameters. The 0 passed at the keymap
          * is unused: the tap behavior does not take a parameter.
-         * Usage: &qw_f LSHFT 0
+         * Usage: &qw_f LCTRL 0
          */
         qw_f: qw_f {
             compatible = "zmk,behavior-hold-tap";
@@ -740,25 +796,25 @@
         combo_term_open {
             timeout-ms = <50>;
             layers = <NUM>;
-            key-positions = <7 8>;
+            key-positions = <6 7>;
             bindings = <&kp LC(GRAVE)>;
         };
         combo_term_next {
             timeout-ms = <50>;
             layers = <NUM>;
-            key-positions = <6 7>;
+            key-positions = <5 6>;
             bindings = <&kp LS(LG(LBKT))>;
         };
         combo_term_prev {
             timeout-ms = <50>;
             layers = <NUM>;
-            key-positions = <8 26>;
+            key-positions = <7 30>;
             bindings = <&kp LS(LG(RBKT))>;
         };
         combo_term_new {
             timeout-ms = <70>;
             layers = <NUM>;
-            key-positions = <6 7 8>;
+            key-positions = <5 6 7>;
             bindings = <&kp LC(LS(GRAVE))>;
         };
     };
@@ -771,12 +827,12 @@
             bindings = <
                 &kp Q        &ak_w          &ak_f          &ak_p          &kp B
                 &ak_j        &ak_l          &kp U          &ak_y          &kp SEMI
-                &hrm_l LGUI A  &hrm_l LALT R  &hrm_l LCTRL S  &hrm_l LSHFT T  &kp G
-                &kp M        &hrm_r RSHFT N  &hrm_r RCTRL E  &hrm_r RALT I  &hrm_r RGUI O
+                &a_nav NAV A  &hrm_l LALT R  &hrm_l LSHFT S  &hrm_l LCTRL T  &hrm_in_l LGUI G
+                &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
                 &eh 0 ESC  &kp Z  &ak_x  &kp C  &kp D  &ak_v
                 &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &eh 0 ESC
                 &sk LSHFT  &lt NAV TAB  &lt NUM SPACE
-                &lt RSE RET  &lt ADJ BSPC  &kp DEL
+                &lt SYM RET  &lt ADJ BSPC  &kp DEL
             >;
         };
 
@@ -785,8 +841,8 @@
             bindings = <
                 &kp Q  &ak_w  &kp E  &kp R  &kp T
                 &ak_y  &kp U  &kp I  &kp O  &ak_p
-                &hrm_l LGUI A  &hrm_l LALT S  &hrm_l LCTRL D  &qw_f LSHFT 0  &kp G
-                &kp H  &qw_j RSHFT 0  &hrm_r RCTRL K  &qw_l RALT 0  &hrm_r RGUI SEMI
+                &a_nav NAV A  &hrm_l LALT S  &hrm_l LSHFT D  &qw_f LCTRL 0  &hrm_in_l LGUI G
+                &hrm_in_r RGUI H  &qw_j RCTRL 0  &hrm_r RSHFT K  &qw_l RALT 0  &kp SEMI
                 &trans  &kp Z  &ak_x  &kp C  &ak_v  &kp B
                 &kp N  &kp M  &kp COMMA  &kp DOT  &ak_sl  &trans
                 &trans  &trans  &trans
@@ -799,8 +855,8 @@
             bindings = <
                 &kp Q  &ak_l  &ak_y  &ak_p  &kp B
                 &kp Z  &ak_f  &kp O  &kp U  &kp SEMI
-                &hrm_l LGUI C  &hrm_l LALT R  &hrm_l LCTRL S  &hrm_l LSHFT T  &kp G
-                &kp M  &hrm_r RSHFT N  &hrm_r RCTRL E  &hrm_r RALT I  &hrm_r RGUI A
+                &a_nav NAV C  &hrm_l LALT R  &hrm_l LSHFT S  &hrm_l LCTRL T  &hrm_in_l LGUI G
+                &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp A
                 &trans  &ak_w  &ak_j  &ak_v  &kp D  &kp K
                 &ak_x  &kp H  &kp COMMA  &kp DOT  &ak_sl  &trans
                 &trans  &trans  &trans
@@ -811,13 +867,13 @@
         num_layer {
             label = "Num";
             bindings = <
-                &kp EXCL  &kp LT     &kp GT     &kp EQUAL  &kp CARET
-                &kp STAR  &kp N7     &kp N8     &kp N9     &kp COLON
-                &kp HASH  &kp LBKT   &kp LPAR   &kp RPAR   &kp RBKT
-                &kp AMPS  &kp N4     &kp N5     &kp N6     &kp KP_MINUS
-                &kp BSLH  &kp AT  &kp DLLR  &kp LBRC  &kp RBRC  &kp PRCNT
-                &ak_0  &kp N1  &kp N2  &kp N3  &kp KP_SLASH  &kp KP_PLUS
-                &kp LS(TAB)  &kp TAB  &trans
+                &msc SCRL_UP  &mkp MB2  &mmv MOVE_UP  &mkp MB1  &mkp MB3
+                &kp N7  &kp N8  &kp N9  &kp KP_MINUS  &kp KP_SLASH
+                &trans  &trans  &trans  &trans  &trans
+                &kp N4  &kp N5  &kp N6  &kp STAR  &kp EQUAL
+                &msc SCRL_DOWN  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &trans  &trans
+                &kp N1  &kp N2  &kp N3  &kp DOT  &ak_0  &kp KP_PLUS
+                &trans  &trans  &trans
                 &kp RET  &kp BSPC  &kp DEL
             >;
         };
@@ -829,23 +885,23 @@
                 &kp LC(PG_UP)  &kp HOME  &kp UP  &kp END  &tog NAV
                 &kp F6  &kp F7  &kp F8  &kp F9  &kp F10
                 &cmd_stab  &kp LEFT  &kp DOWN  &kp RIGHT  &cmd_tab
-                &trans  &kp F11  &kp F12  &kp C_BRI_DN  &kp C_BRI_UP  &key_repeat
+                &trans  &kp F11  &kp F12  &kp LG(MINUS)  &kp LG(EQUAL)  &kp LG(N0)
                 &ctrl_tab  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &os_fwd  &sk LGUI
                 &trans  &trans  &kp SPACE
                 &kp RET  &kp BSPC  &kp DEL
             >;
         };
 
-        raise_layer {
-            label = "Raise";
+        sym_layer {
+            label = "Sym";
             bindings = <
-                &mkp MB3  &mkp MB2  &mmv MOVE_UP  &mkp MB1  &kp C_MUTE
-                &kp C_VOL_UP  &mkp LCLK  &mkp MCLK  &mkp RCLK  &tog RSE
-                &none  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &kp LC(LA(LG(M)))
-                &selword  &kp LA(LC(LS(RIGHT)))  &os_back  &os_fwd_br  &kp C_PP
-                &trans  &kp LG(MINUS)  &msc SCRL_UP  &msc SCRL_DOWN  &kp LG(EQUAL)  &selline
-                &kp C_VOL_DN  &brc2_morph  &brc_morph  &arrow_morph  &kp C_NEXT  &kp LG(N0)
-                &trans  &kp TAB  &kp SPACE
+                &kp LBRC  &kp RBRC  &kp LT  &kp GT  &kp PIPE
+                &kp C_VOL_UP  &kp C_MUTE  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT
+                &kp LPAR  &kp RPAR  &kp LBKT  &kp RBKT  &kp BSLH
+                &trans  &trans  &trans  &trans  &trans
+                &kp EQUAL  &kp PLUS  &kp MINUS  &kp UNDER  &kp STAR  &kp FSLH
+                &kp C_VOL_DN  &selword  &kp LA(LC(LS(RIGHT)))  &selline  &os_back  &os_fwd_br
+                &trans  &trans  &trans
                 &trans  &kp BSPC  &kp DEL
             >;
         };
@@ -854,18 +910,18 @@
             label = "Adjust";
             bindings = <
                 &sys_reset  &bt BT_CLR  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
-                &to BASE  &to QWERTY  &to CANARY  &kp NUHS  &tog ADJ
+                &to BASE  &to QWERTY  &to CANARY  &brc_morph  &tog ADJ
                 &bootloader  &bt BT_NXT  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-                &tog NUM  &tog NAV  &tog RSE  &kp GRAVE  &kp SYS_SLEEP
+                &tog NUM  &tog NAV  &tog SYM  &kp GRAVE  &kp SYS_SLEEP
                 &trans  &bt BT_PRV  &kp C_BRI_UP  &kp C_BRI_DN  &key_repeat  &kp CAPS
-                &kp INS  &kp PSCRN  &kp SLCK  &kp KP_NUMLOCK  &caps_word  &trans
+                &kp INS  &kp PSCRN  &arrow_morph  &brc2_morph  &caps_word  &trans
                 &trans  &kp TAB  &kp SPACE
                 &kp RET  &trans  &kp DEL
             >;
         };
 
         /*
-         * On while both inner thumbs are held (Num and Raise). The two
+         * On while both inner thumbs are held (Num and Sym). The two
          * held positions stay transparent. Bluetooth, boot, and reset are
          * duplicated from Adjust so either path still works.
          */

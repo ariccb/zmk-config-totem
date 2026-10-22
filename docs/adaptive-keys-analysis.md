@@ -139,8 +139,8 @@ and 70 ms for the three-key ones. `U+Y` is the pair that is both.
 Home-row mods are new on the Totem; the Leeloo did not put these letters
 under hold-taps. Two rules start on a home-row mod on Colemak-DH:
 
-- `S` is left Ctrl, and `V` is the same hand (`SV → SC`).
-- `E` is right Ctrl, and `/` is the same hand (`E/ → E,`).
+- `S` is left Shift (middle finger), and `V` is the same hand (`SV → SC`).
+- `E` is right Shift (middle finger), and `/` is the same hand (`E/ → E,`).
 
 The hold-taps are positional and `balanced`, with `hold-trigger-on-release`.
 A same-hand follower is captured, the home-row key is then decided as a tap
@@ -149,15 +149,18 @@ sent, and the captured key is replayed. The adaptive behavior therefore
 sees `S` before it handles `V`. `require-prior-idle-ms` also forces a tap
 when the previous key was recent, which is the fast-typing case. This is
 the interaction to try first on hardware. `PF`, `FW`, `LJ`, `JL`, and the
-other Colemak pairs do not start on a home-row mod.
+other Colemak pairs do not start on a home-row mod. `G` and `M` are Cmd
+holds, but no rule uses them as the first letter of a pair.
 
 On QWERTY, `F`, `J`, and `L` are both home-row mods and adaptive keys.
 They use dedicated hold-taps (`qw_f`, `qw_j`, `qw_l`) whose tap binding is
-the adaptive behavior. A rolled `PF` on QWERTY can still become Shift
-instead of `PT` when `F` is held while `P` (a hold-trigger position on the
-other hand) is released. Colemak `PF` does not have that overlap. Canary's
-adaptive letters are not on home-row-mod positions. Canary `S` is a
-home-row mod and is the trigger for `V`, same as Colemak.
+the adaptive behavior. `F` and `J` hold Ctrl. `L` holds Alt. A rolled `PF`
+on QWERTY can still become Ctrl instead of `PT` when `F` is held while `P`
+(a hold-trigger position on the other hand) is released. Colemak `PF` does
+not have that overlap. Canary's adaptive letters are not on home-row-mod
+positions. Canary `S` is a home-row Shift and is the trigger for `V`, same
+as Colemak. Windows mode swaps Ctrl and GUI after the adaptive behavior
+has chosen the letter, and both modifiers stay in the suppress mask.
 
 ## ZMK implementation
 

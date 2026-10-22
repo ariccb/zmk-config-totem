@@ -26,9 +26,11 @@ Hardware and the build guide: <https://github.com/GEIGEIGEIST/totem>
 
 This firmware enables mouse keys, which changes the Bluetooth HID report.
 Forget the keyboard on the host and pair it again after flashing. There is
-no XIAO settings-reset image; clearing bonds from the host plus `&bt BT_CLR`
-on Adjust or System is the reset path. Clearing bonds does not clear the
-saved Mac/Windows choice.
+no settings_reset image in this build. Clearing bonds from the host plus
+`&bt BT_CLR` on Adjust or System drops the Bluetooth profile and does not
+clear the saved Mac/Windows choice. A fresh board boots in Windows mode.
+A board that already saved a mode keeps it until the System-layer Win key
+is pressed once, or until settings are wiped. See Mac and Windows.
 
 The keymap editor at <https://nickcoutsos.github.io/keymap-editor/> can edit
 `config/totem.keymap`. Leave the `#include "adaptive.dtsi"` line in place.
@@ -55,13 +57,15 @@ Hold-taps below are written `hold/tap`.
 
 ```
  q   w*  f*  p*  b          j*  l*  u   y*  ;
- a   r   s   t   g          m   n   e   i   o
+A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  o
 Esc  z   x*  c   d   v*     k   h   ,   .   /* Esc
-   Shift  Nav/Tab  Num/Space    Raise/Enter  Adjust/Bsp  Del
+   Shift  Nav/Tab  Num/Space    Sym/Enter  Adjust/Bsp  Del
 ```
 
-A star is an adaptive key, the second key of a rule. `a r s t` and `n e i o`
-are home-row mods. Both pinkies are Esc on tap, Hyper on hold.
+A star is an adaptive key, the second key of a rule. Home-row mods, Mac
+mode: ring Alt, middle Shift, index Ctrl, inner column Cmd (`g` and `m`).
+`a` taps A and holds Nav. `o` is a plain letter. The outer pinkies (the
+keys below the home pinkies) are Esc on tap, Hyper on hold.
 Hyper is Left Ctrl + Left Shift + Left Alt + Left GUI.
 
 Thumbs, and why Tab sits where it does:
@@ -71,15 +75,16 @@ Thumbs, and why Tab sits where it does:
 | Left outer | 32 | one-shot Shift | |
 | Left middle | 33 | Tab | Nav |
 | Left inner | 34 | Space | Num |
-| Right inner | 35 | Enter | Raise |
+| Right inner | 35 | Enter | Sym |
 | Right middle | 36 | Backspace | Adjust |
 | Right outer | 37 | Delete | |
 
 Space stays on the inner thumb, which is the resting key. Tab shares the
-middle thumb with Nav, between Shift and Space, so the layer holds stay on
-thumbs and Tab does not take a pinky. One-shot Shift is the outer left
-thumb (1 second, quick-release), matching the Leeloo one-shot shift.
-Repeat is not on a thumb; it is on Nav and Adjust.
+middle thumb with Nav, between Shift and Space. That thumb stays: holding
+`a` opens Nav for the right hand, and the Tab thumb still opens Nav when
+the left hand needs the F-keys and zoom keys on that side. One-shot Shift
+is the outer left thumb (1 second, quick-release), matching the Leeloo
+one-shot shift. Repeat is not on a thumb; it is on Adjust.
 
 QWERTY and Canary leave the thumbs and both pinkies transparent, so they
 inherit this row. `&to` keeps Base underneath them.
@@ -88,14 +93,14 @@ inherit this row. `&to` keeps Base underneath them.
 
 ```
  q   w*  e   r   t          y*  u   i   o   p*
- a   s   d   f*  g          h   j*  k   l*  ;
+A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  ;
 Esc  z   x*  c   v*  b      n   m   ,   .   /* Esc
-        (same thumbs and pinkies as Base)
+        (same thumbs and outer pinkies as Base)
 ```
 
-`f` is Shift and adaptive, `j` is Shift and adaptive, `l` is Alt and
+`f` is Ctrl and adaptive, `j` is Ctrl and adaptive, `l` is Alt and
 adaptive. Those three use their own hold-taps so a tap still runs the
-adaptive rule.
+adaptive rule. `g` and `h` are the inner-column Cmd keys.
 
 ## Canary
 
@@ -103,46 +108,64 @@ The Leeloo Canary, including the Q/W swap noted in that keymap.
 
 ```
  q   l*  y*  p*  b          z   f*  o   u   ;
- c   r   s   t   g          m   n   e   i   a
+C/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  a
 Esc  w*  j*  v*  d   k      x*  h   ,   .   /* Esc
-        (same thumbs and pinkies as Base)
+        (same thumbs and outer pinkies as Base)
 ```
+
+The left home pinky taps Canary's `c` and holds Nav. That is the same
+physical key as Colemak `a`. Canary's `a` is the right home pinky and is a
+plain letter.
 
 ## Num
 
-Leeloo Lower, folded onto the 3x5. Digits are the number row, not the keypad,
-except the operators that adaptive rules match on.
+Hold the left Space thumb. Digits sit on the right hand, in numpad order
+with the index on 4/7/1 and the middle finger on 5. Mouse sits on the left
+hand. The left home row is transparent, so Alt, Shift, Ctrl, and Cmd from
+the base layer still chord with a digit.
 
 ```
- !   <   >   =   ^          *   7   8   9   :
- #   [   (   )   ]          &   4   5   6   -
- \   @   $   {   }   %      0   1   2   3   /   +
-   S-Tab   Tab    (held)      Enter  Backspace  Delete
+ScrlUp RClk Up  LClk MClk      7  8  9  -  /
+(home row falls through)       4  5  6  *  =
+ScrlDn Left Down Right         1  2  3  .  0  +
+       (thumbs fall through)      Enter Backspace Delete
 ```
 
-`*` is Shift+8, so the keypad-star adaptive rule stays dormant, as it was
-on the Leeloo. `-` is keypad minus, `/` is keypad slash, `+` is keypad plus,
-`=` is the equals key. `0` is adaptive: after one of those operators it
-sends Space.
+`-` and `/` are keypad minus and keypad slash. `+` is keypad plus. `=` is
+the equals key. `*` is Shift+8, so the keypad-star adaptive rule stays
+dormant. `0` is adaptive: after keypad `-`, `=`, keypad `+`, or keypad `/`
+it sends Space.
 
-The pinkies are not Esc/Hyper on this layer. The left one is `\`, the right
-one is keypad `+`, so `+` then `0` still has a key. Other layers leave the
-pinkies transparent and keep Esc/Hyper.
+Mouse up is the top middle key. Left, down, and right are the bottom row
+under the ring, middle, and index, so the home row can stay a modifier row.
+Up and down have the home row between them. That gap is the cost of keeping
+the left-hand mods. Scroll is the outer column, which is not a modifier, so
+scroll still chords with Alt, Shift, Ctrl, or Cmd. Right click is the ring
+column, left click is the index column, and middle click is the inner
+column. Shift-click works: hold the middle finger and click with the index.
+Cmd-click works: hold the inner column and click with the index. Ctrl-click
+does not, in Mac mode, because Ctrl and left click are the same index
+finger. Windows mode moves Ctrl to the inner column, so Ctrl-click is that
+same two-finger chord, and Win-click is the one that shares the index. The
+two keys under `d` and `v` stay transparent. The left outer bottom key is
+scroll down, not Esc.
 
-Terminal chords, this layer only: `8+9` opens a terminal (`Ctrl+Grave` on
-Mac, `Win+Grave` in Windows mode), `7+8` next, `9+0` previous, `7+8+9` new
-terminal. `7+8` is a subset of `7+8+9`; hit all three inside the 70 ms
+Terminal chords follow the digit keys: `8+9` opens a terminal (`Ctrl+Grave`
+on Mac, `Win+Grave` in Windows mode), `7+8` next, `9+0` previous, `7+8+9`
+new terminal. `7+8` is a subset of `7+8+9`; hit all three inside the 70 ms
 window. Next and previous are Shift+Cmd+[ / ] on Mac and Shift+Ctrl+[ / ]
 in Windows mode.
 
 ## Nav
 
-Hold the Tab thumb.
+Hold the Tab thumb, or hold the left home pinky (`a` on Colemak and
+QWERTY, `c` on Canary). The pinky hold reaches the right-hand Nav keys.
+The Tab thumb still reaches the F-keys and zoom on the left.
 
 ```
  F1  F2  F3  F4  F5       C-PgUp  Home  Up   End  (unlock)
  F6  F7  F8  F9  F10      Cmd-S-Tab Left Down Right Cmd-Tab
-Esc F11 F12 Bri- Bri+ Rep  C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
+Esc F11 F12 Zoom- Zoom+ Zoom0  C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
    (held)  (held)  Space       Enter  Backspace  Delete
 ```
 
@@ -160,31 +183,50 @@ this layer and tapping it does not lock the layer. ZMK keeps one bit per
 layer, so toggling the layer you are holding clears it, and releasing the
 thumb clears it again.
 
-## Raise
+## Sym
 
-Hold the Enter thumb.
+Hold the Enter thumb. Coding symbols are on the left hand, pairs next to
+each other, parens and brackets on the home row. The right home row is
+transparent, so Cmd, Ctrl, Shift, and Alt still chord from that hand while
+the thumb holds the layer. `<` and `>` are on the top row. Shift plus the
+right-hand comma and dot (they fall through on layers that leave them
+transparent) is the other way to type them, but on this layer those two
+keys are select-part and select-line, so the dedicated `<` `>` keys are
+the ones to use.
 
 ```
- MClk RClk  Up  LClk Mute     Vol+  LClk MClk RClk (unlock)
-      Left Down Right MicMute SelWd SelPart Back Fwd Play
-Esc  Zoom- ScrlUp ScrlDn Zoom+ Line  Vol-  Brackets Parens Arrow Next Zoom0
-   (held)   Tab   Space          (held)  Backspace  Delete
+ {   }   <   >   |        Vol+ Mute Mic Play Next
+ (   )   [   ]   \        (home row falls through to the mods)
+ =   +   -   _   *   /    Vol- SelWd SelPart Line Back Fwd
+    (thumbs fall through)        (held)  Backspace  Delete
 ```
 
-`MicMute` is Ctrl+Alt+Cmd+M, so swapping Ctrl and Cmd does not change it.
-`SelWd` is Alt+Shift+Right (repeat extends the selection). `SelPart` is
-Alt+Ctrl+Shift+Right, which becomes Alt+Win+Shift+Right in Windows mode.
-`Back` and `Fwd` are browser back and forward: Cmd+[ and Cmd+] on Mac,
-Alt+Left and Alt+Right on Windows. `Line` is Cmd+Left then Cmd+Shift+Right
-(Ctrl+Left then Ctrl+Shift+Right in Windows mode). `Zoom0` is Cmd+0
-(Ctrl+0 in Windows mode), and the zoom-out / zoom-in keys next to the
-scroll keys follow the same swap. Brackets, parens, and the arrow snippet
-follow Shift the way the Leeloo macros did: unshifted is `[]` / `()` / `() =>`,
-shifted is `{}` / `<>` / the longer arrow snippet. Quotes from the `H+,`
-combo do the same (`"` unshifted, `'` shifted).
+`|` is the pipe. `\` is backslash. `Mic` is Ctrl+Alt+Cmd+M, so swapping
+Ctrl and Cmd does not change it. `SelWd` is Alt+Shift+Right (repeat
+extends the selection). `SelPart` is Alt+Ctrl+Shift+Right, which becomes
+Alt+Win+Shift+Right in Windows mode. `Line` is Cmd+Left then
+Cmd+Shift+Right (Ctrl+Left then Ctrl+Shift+Right in Windows mode). `Back`
+and `Fwd` are browser back and forward: Cmd+[ and Cmd+] on Mac, Alt+Left
+and Alt+Right on Windows. Nav still has the other forward, Cmd+Right /
+Alt+Right.
 
-Mouse movement uses ZMK's defaults (300 ms to full speed, move value 600).
-The Leeloo kinetic-mouse settings are not copied.
+`?` is Shift plus the `/` key (the right-hand Shift falls through on this
+layer). `! @ # $ % ^ &` are Shift plus the digits on Num (the left-hand
+Shift falls through there). Backtick stays on Adjust, and Shift plus that
+key is `~`. Quotes stay the `H+,` combo (`"` unshifted, `'` shifted).
+`;` and `:` stay the base semicolon key.
+
+Where the old Raise keys went:
+
+| Old Raise key | Now |
+| --- | --- |
+| Mouse move, clicks, scroll | Num, left hand |
+| Zoom out, zoom in, zoom reset | Nav, left bottom. Brightness stays on Adjust. Repeat stays on Adjust |
+| `()` / `<>` macro, arrow snippet, `[]` / `{}` macro | Adjust, in the old non-US `#`, Scroll Lock, and Num Lock spots. Num Lock remains the `L U Y` combo. `` ` `` stays on Adjust |
+| Volume, mute, mic mute, play, next, select word / part / line, browser back and Cmd+] forward | Sym, right top and bottom |
+
+The on-Raise key that toggled Raise while the layer was held is not copied.
+It could not lock the layer. Adjust's Sym toggle is the lock that works.
 
 ## Adjust
 
@@ -192,14 +234,14 @@ Hold the Backspace thumb. This is also where Bluetooth lives; the Leeloo was
 wired.
 
 ```
-Reset ClearBT OutToggle BT0 BT1     Base  QWERTY Canary #  (unlock)
-Boot  NextBT  BT2  BT3  BT4          Num   Nav   Raise  `  Sleep
-Esc   PrevBT  Bri+ Bri- Repeat Caps  Ins  PrtSc Scroll NumLock CapsWord Esc
+Reset ClearBT OutToggle BT0 BT1     Base  QWERTY Canary ()  (unlock)
+Boot  NextBT  BT2  BT3  BT4          Num   Nav   Sym   `  Sleep
+Esc   PrevBT  Bri+ Bri- Repeat Caps  Ins  PrtSc Arrow []  CapsWord Esc
    (held)   Tab   Space            Enter  (held)  Delete
 ```
 
 `Base`, `QWERTY`, and `Canary` are `&to`. They replace the persistent
-default layer. `Num`, `Nav`, and `Raise` are toggles on this layer, which
+default layer. `Num`, `Nav`, and `Sym` are toggles on this layer, which
 is the lock that works: hold Adjust, tap the layer, release Adjust, and
 that layer stays up. `&to Base` (or QWERTY / Canary) turns the toggled
 layers off. The Leeloo's 120 second layer-lock idle timeout is not ported.
@@ -210,31 +252,31 @@ keeps them so one thumb is still enough.
 
 ## System
 
-Hold Num and Raise together. Those are the two inner thumbs: Space/Num on
-the left, Enter/Raise on the right. Each is already a layer key, and they
+Hold Num and Sym together. Those are the two inner thumbs: Space/Num on
+the left, Enter/Sym on the right. Each is already a layer key, and they
 sit under the resting position, one hand each. Nav stays on the middle Tab
 thumb and Adjust stays on the Backspace thumb, so those remain one-thumb
 layers.
 
 ZMK turns System on only while both of those layers are held
-(`conditional_layers` on Num + Raise). System is not also bound to its own
+(`conditional_layers` on Num + Sym). System is not also bound to its own
 hold or toggle. Let go of either thumb and System drops. While it is up it
-covers Num and Raise.
+covers Num and Sym.
 
 ```
  Mac  Win  Out  BT0  BT1       Clear  Save  Find
  Boot Rst  BT2  BT3  BT4                            Sleep
 
-           (held Num)              (held Raise)
+           (held Num)              (held Sym)
 ```
 
 The outer pinkies are blank on this layer, so the chord does not fire
-Esc/Hyper or Num's `\` and `+`.
+Esc/Hyper, Num's scroll and `+`, or Sym's `/` and browser forward.
 
 | Key | What it sends |
 | --- | --- |
-| Mac | Mac shortcut mode. Cmd is Cmd, and this is the boot default |
-| Win | Windows shortcut mode. Ctrl and Cmd swap, including the home-row mods |
+| Mac | Mac shortcut mode. Cmd stays Cmd |
+| Win | Windows shortcut mode, and the boot default. Ctrl and Cmd swap, including the home-row mods |
 | Out | Toggle USB and Bluetooth output |
 | BT0–BT4 | Select Bluetooth profile 0 through 4 |
 | Clear | `&bt BT_CLR`, clear the current profile |
@@ -253,10 +295,14 @@ down is released with the other mode's code and can stick on the host.
 
 ## Mac and Windows
 
-The keymap is written for Mac. Home-row pinkies are GUI (Cmd), home-row
-middles are Ctrl, and the shortcut combos are Cmd chords. Windows mode does
-not replace those nodes and does not add a second set of hold-taps, so the
-timing properties on `hrm_l` and `hrm_r` apply to both modes.
+The keymap is written with Mac keycodes. The inner home-row column is GUI
+(Cmd), the index fingers are Ctrl, and the shortcut combos are Cmd chords.
+Windows mode is the boot default: `CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS`
+is set in `config/totem.conf`. A fresh board, and a board whose settings
+have been cleared, starts in Windows mode. Windows mode does not replace
+those nodes and does not add a second set of hold-taps, so the timing on
+`hrm_l` and `hrm_r` applies in both modes. The inner column uses `hrm_in_l`
+and `hrm_in_r` with the same swap.
 
 A listener on the central half rewrites the report after sticky key, caps
 word, and key repeat have seen the original code, and before USB/BLE HID
@@ -266,12 +312,16 @@ Cmd (Hyper, mic mute) is unchanged.
 
 The listener is not a layer, so switching alpha layout with `&to` does not
 clear it. The choice is stored in ZMK settings (`totem/os/win`) and comes
-back after a reboot. On a fresh board, before either key has been pressed,
-the mode is Mac. Uncomment `CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS` in
-`config/totem.conf` to make that first boot Windows instead. After a Mac or
-Windows key press, the saved value wins over that setting. `&bt BT_CLR`
-does not erase it. There is no XIAO settings-reset firmware; press the other
-mode key to change it back.
+back after a reboot. A value already stored there overrides the compile
+default. A board that saved Mac on an earlier flash still boots in Mac
+mode until that saved value changes.
+
+Press the System-layer Win key once to store Windows mode. That leaves
+Bluetooth bonds in place. Flashing ZMK's `settings_reset` firmware for the
+XIAO wipes the settings partition, bonds included, and the next boot of
+this firmware then uses the Windows default. This repository does not
+build a settings_reset image. `&bt BT_CLR` clears the current Bluetooth
+profile and does not erase the saved mode.
 
 A straight swap is wrong for a few Leeloo shortcuts, so those are their own
 behaviors in `config/os.dtsi` and do not get swapped a second time:
@@ -281,8 +331,8 @@ behaviors in `config/os.dtsi` and do not get swapped a second time:
 | Redo (F P) | Cmd+Shift+Z | Ctrl+Y |
 | Clipboard history (X D) | Alt+Shift+Cmd+Space | Win+V |
 | Nav `Fwd` | Cmd+Right | Alt+Right |
-| Raise `Back` | Cmd+[ | Alt+Left |
-| Raise `Fwd` | Cmd+] | Alt+Right |
+| Sym `Back` | Cmd+[ | Alt+Left |
+| Sym `Fwd` | Cmd+] | Alt+Right |
 
 Everything else that is Cmd in the keymap becomes Ctrl, and a bare Ctrl
 becomes Win. That includes undo, cut, copy, paste, paste-without-formatting,
@@ -316,19 +366,41 @@ them and also cover the shortcuts the magic swap gets wrong.
 
 Positional hold-taps, the timeless setup from the ZMK hold-tap docs.
 
-Mac mode is drawn below. Windows mode swaps pinky and middle on both
-hands (pinky becomes Ctrl, middle becomes Win) and leaves Alt and Shift
-where they are.
+Windows mode is how a fresh board boots. Mac mode is drawn below. Windows
+mode swaps Ctrl and GUI, so the index becomes Win and the inner column
+becomes Ctrl. Alt and Shift stay put.
+That keeps the shortcut modifier on the inner column in both modes: Cmd
+on Mac, Ctrl on Windows. The index keeps the other modifier: Ctrl on Mac,
+Win on Windows. Leaving the fingers unswapped would put Win on the inner
+column and Ctrl on the index, which fights this layout.
 
 | | Left | Right |
 | --- | --- | --- |
-| Pinky | GUI / Cmd | GUI / Cmd |
+| Pinky | letter, or Nav on the left | letter |
 | Ring | Alt | Alt |
-| Middle | Ctrl | Ctrl |
-| Index | Shift | Shift |
+| Middle | Shift | Shift |
+| Index | Ctrl | Ctrl |
+| Inner | GUI / Cmd | GUI / Cmd |
 
-`G` and `M` are not mods. The same positions are mods on QWERTY
-(`A S D F` / `J K L ;`) and Canary (`C R S T` / `N E I A`).
+Colemak letters are `A R S T G` / `M N E I O`. QWERTY uses the same
+fingers: `A S D F G` / `H J K L ;`, with `F`, `J`, and `L` also adaptive.
+Canary uses `C R S T G` / `M N E I A`. The left pinky hold is Nav on all
+three. The right pinky is a plain letter.
+
+The Leeloo did not use this home row. Its left home pinky was hold-Adjust
+/ tap the letter, with the global 200 ms tapping term and no prior-idle.
+Colemak `O` was a plain letter. QWERTY's semicolon was hold-Adjust; this
+port leaves it a letter so the right pinky matches Colemak and Canary,
+and Adjust stays on the thumb.
+
+The left pinky uses the same balanced / 280 ms / 150 ms prior-idle tuning
+as the other home-row mods, and it only becomes Nav with a key on the
+right hand. The layer turns on as that key goes down, so an arrow can
+repeat. The inner Cmd keys are stricter (320 ms tapping term, 200 ms
+prior-idle, 200 ms quick-tap) because `G` and `M` are rolled, including
+cross-hand rolls. If Cmd still fires while typing, raise
+`require-prior-idle-ms` on `hrm_in_l` and `hrm_in_r`. If Cmd is hard to
+reach, lower it toward 150.
 
 | Property | Value | Effect |
 | --- | --- | --- |
@@ -339,14 +411,15 @@ where they are.
 | hold-trigger-key-positions | the other hand, including its pinky and thumbs | A same-hand roll is a tap |
 | hold-trigger-on-release | set | Same-hand mods can still be held together |
 
-There is no global quick-tap. Layer-taps are separate: balanced, 200 ms
-tapping term, 120 ms quick-tap, and no prior-idle requirement, so Num and
-Nav do not need a pause.
+There is no global quick-tap. The table is the ring, middle, and index
+(`hrm_l`, `hrm_r`). The inner Cmd keys are `hrm_in_l` and `hrm_in_r`.
+Thumb layer-taps are separate: balanced, 200 ms tapping term, 120 ms
+quick-tap, and no prior-idle requirement, so Num and Sym do not need a
+pause. The left pinky's Nav hold is `a_nav`, not that thumb tuning.
 
 If mods fire while typing, raise `require-prior-idle-ms` (try 200) or
 `tapping-term-ms`. If mods feel late, lower `require-prior-idle-ms` toward
-100 or `tapping-term-ms` toward 240. Those properties are on `hrm_l` and
-`hrm_r` in `config/totem.keymap`.
+100 or `tapping-term-ms` toward 240.
 
 ## Esc / Hyper
 
@@ -364,14 +437,16 @@ If Esc still turns into Hyper, raise `tapping-term-ms`. If Hyper is hard to
 reach, lower `require-prior-idle-ms` or remove that line. The node is `eh`
 in `config/totem.keymap`.
 
-Num replaces the pinkies, as drawn above. System leaves them blank. Every
-other layer keeps Esc/Hyper.
+Num replaces both pinkies with scroll down and keypad `+`. Sym replaces
+them with `/` and browser forward. Nav keeps Esc/Hyper on the left pinky
+and puts sticky Cmd on the right. System leaves both blank. QWERTY,
+Canary, and Adjust leave them transparent, so they stay Esc/Hyper.
 
 ## Combos
 
 50 ms, alpha layers only (Base, QWERTY, Canary). Positions follow Colemak-DH,
-including while QWERTY or Canary is active. Mac mode is the default.
-Windows mode is the System-layer `Win` key, described above.
+including while QWERTY or Canary is active. The Mac column is the keymap
+before the swap. Windows mode is the boot default; see Mac and Windows.
 
 | Chord | Mac | Windows |
 | --- | --- | --- |
@@ -389,7 +464,7 @@ Windows mode is the System-layer `Win` key, described above.
 | E I | = | same |
 | T G | @ | same |
 | H , | `"` , or `'` if Shift is held | same |
-| T N | Caps word (the two index Shift mods) | same |
+| T N | Caps word (the two index keys, which are Ctrl) | same |
 | L U Y | Num Lock | same |
 | letter + `.` | The Leeloo HTML / snippet macros (div, p, title, href, img, style, the generic tag, `console.log`, `() =>`) | same, except the generic tag's Cmd+D becomes Ctrl+D |
 
@@ -405,17 +480,19 @@ The Leeloo is a 4x6 plus four thumbs and two encoders. The Totem is a 3x5
 plus one outer pinky and three thumbs per side. The number row, the outer
 column, and both encoders had to move.
 
-- F-keys, brightness, and the app/tab switchers moved to Nav.
-- The symbol/number layer is Num, on the Space thumb. Shifted-tab from the
-  Leeloo's lower outer column is the outer left thumb on Num.
-- One-shot Shift, Tab/Nav, Space/Num on the left; Enter/Raise, Backspace/Adjust,
-  Delete on the right. The Leeloo's repeat thumb and play/pause thumb are
-  keys on Nav and Raise.
+- F-keys, brightness, and the app/tab switchers moved to Nav. Zoom replaced
+  brightness on Nav; brightness stays on Adjust.
+- Num, on the Space thumb, is a right-hand numpad and a left-hand mouse.
+  Sym, on the Enter thumb, is the coding-symbol layer.
+- One-shot Shift, Tab/Nav, Space/Num on the left; Enter/Sym, Backspace/Adjust,
+  Delete on the right. Num puts digits on the right hand and the mouse on
+  the left. Sym puts coding symbols on the left hand. The Leeloo's repeat
+  thumb is on Adjust, and play/pause is on Sym.
 - Esc/Hyper is the outer pinky on both sides, not a full-height outer column.
-  Quote and backslash moved to Num (backslash is the left pinky there,
-  quote is the `H+,` combo).
-- Home-row mods replace the Leeloo's corner modifiers (Ctrl, Alt, GUI, Shift
-  scattered on thumbs and outer keys).
+  Backslash is on Sym. Quote is the `H+,` combo.
+- Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
+  is Shift, index is Ctrl, and the inner column is Cmd. The left home
+  pinky holds Nav. The right home pinky is a plain letter.
 - Encoders became keys: volume, brightness, zoom, undo/redo (combos), mic
   mute, play/pause, next track.
 - Three alpha layouts stay. Switching them is `&to` on Adjust.
@@ -423,14 +500,17 @@ column, and both encoders had to move.
   and sleep are on Adjust. System repeats profile select, clear, output
   toggle, bootloader, reset, and sleep, and adds Save and Find. Adjust's
   copies stay, so one thumb still reaches Bluetooth.
-- Shortcuts start as Mac. System's Mac and Win keys swap Ctrl and Cmd at
-  runtime, including home-row mods and the shortcut combos, and they keep
-  the Leeloo exceptions (redo is Ctrl+Y on Windows, clipboard history is
-  Win+V, browser back/forward are Alt+arrows). The Leeloo's compile-time
+- Shortcuts are written as Mac chords. The firmware boots in Windows mode
+  (`CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS` in `config/totem.conf`). A
+  previously saved mode overrides that default. Press System's Win key
+  once, or flash `settings_reset` and then this firmware, to get Windows
+  again. System's Mac and Win keys swap Ctrl and Cmd at runtime, including
+  home-row mods and the shortcut combos, and they keep the Leeloo
+  exceptions (redo is Ctrl+Y on Windows, clipboard history is Win+V,
+  browser back/forward are Alt+arrows). The Leeloo's compile-time
   `MAC_HOTKEYS` block and its `CG_SWAP` / `CG_NORM` magic keys are that
   story on the QMK side; see Mac and Windows above. The choice is saved
-  across reboots. `config/totem.conf` can select the default for a board
-  that has never pressed either key.
+  across reboots.
 - The TVPaint layers from the previous Totem keymap are not in the Leeloo
   map and are not in this one.
 - Autocorrect is not ported.
@@ -455,13 +535,17 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 3. `pf` → `pt`, `fw` → `fs`, `lj` → `lk`, `jl` → `ju`.
 4. A fast Esc on each pinky, then a roll from a letter into that pinky.
    Then a paused hold of the same key plus a letter, which should be Hyper.
-5. Tab on the middle left thumb, Nav while it is held. Space/Num, Enter/Raise,
-   Backspace/Adjust.
-6. A same-hand roll (`as`) stays letters. A cross-hand chord (`a` held, then
-   a right-hand key) is Cmd in Mac mode and Ctrl in Windows mode.
-7. Caps word from the two index Shift keys, then a shifted bigram.
+5. Tab on the middle left thumb, Nav while it is held. Space/Num, Enter/Sym,
+   Backspace/Adjust. Hold `a` and a right-hand arrow for Nav from the pinky.
+6. A same-hand roll (`as` on QWERTY, `ar` on Colemak) stays letters. Hold
+   `g` or `m` after a short pause, then a key on the other hand: that is
+   Cmd in Mac mode and Ctrl in Windows mode. Hold `a` and tap a right-hand
+   key for Nav.
+7. Caps word from the two index keys (they are Ctrl), then a shifted bigram.
 8. `U` and `Y` together produce `-`. A roll produces `UE`.
 9. Hold Adjust, tap Num, release Adjust. Num should stay. `&to Base` clears it.
-10. Hold Space/Num and Enter/Raise together. System should come up. `Win`,
-    then W+F is Ctrl+Z and F+P is Ctrl+Y. `Mac` puts those back to Cmd+Z and
-    Cmd+Shift+Z. Power-cycle and the last choice should still be selected.
+10. Hold Space/Num and Enter/Sym together. System should come up. A fresh
+    board is already in Windows mode: W+F is Ctrl+Z and F+P is Ctrl+Y.
+    `Mac` puts those on Cmd+Z and Cmd+Shift+Z. `Win` puts them back, and
+    one press is also how a previously saved Mac choice is replaced.
+    Power-cycle and the last choice should still be selected.
