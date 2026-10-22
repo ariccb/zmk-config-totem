@@ -191,8 +191,9 @@
 
         /*
          * Outer pinkies. tap-preferred: a tap shorter than the tapping term
-         * is always Esc, even if another key overlaps. Hyper is Ctrl+Shift+Alt+Gui.
-         * Usage is &eh 0 ESC. The 0 is unused because Hyper takes no parameter.
+         * is always the tap key, even if another key overlaps. Hyper is
+         * Ctrl+Shift+Alt+Gui. The 0 is unused because Hyper takes no
+         * parameter. Left is &eh 0 ESC. Right is &eh 0 BSPC.
          */
         eh: esc_hyper {
             compatible = "zmk,behavior-hold-tap";
@@ -830,7 +831,7 @@
                 &a_nav NAV A  &hrm_l LALT R  &hrm_l LSHFT S  &hrm_l LCTRL T  &hrm_in_l LGUI G
                 &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
                 &eh 0 ESC  &kp Z  &ak_x  &kp C  &kp D  &ak_v
-                &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &eh 0 ESC
+                &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &eh 0 BSPC
                 &sk LSHFT  &lt NAV TAB  &lt NUM SPACE
                 &lt SYM RET  &lt ADJ BSPC  &kp DEL
             >;

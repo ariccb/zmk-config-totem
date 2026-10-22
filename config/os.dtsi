@@ -4,8 +4,9 @@
  * Included from totem.keymap. The keymap editor keeps this include and the
  * &os_* references. Do not delete the include.
  *
- * Mac is the default. Windows mode swaps Ctrl and GUI (Cmd) as each report
- * goes out, including home-row mods and LG() shortcuts. The nodes below are
+ * Windows is the default (CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS). It swaps
+ * Ctrl and GUI (Cmd) as each report goes out, including home-row mods and
+ * LG() shortcuts. A saved mode overrides that default. The nodes below are
  * the shortcuts that are not that swap:
  *   redo    Mac Cmd+Shift+Z,  Windows Ctrl+Y
  *   clip    Mac Alt+Shift+Cmd+Space,  Windows Win+V

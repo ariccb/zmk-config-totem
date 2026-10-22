@@ -58,15 +58,18 @@ Hold-taps below are written `hold/tap`.
 ```
  q   w*  f*  p*  b          j*  l*  u   y*  ;
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  o
-Esc  z   x*  c   d   v*     k   h   ,   .   /* Esc
+Esc  z   x*  c   d   v*     k   h   ,   .   /* Bsp
    Shift  Nav/Tab  Num/Space    Sym/Enter  Adjust/Bsp  Del
 ```
 
 A star is an adaptive key, the second key of a rule. Home-row mods, Mac
 mode: ring Alt, middle Shift, index Ctrl, inner column Cmd (`g` and `m`).
-`a` taps A and holds Nav. `o` is a plain letter. The outer pinkies (the
-keys below the home pinkies) are Esc on tap, Hyper on hold.
-Hyper is Left Ctrl + Left Shift + Left Alt + Left GUI.
+`a` taps A and holds Nav. `o` is a plain letter. The left outer pinky (the
+key below the home pinky) is Esc on tap and Hyper on hold. The right outer
+pinky is Backspace on tap and Hyper on hold. QWERTY and Canary leave those
+keys transparent, so they inherit the same pair. Hyper is Left Ctrl + Left
+Shift + Left Alt + Left GUI in both OS modes. Windows mode swaps Ctrl and
+GUI, and a chord that already holds both still sends both.
 
 Thumbs, and why Tab sits where it does:
 
@@ -94,7 +97,7 @@ inherit this row. `&to` keeps Base underneath them.
 ```
  q   w*  e   r   t          y*  u   i   o   p*
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  ;
-Esc  z   x*  c   v*  b      n   m   ,   .   /* Esc
+Esc  z   x*  c   v*  b      n   m   ,   .   /* Bsp
         (same thumbs and outer pinkies as Base)
 ```
 
@@ -109,7 +112,7 @@ The Leeloo Canary, including the Q/W swap noted in that keymap.
 ```
  q   l*  y*  p*  b          z   f*  o   u   ;
 C/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  a
-Esc  w*  j*  v*  d   k      x*  h   ,   .   /* Esc
+Esc  w*  j*  v*  d   k      x*  h   ,   .   /* Bsp
         (same thumbs and outer pinkies as Base)
 ```
 
@@ -236,7 +239,7 @@ wired.
 ```
 Reset ClearBT OutToggle BT0 BT1     Base  QWERTY Canary ()  (unlock)
 Boot  NextBT  BT2  BT3  BT4          Num   Nav   Sym   `  Sleep
-Esc   PrevBT  Bri+ Bri- Repeat Caps  Ins  PrtSc Arrow []  CapsWord Esc
+Esc   PrevBT  Bri+ Bri- Repeat Caps  Ins  PrtSc Arrow []  CapsWord Bsp
    (held)   Tab   Space            Enter  (held)  Delete
 ```
 
@@ -271,7 +274,8 @@ covers Num and Sym.
 ```
 
 The outer pinkies are blank on this layer, so the chord does not fire
-Esc/Hyper, Num's scroll and `+`, or Sym's `/` and browser forward.
+left Esc/Hyper, right Backspace/Hyper, Num's scroll and `+`, or Sym's `/`
+and browser forward.
 
 | Key | What it sends |
 | --- | --- |
@@ -307,8 +311,10 @@ and `hrm_in_r` with the same swap.
 A listener on the central half rewrites the report after sticky key, caps
 word, and key repeat have seen the original code, and before USB/BLE HID
 sends it. Left Ctrl and Left GUI trade places, and the same for the right
-side. Shift and Alt stay put. A chord that already contains both Ctrl and
-Cmd (Hyper, mic mute) is unchanged.
+side. Shift and Alt stay put. A chord that already holds both Ctrl and
+Cmd still sends both. Hyper is four key events, and the listener trades
+the Ctrl and GUI keycodes, so the set stays Ctrl+Alt+Shift+GUI. Mic mute
+is one event with both modifier bits, and the bit swap keeps both.
 
 The listener is not a layer, so switching alpha layout with `&to` does not
 clear it. The choice is stored in ZMK settings (`totem/os/win`) and comes
@@ -423,24 +429,27 @@ If mods fire while typing, raise `require-prior-idle-ms` (try 200) or
 
 ## Esc / Hyper
 
-Both outer pinkies use `&eh 0 ESC`. Hold-taps always take two parameters, and the `0` is unused because Hyper takes none.
+Both outer pinkies use the `eh` hold-tap. The left is `&eh 0 ESC`. The
+right is `&eh 0 BSPC`. Hold-taps always take two parameters, and the `0`
+is unused because Hyper takes none. The timing is the same on both keys.
 
 | Property | Value | Effect |
 | --- | --- | --- |
-| flavor | tap-preferred | A release before the tapping term is always Esc |
+| flavor | tap-preferred | A release before the tapping term is always the tap key |
 | tapping-term-ms | 200 | Hyper starts once the key has been down this long |
-| require-prior-idle-ms | 150 | A pinky struck during typing stays Esc |
+| require-prior-idle-ms | 150 | A pinky struck during typing stays Esc or Backspace |
 
-A fast Esc, including a roll from a letter into the pinky, does not become
+A fast tap, including a roll from a letter into the pinky, does not become
 Hyper. Hyper+key means a short pause, then holding the pinky past 200 ms.
-If Esc still turns into Hyper, raise `tapping-term-ms`. If Hyper is hard to
-reach, lower `require-prior-idle-ms` or remove that line. The node is `eh`
-in `config/totem.keymap`.
+If a tap still turns into Hyper, raise `tapping-term-ms`. If Hyper is hard
+to reach, lower `require-prior-idle-ms` or remove that line. The node is
+`eh` in `config/totem.keymap`.
 
 Num replaces both pinkies with scroll down and keypad `+`. Sym replaces
 them with `/` and browser forward. Nav keeps Esc/Hyper on the left pinky
 and puts sticky Cmd on the right. System leaves both blank. QWERTY,
-Canary, and Adjust leave them transparent, so they stay Esc/Hyper.
+Canary, and Adjust leave them transparent, so the left stays Esc/Hyper
+and the right stays Backspace/Hyper.
 
 ## Combos
 
@@ -488,7 +497,8 @@ column, and both encoders had to move.
   Delete on the right. Num puts digits on the right hand and the mouse on
   the left. Sym puts coding symbols on the left hand. The Leeloo's repeat
   thumb is on Adjust, and play/pause is on Sym.
-- Esc/Hyper is the outer pinky on both sides, not a full-height outer column.
+- The left outer pinky is Esc/Hyper and the right outer pinky is
+  Backspace/Hyper, not a full-height outer column.
   Backslash is on Sym. Quote is the `H+,` combo.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
@@ -533,8 +543,9 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 1. Forget the keyboard and pair it again. Mouse keys changed the HID report.
 2. `sv` → `sc`, and `e/` → `e,`. Both start on a home-row mod.
 3. `pf` → `pt`, `fw` → `fs`, `lj` → `lk`, `jl` → `ju`.
-4. A fast Esc on each pinky, then a roll from a letter into that pinky.
-   Then a paused hold of the same key plus a letter, which should be Hyper.
+4. A fast Esc on the left outer pinky and a fast Backspace on the right,
+   then a roll from a letter into that pinky. A paused hold of either pinky
+   plus a letter is Hyper: Ctrl+Alt+Shift+Cmd in Mac mode and in Windows mode.
 5. Tab on the middle left thumb, Nav while it is held. Space/Num, Enter/Sym,
    Backspace/Adjust. Hold `a` and a right-hand arrow for Nav from the pinky.
 6. A same-hand roll (`as` on QWERTY, `ar` on Colemak) stays letters. Hold

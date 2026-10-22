@@ -73,6 +73,21 @@ struct behavior_os_mode_data {
 static bool windows_mode = IS_ENABLED(CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS);
 static bool os_passthrough;
 
+/*
+ * Swap Ctrl and GUI without dropping either one.
+ *
+ * Both families are cleared first, then set from the original bits. Doing
+ * it in place (if Ctrl, write GUI; if GUI, write Ctrl) would see the GUI
+ * just written and turn a chord that held both into Ctrl alone.
+ *
+ * Hyper is not one event. The macro presses LCTRL, LSHIFT, LALT, and LGUI
+ * as four key events, and a plain modifier key carries its identity in the
+ * keycode with the modifier byte clear. zmk_hid_keyboard_press registers
+ * that keycode as the modifier bit. Swapping the keycodes trades LCTRL
+ * with LGUI, so the report still has Ctrl, Shift, Alt, and GUI. The same
+ * holds for one event whose implicit modifiers already contain both, such
+ * as mic mute LC(LA(LG(M))).
+ */
 static uint8_t swap_ctrl_gui_bits(uint8_t mods) {
     uint8_t swapped = mods & (uint8_t) ~(MOD_LCTL | MOD_RCTL | MOD_LGUI | MOD_RGUI);
 
