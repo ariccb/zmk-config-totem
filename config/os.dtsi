@@ -21,6 +21,7 @@
  *   selword  Select word: Mac Option+Shift+Right, Windows Ctrl+Shift+Right
  *   selline  Select line: Mac Cmd+Left then Cmd+Shift+Right,
  *            Windows Home then Shift+End
+ *   enter    Raise outer left thumb: Mac Cmd+Enter, Windows Ctrl+Enter
  *
  * os_ac toggles autocorrect. It is on until this key stores the other
  * choice (totem/ac/en). The key sits on System, to the right of Canary.
@@ -129,6 +130,13 @@
             label = "OS_SELLINE";
             #binding-cells = <0>;
             command = "selline";
+        };
+
+        os_enter: os_enter {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_ENTER";
+            #binding-cells = <0>;
+            command = "enter";
         };
 
         os_ac: os_ac {

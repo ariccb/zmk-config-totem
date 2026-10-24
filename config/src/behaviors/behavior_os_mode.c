@@ -25,8 +25,10 @@
  * are sent with passthrough too. Select word and select line are taps.
  * Select word is Option+Shift+Right on Mac and Ctrl+Shift+Right on
  * Windows. Select line is Cmd+Left then Cmd+Shift+Right on Mac, and
- * Home then Shift+End on Windows. Passthrough keeps Windows mode from
- * rewriting the Mac GUI chords into Ctrl.
+ * Home then Shift+End on Windows. Raise's outer left thumb is
+ * Cmd+Enter on Mac and Ctrl+Enter on Windows. Passthrough keeps Windows
+ * mode from rewriting the Mac GUI chords into Ctrl, and from rewriting
+ * the Windows Ctrl+Enter chord back into Cmd+Enter.
  *
  * The choice is stored in ZMK settings (totem/os/win) when settings are
  * enabled, which they are on this BLE keyboard. Until a Mac or Windows key
@@ -79,6 +81,7 @@ enum os_command {
     OS_TAB_NEXT,
     OS_SELWORD,
     OS_SELLINE,
+    OS_ENTER,
 };
 
 struct behavior_os_mode_config {
@@ -236,6 +239,9 @@ static uint32_t chord_for(uint8_t command) {
     case OS_TAB_NEXT:
         /* Ctrl+Tab on both Mac and Windows. */
         return LC(TAB);
+    case OS_ENTER:
+        /* Cmd+Enter on Mac, Ctrl+Enter on Windows. */
+        return windows_mode ? LC(ENTER) : LG(ENTER);
     default:
         return 0;
     }

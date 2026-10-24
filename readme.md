@@ -24,9 +24,10 @@ Hardware and the build guide: <https://github.com/GEIGEIGEIST/totem>
   `totem_left-xiao_ble__zmk-zmk.uf2` onto the drive that appears.
 - Repeat with the right half and `totem_right-xiao_ble__zmk-zmk.uf2`.
 
-This firmware still enables the pointing HID report, so a host that paired
-before mouse keys existed needs to forget the keyboard and pair again.
-Lower itself no longer sends move, scroll, or clicks. There is
+This firmware binds mouse keys on Raise's left hand and keeps the pointing
+HID report on. A host that paired before pointing was enabled still needs
+to forget the keyboard and pair again. Lower does not send move, scroll,
+or clicks. There is
 no settings_reset image in this build. Clearing bonds from the host plus
 `&bt BT_CLR` on Adjust or System drops the Bluetooth profile and does not
 clear the saved Mac/Windows choice. A fresh board boots in Windows mode.
@@ -34,9 +35,10 @@ A board that already saved a mode keeps it until the System-layer Win key
 is pressed once, or until settings are wiped. See Mac and Windows.
 
 The keymap editor at <https://nickcoutsos.github.io/keymap-editor/> can edit
-`config/totem.keymap`. Leave the `#include "adaptive.dtsi"` line in place.
-The editor keeps that include and the `&ak_*` bindings; the trigger nodes
-themselves are edited in the dtsi.
+`config/totem.keymap`. Leave `#include "adaptive.dtsi"`, `#include "os.dtsi"`,
+and `#include <dt-bindings/zmk/pointing.h>` in place. The editor keeps those
+includes and the `&ak_*`, `&os_*`, and pointing bindings (`&mmv`, `&mkp`,
+`&msc`). Adaptive-key trigger nodes are edited in the dtsi.
 
 ## Key positions
 
@@ -88,7 +90,8 @@ Thumbs:
 Space on the middle left thumb and Backspace on the middle right thumb
 both hold Lower. The outer left thumb is `&mt LGUI ENTER`, balanced at
 200 ms, and `z` uses that same mod-tap. Windows mode swaps that Command
-to Ctrl, the same as the other Cmd keys. The inner left thumb is
+to Ctrl, the same as the other Cmd keys. Raise replaces that thumb with
+`&os_enter`: Cmd+Enter on Mac, Ctrl+Enter on Windows. The inner left thumb is
 `&os_galt_tab 0 TAB`: tap Tab, hold Command+Alt. Mac sends Cmd+Option.
 Windows sends Win+Alt. The `0` is unused, because that hold takes no
 parameter. The inner right thumb is backtick. The outer right thumb is
@@ -175,9 +178,8 @@ right thumb. `0` is the outer right thumb.
 unchanged. The Leeloo colon was the outer right column; `+` is there instead.
 
 Mouse move, scroll, and clicks used to be the left hand of this layer.
-They are not on Lower, and they were not moved onto Raise. Raise's left
-side already has its own symbols. The firmware still
-compiles pointing, so the Bluetooth report does not change.
+They are on Raise's left hand now. Lower does not bind them. The firmware
+still compiles pointing, so the Bluetooth report does not change.
 
 Terminal chords follow the digit keys: `7+9` opens a terminal (`Ctrl+Grave`
 on Mac, `Win+Grave` in Windows mode), `7+8` next, `8+9` previous. There is
@@ -233,37 +235,60 @@ is momentary Nav and does not blink. Adjust uses the same `&nav_lock`.
 ## Raise
 
 Hold the outer right thumb (Delete). This layer used to be called Sym.
-Coding symbols are on the left hand, pairs next to each other, parens and
-brackets on the home row. The right home row's outer keys stay
-transparent. `<` and `>` are on the top row. Shift plus the right-hand
-comma and dot (they fall through on layers that leave them transparent)
-is the other way to type them, but on this layer those two keys are
-select-part and select-line, so the dedicated `<` `>` keys are the ones
-to use.
+The left hand is the mouse block that used to sit on Num. The right hand
+is volume, mute, and media on the Colemak letters, then select word and
+browser back and forward.
 
 ```
- {   }   <   >   |        Vol+ Mute Mic  Play Next
- (   )   [   ]   \          ·   Mic  Play Next  ·
- =   +   -   _   *   /    Vol- SelWd SelPart Line Back Fwd
-    (thumbs fall through)        (held)  Backspace  Delete
+ScrlUp RClk Up  LClk MClk      Vol- Vol+ SpkMute ·  Next
+(home row falls through)       Mic  Prev Play Next ·
+ScrlDn Left Down Right ·  ·     ·  SelWd SelPart Line Back Fwd
+  Cmd+Ent  ·   ·             ·   Backspace  Delete
 ```
 
-The home-row mic, play, and next keys are the same chords as the top
-row: Ctrl+Alt+Cmd+M, play/pause, and next track. The two outer home-row
-keys stay transparent.
+Mouse up is the top middle key. Left, down, and right are the bottom row
+under the ring, middle, and index, so the left home row stays transparent
+and Alt, Shift, Ctrl, and Cmd still chord with a click. Up and down have
+that home row between them. Scroll is the outer column. Right click is
+the ring column, left click is the index column, and middle click is the
+inner column. Shift-click works: hold the middle finger and click with
+the index.
 
-`|` is the pipe. `\` is backslash. `Mic` is Ctrl+Alt+Cmd+M, so swapping
-Ctrl and Cmd does not change it. `SelWd` taps Option+Shift+Right on Mac
-and Ctrl+Shift+Right on Windows. Each tap extends the selection by one
-word. `SelPart` is Alt+Ctrl+Shift+Right, which becomes
-Alt+Win+Shift+Right in Windows mode. `Line` taps Cmd+Left, then
-Cmd+Shift+Right, on Mac. On Windows it taps Home, then Shift+End.
-`Back` and `Fwd` are browser back and forward: Cmd+[ and Cmd+] on Mac,
-Alt+Left and Alt+Right on Windows. Nav still has the other forward,
-Cmd+Right / Alt+Right.
+Volume and mute follow the Colemak letters on the right:
 
-`?` is Shift plus the `/` key. `! @ # $ % ^ & *` are keys on Lower. Backtick is the outer left
-thumb there, and Shift plus that key is `~`. Adjust still has a backtick
+| Letter | Position | Key |
+| --- | --- | --- |
+| J | 5 | Volume down |
+| L | 6 | Volume up |
+| U | 7 | Speaker mute |
+| Y | 8 | Transparent. Falls through to Y. Play/pause is not here |
+| ; | 9 | Next track |
+| M | 15 | Mic mute, Ctrl+Alt+Cmd+M |
+| N | 16 | Previous track |
+| E | 17 | Play/pause. This key already had it |
+| I | 18 | Next track |
+| O | 19 | Transparent |
+
+Mic mute is only on M. Previous track is only on N. Speaker mute is only
+on U. Volume down is only on J, not also on the bottom row. Y is not
+play/pause. Next track stays on the semicolon key and on I, which are
+not J, L, U, M, or N. `Mic` is Ctrl+Alt+Cmd+M, so swapping Ctrl and Cmd
+does not change it.
+
+The outer left thumb is `&os_enter`: Cmd+Enter on Mac, Ctrl+Enter on
+Windows. The other left thumbs fall through. Backspace and Delete stay
+on the right.
+
+`SelWd` taps Option+Shift+Right on Mac and Ctrl+Shift+Right on Windows.
+Each tap extends the selection by one word. `SelPart` is
+Alt+Ctrl+Shift+Right, which becomes Alt+Win+Shift+Right in Windows mode.
+`Line` taps Cmd+Left, then Cmd+Shift+Right, on Mac. On Windows it taps
+Home, then Shift+End. `Back` and `Fwd` are browser back and forward:
+Cmd+[ and Cmd+] on Mac, Alt+Left and Alt+Right on Windows. Nav still
+has the other forward, Cmd+Right / Alt+Right.
+
+The coding symbols that were on this hand are not on Raise. `< > = ( ) [ ] { } + - * / |` are on Lower. `_` is the comma+dot combo. `\` is not on a layer key. `?` is the `.`+`/` combo. `! @ # $ % ^ & *` are keys on Lower. Backtick is Lower's outer left
+thumb, and Shift plus that key is `~`. Adjust still has a backtick
 too. `H+,` types `"`. `I+O` types an apostrophe. The right pinky is
 Quopostrokey: apostrophe after a letter, and `""` with the cursor between
 the quotes otherwise.
@@ -273,10 +298,10 @@ Where the old Raise keys went:
 
 | Old Raise key | Now |
 | --- | --- |
-| Mouse move, clicks, scroll | Removed. They were the left hand of Num, and Lower does not keep them |
+| Mouse move, clicks, scroll | Raise, left hand. This is the block that used to be on Num. Lower does not keep it |
 | Zoom out, zoom in, zoom reset | Off the keymap. F1–F4 took the left bottom of Nav, including the old zoom-reset key. Brightness stays on Adjust. Repeat stays on Adjust |
 | `()` / `<>` macro, arrow snippet, `[]` / `{}` macro | Adjust, in the old non-US `#`, Scroll Lock, and Num Lock spots. `L U Y` toggles Nav. `` ` `` stays on Adjust |
-| Volume, mute, mic mute, play, next, select word / part / line, browser back and Cmd+] forward | Raise, right top, home, and bottom |
+| Volume, mute, mic mute, previous, play, next, select word / part / line, browser back and Cmd+] forward | Raise, right hand. Vol− on J, Vol+ on L, speaker mute on U, mic on M, previous on N, play on E, next on `;` and I |
 
 The on-Raise key that toggled Raise while the layer was held is not copied.
 It could not lock the layer. Adjust's Raise toggle is the lock that works.
@@ -304,8 +329,8 @@ QWERTY / Canary) turns the toggled layers off. The Leeloo's 120 second
 layer-lock idle timeout is not ported.
 
 `Boot` is the bootloader. Reset-by-combo is not ported, on purpose.
-These Bluetooth, boot, and reset keys are duplicated on System. Adjust
-keeps them so one thumb is still enough.
+Profile select, clear, next, previous, boot, and reset are also on
+System. Adjust keeps its copies so one thumb is still enough.
 
 ## System
 
@@ -321,29 +346,32 @@ covers Lower and Raise. Tap Colemak, QWERTY, or Canary on the right top
 row before you let go.
 
 ```
- Mac  Win  Out  BT0  BT1       Base QWERTY Canary AC Clear
- Boot Rst  BT2  BT3  BT4       Save Find                 Sleep
+ Mac  Nxt  Out  BT0  BT1       Base QWERTY Canary AC Clear
+ Win  Rst  BT2  BT3  BT4       Save Find                 Sleep
+ Boot Prv
 
           (held Lower)            (held Raise)
 ```
 
-The outer pinkies are blank on this layer, so the chord does not fire
-left Esc/Hyper, the right pinky's Quopostrokey, Lower's Shift and `|`, or Raise's `/`
-and browser forward.
+The left outer pinky is the bootloader, so the chord does not fall
+through to Esc/Hyper. The right outer pinky is blank, so it does not
+fire Quopostrokey, Lower's `|`, or Raise's browser forward.
 
 | Key | What it sends |
 | --- | --- |
-| Mac | Mac shortcut mode. Cmd stays Cmd |
-| Win | Windows shortcut mode, and the boot default. Ctrl and Cmd swap, including the home-row mods |
+| Mac | Mac shortcut mode. Position 0, the left top key. Cmd stays Cmd |
+| Win | Windows shortcut mode, and the boot default. Position 10, the home key under Mac. Ctrl and Cmd swap, including the home-row mods |
+| Nxt | `&bt BT_NXT`, position 1. Next Bluetooth profile. The left LED blinks the new profile |
+| Prv | `&bt BT_PRV`, position 21, under Reset. Previous Bluetooth profile. Same blink |
 | Out | Toggle USB and Bluetooth output |
-| BT0–BT4 | Select Bluetooth profile 0 through 4 |
+| BT0–BT4 | Select Bluetooth profile 0 through 4. Selecting a different profile blinks it the same way |
 | Base | `&to BASE`, position 5. Colemak-DH |
 | QWERTY | `&to QWERTY`, position 6 |
 | Canary | `&to CANARY`, position 7 |
 | AC | Toggle autocorrect, position 8, the key to the right of Canary. On until this key stores the other choice |
 | Clear | `&bt BT_CLR`, position 9, the right top pinky |
-| Boot | Bootloader |
-| Rst | `&sys_reset` |
+| Boot | Bootloader, position 20, the left outer pinky |
+| Rst | `&sys_reset`, position 11 |
 | Save | Cmd+S, or Ctrl+S in Windows mode. Position 15, under Base |
 | Find | Cmd+F, or Ctrl+F in Windows mode. Position 16, under QWERTY |
 | Sleep | System sleep |
@@ -357,15 +385,16 @@ down is released with the other mode's code and can stick on the host.
 
 ## Status LED
 
-The left XIAO's RGB LED reports state. The right half stays off. Mac and
-Win are the first two keys on System's left top row. System is Lower plus
-Raise: hold either middle thumb (Space on the left, Backspace on the
-right) and the outer right thumb (Delete), then tap Mac or Win before
-letting go.
+The left XIAO's RGB LED reports state. The right half stays off. Mac is
+the left top key on System. Win is the home-row key directly under it.
+System is Lower plus Raise: hold either middle thumb (Space on the left,
+Backspace on the right) and the outer right thumb (Delete), then tap Mac
+or Win before letting go.
 
-Caps Word, latched Nav, and a one-shot OS flash need the LED to
-themselves, so this firmware drives the XIAO RGB directly (red P0.26,
-green P0.30, blue P0.06). Battery and connection blinks stay off.
+Caps Word, latched Nav, a one-shot OS flash, and a Bluetooth profile
+count need the LED to themselves, so this firmware drives the XIAO RGB
+directly (red P0.26, green P0.30, blue P0.06). Battery and connection
+blinks stay off. rgbled-widget is not linked.
 
 | State | LED |
 | --- | --- |
@@ -373,11 +402,16 @@ green P0.30, blue P0.06). Battery and connection blinks stay off.
 | Caps Word | Fast yellow blink while it is on |
 | Nav lock | Slow blue blink while Nav is latched with `&nav_lock` |
 | OS mode | A short magenta flash when Mac or Win is pressed, then the LED returns to the persistent indicator |
+| Bluetooth profile | After Next, Previous, or a profile select that changes the slot, cyan blinks once for profile 0, twice for profile 1, up to five times for profile 4. Then the LED returns to the indicator below. Connecting, disconnecting, or clearing a profile does not blink |
 | Idle | Off |
 
-Caps Lock wins over Caps Word, which wins over Nav lock. Holding the left
-pinky for momentary Nav does not blink. The tick is 150 ms. Fast toggles
-every tick. Slow is about 600 ms on and 600 ms off.
+An OS-mode flash wins over a profile count that is waiting, and both win
+over Caps Lock. Caps Lock wins over Caps Word, which wins over Nav lock.
+Holding the left pinky for momentary Nav does not blink. The tick is
+150 ms. A profile blink is one tick on and one tick off, repeated for
+the profile number. Fast toggles every tick. Slow is about 600 ms on
+and 600 ms off. The profile index ZMK reports is 0-based, so the count
+is that index plus one. Profile 0 blinks once instead of not at all.
 
 ## Mac and Windows
 
@@ -428,11 +462,16 @@ behaviors in `config/os.dtsi` and do not get swapped a second time:
 | Inner left thumb hold | Cmd+Alt | Win+Alt |
 | Raise `SelWd` | Option+Shift+Right | Ctrl+Shift+Right |
 | Raise `Line` | Cmd+Left, then Cmd+Shift+Right | Home, then Shift+End |
+| Raise outer left thumb | Cmd+Enter | Ctrl+Enter |
+
+Raise's outer left thumb is `&os_enter`. It sends the finished chord
+with passthrough, so Windows mode does not swap Ctrl+Enter back into
+Cmd+Enter.
 
 Everything else that is Cmd in the keymap becomes Ctrl, and a bare Ctrl
 becomes Win. That includes undo, cut, copy, paste, paste-without-formatting,
 select-all, save, find, zoom, add-cursor, the HTML tag's
-Cmd+D, the home-row mods, and the outer left thumb's Command hold.
+Cmd+D, the home-row mods, and the base layer's outer left thumb Command hold.
 Terminal chords on Lower follow the same rule:
 Ctrl+Grave becomes Win+Grave, and Shift+Cmd+[ / ] become Shift+Ctrl+[ / ].
 
@@ -553,8 +592,9 @@ repeat Backspace.
 QWERTY and Canary inherit it.
 
 Lower replaces the left pinky with Shift and the right pinky with `|`. Raise replaces
-them with `/` and browser forward. Nav keeps Esc/Hyper on the left pinky
-and leaves the right pinky blank. System leaves both blank. QWERTY,
+them with scroll down and browser forward. Nav keeps Esc/Hyper on the left pinky
+and leaves the right pinky blank. System puts the bootloader on the left pinky
+and leaves the right pinky blank. QWERTY,
 Canary, and Adjust leave them transparent, so the left stays Esc/Hyper
 and the right stays Quopostrokey / exponential Backspace.
 
@@ -605,15 +645,15 @@ column, and both encoders had to move.
   this layer. Brightness stays on Adjust.
 - Lower, on either middle thumb, is the Leeloo Lower layer: symbols on the
   left, numpad and operators on the right. The Leeloo mouse stays off this
-  layer. Raise, on the outer right thumb, is the other symbol and media
-  layer.
+  layer. Raise, on the outer right thumb, puts that mouse block on the
+  left hand and media on the right.
 - Left thumbs are Enter/Command, Space/Lower, and Tab/Command+Alt.
   Right thumbs are backtick, Backspace/Lower, and Delete/Raise. The Leeloo's
   repeat thumb is on Adjust, and play/pause is on Raise.
 - The left outer pinky is Esc/Hyper, `q` is also Hyper, position 21 is
   Shift (Colemak and QWERTY Z, Canary W), and the right outer pinky is
   Quopostrokey on tap and exponential Backspace on hold.
-  Backslash is on Raise. `H+,` types `"` and `I+O` types an apostrophe.
+  Backslash is not on a layer key. `H+,` types `"` and `I+O` types an apostrophe.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
   pinky holds Nav. The right home pinky is a plain letter.
@@ -625,10 +665,12 @@ column, and both encoders had to move.
   leaves Colemak Base underneath, so transparent thumbs and pinkies stay
   the Base holds. Only the letters differ. Canary's Shift hold stays on
   position 21 (W). QWERTY's Shift hold stays on position 21 (Z).
-- Bluetooth profile select, clear, next/previous, output toggle, bootloader,
-  and sleep are on Adjust. System repeats profile select, clear, output
-  toggle, bootloader, reset, and sleep, and adds Save and Find. Adjust's
-  copies stay, so one thumb still reaches Bluetooth.
+- Bluetooth profile select, clear, next, previous, output toggle, bootloader,
+  and sleep are on Adjust. System has select 0–4, clear, next, previous,
+  output toggle, bootloader, reset, and sleep, and adds Save and Find.
+  Mac is the left top key, Win is the home key under it, and the bootloader
+  is the left outer pinky. Next and previous blink the new profile on the
+  left LED. Adjust's copies stay, so one thumb still reaches Bluetooth.
 - Shortcuts are written as Mac chords. The firmware boots in Windows mode
   (`CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS` in `config/totem.conf`). A
   previously saved mode overrides that default. Press System's Win key
@@ -691,7 +733,8 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
    between the quotes. Hold that pinky and Backspace speeds up until you
    let go. A paused hold of the left pinky plus a letter is Hyper:
    Ctrl+Alt+Shift+Cmd in Mac mode and in Windows mode.
-5. Enter on the outer left thumb, Command while it is held. Space/Lower
+5. Enter on the outer left thumb, Command while it is held. On Raise that
+   same thumb is Cmd+Enter, or Ctrl+Enter in Windows mode. Space/Lower
    on the middle left thumb, Backspace/Lower on the middle right.
    Tab on the inner left thumb, Command+Alt while it is held (Win+Alt in
    Windows mode). Backtick, then Delete/Raise, on the other right thumbs.
@@ -710,7 +753,10 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
     one press is also how a previously saved Mac choice is replaced.
     Power-cycle and the last choice should still be selected.
     The right top row is Colemak, QWERTY, and Canary. Tap one to switch
-    layouts. Clear is the pinky of that row.
+    layouts. Clear is the pinky of that row. Mac is the left top key and
+    Win is the home key under it. Next profile is the key beside Mac.
+    Previous profile is under Reset. The left LED blinks the new slot:
+    once for profile 0, twice for profile 1, up to five times for profile 4.
 11. Type `becuase`. The last letter should correct it to `because`.
     System's AC key, to the right of Canary, turns autocorrect off, and
     that choice survives a reboot.
