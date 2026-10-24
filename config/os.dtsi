@@ -23,7 +23,7 @@
  *            Windows Home then Shift+End
  *
  * os_ac toggles autocorrect. It is on until this key stores the other
- * choice (totem/ac/en). The key sits on System, to the right of Find.
+ * choice (totem/ac/en). The key sits on System, to the right of Canary.
  *
  * os_galt_tab is the inner left thumb: tap Tab, hold galt. The 0 passed
  * at the key is unused, because galt takes no parameter. Timing matches

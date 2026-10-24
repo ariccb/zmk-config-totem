@@ -161,7 +161,8 @@ the adaptive behavior. `F` and `J` hold Ctrl. `L` holds Alt. A rolled `PF`
 on QWERTY can still become Ctrl instead of `PT` when `F` is held while `P`
 (a hold-trigger position on the other hand) is released. Colemak `PF` does
 not have that overlap. Canary's adaptive letters are not on home-row-mod
-positions. Canary `S` is a home-row Shift and is the trigger for `V`, same
+positions. Canary `W` is the Shift mod-tap on the Colemak Z key, and that
+tap is `ak_w`. Canary `S` is a home-row Shift and is the trigger for `V`, same
 as Colemak. Windows mode swaps Ctrl and GUI after the adaptive behavior
 has chosen the letter, and both modifiers stay in the suppress mask.
 

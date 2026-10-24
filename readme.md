@@ -111,20 +111,29 @@ Esc  Z/Sf x*  c   v*  b      n   m   ,   .   /* '/Bs
 adaptive. Those three use their own hold-taps so a tap still runs the
 adaptive rule. `g` and `h` are the inner-column Cmd keys.
 
+The holds match Colemak, and only the letters move. Q is Hyper. A holds
+Nav. Position 21 is Z with Shift (`&mt LSHFT Z`). Home-row mods sit on
+the same fingers. Thumbs and both outer pinkies are transparent, so they
+inherit Base. Semicolon is the plain right home pinky.
+
 ## Canary
 
 The Leeloo Canary, including the Q/W swap noted in that keymap.
 
 ```
-Q/Hy l*  y*  p*  b         Z/Sf f*  o   u   ;
+Q/Hy l*  y*  p*  b          z   f*  o   u   ;
 C/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  a
-Esc  w*  j*  v*  d   k      x*  h   ,   .   /* '/Bs
+Esc  w*/Sf j* v*  d   k      x*  h   ,   .   /* '/Bs
         (same thumbs and outer pinkies as Base)
 ```
 
-The left home pinky taps Canary's `c` and holds Nav. That is the same
-physical key as Colemak `a`. Canary's `a` is the right home pinky and is a
-plain letter.
+Shift stays on position 21, the Colemak Z key. On Canary that letter is
+W, so the hold is Shift and the tap is adaptive W (`&mt_w LSHFT 0`), with
+the same timing as `&mt`. Position 5 is plain Z (`&kp Z`). Z has no
+adaptive rule. The left home pinky taps Canary's `c` and holds Nav. That
+is the same physical key as Colemak `a`. Canary's `a` is the right home
+pinky and is a plain letter. Q stays Hyper. Thumbs and both outer pinkies
+stay transparent and inherit Base.
 
 ## Lower
 
@@ -281,10 +290,14 @@ Esc   PrevBT  Bri+ Bri- Repeat Caps  Ins  PrtSc Arrow []  CapsWord Bsp
 ```
 
 `Base`, `QWERTY`, and `Canary` are `&to`. They replace the persistent
-default layer. `Lower`, `Nav`, and `Raise` are toggles on this layer, which
-is the lock that works: hold Adjust, tap the layer, release Adjust, and
-that layer stays up. `&to Base` (or QWERTY / Canary) turns the toggled
-layers off. The Leeloo's 120 second layer-lock idle timeout is not ported.
+default layer and leave Colemak Base active underneath, so transparent
+thumbs and pinkies keep the Base holds. The same three keys are on
+System, which is how you reach them: hold Lower and Raise, then tap the
+right top row. Adjust has no thumb. `Lower`, `Nav`, and `Raise` are
+toggles on this layer, which is the lock that works: hold Adjust, tap
+the layer, release Adjust, and that layer stays up. `&to Base` (or
+QWERTY / Canary) turns the toggled layers off. The Leeloo's 120 second
+layer-lock idle timeout is not ported.
 
 `Boot` is the bootloader. Reset-by-combo is not ported, on purpose.
 These Bluetooth, boot, and reset keys are duplicated on System. Adjust
@@ -300,11 +313,12 @@ the left home pinky.
 ZMK turns System on only while both of those layers are held
 (`conditional_layers` on Lower + Raise). System is not also bound to its own
 hold or toggle. Let go of either thumb and System drops. While it is up it
-covers Lower and Raise.
+covers Lower and Raise. Tap Colemak, QWERTY, or Canary on the right top
+row before you let go.
 
 ```
- Mac  Win  Out  BT0  BT1       Clear  Save  Find  AC
- Boot Rst  BT2  BT3  BT4                            Sleep
+ Mac  Win  Out  BT0  BT1       Base QWERTY Canary AC Clear
+ Boot Rst  BT2  BT3  BT4       Save Find                 Sleep
 
           (held Lower)            (held Raise)
 ```
@@ -319,12 +333,15 @@ and browser forward.
 | Win | Windows shortcut mode, and the boot default. Ctrl and Cmd swap, including the home-row mods |
 | Out | Toggle USB and Bluetooth output |
 | BT0–BT4 | Select Bluetooth profile 0 through 4 |
-| Clear | `&bt BT_CLR`, clear the current profile |
+| Base | `&to BASE`, position 5. Colemak-DH |
+| QWERTY | `&to QWERTY`, position 6 |
+| Canary | `&to CANARY`, position 7 |
+| AC | Toggle autocorrect, position 8, the key to the right of Canary. On until this key stores the other choice |
+| Clear | `&bt BT_CLR`, position 9, the right top pinky |
 | Boot | Bootloader |
 | Rst | `&sys_reset` |
-| Save | Cmd+S, or Ctrl+S in Windows mode |
-| Find | Cmd+F, or Ctrl+F in Windows mode |
-| AC | Toggle autocorrect. On until this key stores the other choice |
+| Save | Cmd+S, or Ctrl+S in Windows mode. Position 15, under Base |
+| Find | Cmd+F, or Ctrl+F in Windows mode. Position 16, under QWERTY |
 | Sleep | System sleep |
 
 Save and Find were not Leeloo combos. They live here so both modes have
@@ -554,15 +571,21 @@ column, and both encoders had to move.
 - Left thumbs are Enter/Command, Space/Lower, and Tab/Command+Alt.
   Right thumbs are backtick, Backspace/Lower, and Delete/Raise. The Leeloo's
   repeat thumb is on Adjust, and play/pause is on Raise.
-- The left outer pinky is Esc/Hyper, `q` is also Hyper, `z` is Shift, and
-  the right outer pinky is apostrophe/Backspace.
+- The left outer pinky is Esc/Hyper, `q` is also Hyper, position 21 is
+  Shift (Colemak and QWERTY Z, Canary W), and the right outer pinky is
+  apostrophe/Backspace.
   Backslash is on Raise. `H+,` types `"` and `I+O` types an apostrophe.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
   pinky holds Nav. The right home pinky is a plain letter.
 - Encoders became keys: volume, brightness, zoom, undo/redo (combos), mic
   mute, play/pause, next track.
-- Three alpha layouts stay. Switching them is `&to` on Adjust.
+- Three alpha layouts stay. Switching them is `&to` on System: hold
+  Lower and Raise, then tap Colemak, QWERTY, or Canary on the right top
+  row (positions 5, 6, and 7). Adjust keeps the same three keys. `&to`
+  leaves Colemak Base underneath, so transparent thumbs and pinkies stay
+  the Base holds. Only the letters differ. Canary's Shift hold stays on
+  position 21 (W). QWERTY's Shift hold stays on position 21 (Z).
 - Bluetooth profile select, clear, next/previous, output toggle, bootloader,
   and sleep are on Adjust. System repeats profile select, clear, output
   toggle, bootloader, reset, and sleep, and adds Save and Find. Adjust's
@@ -581,7 +604,7 @@ column, and both encoders had to move.
 - The TVPaint layers from the previous Totem keymap are not in the Leeloo
   map and are not in this one.
 - Autocorrect is on. The Leeloo dictionary is checked in and matched on
-  the central half. System's `AC` key, to the right of Find, toggles it
+  the central half. System's `AC` key, to the right of Canary, toggles it
   and the choice is saved.
 
 ## Autocorrect
@@ -600,7 +623,7 @@ the buffer so a shortcut is not corrected. Shift does not. Backspace
 walks the buffer back one letter. The listener runs after caps word,
 sticky key, and key repeat, and before the Windows Ctrl/Cmd swap.
 
-System's `AC` key, the key to the right of Find, toggles it. The choice
+System's `AC` key, the key to the right of Canary, toggles it. The choice
 is stored in ZMK settings (`totem/ac/en`) and comes back after a reboot.
 A board with no saved value leaves autocorrect on. Clearing settings
 returns to on.
@@ -645,6 +668,8 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
     `Mac` puts those on Cmd+Z and Cmd+Shift+Z. `Win` puts them back, and
     one press is also how a previously saved Mac choice is replaced.
     Power-cycle and the last choice should still be selected.
+    The right top row is Colemak, QWERTY, and Canary. Tap one to switch
+    layouts. Clear is the pinky of that row.
 11. Type `becuase`. The last letter should correct it to `because`.
-    System's `AC` key, to the right of Find, turns autocorrect off, and
+    System's AC key, to the right of Canary, turns autocorrect off, and
     that choice survives a reboot.

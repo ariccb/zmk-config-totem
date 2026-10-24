@@ -196,6 +196,21 @@
         };
 
         /*
+         * Canary W sits on the Colemak Z key (position 21). The hold is
+         * Shift, with the same timing as &mt. The tap is adaptive W.
+         * The 0 is unused. Usage: &mt_w LSHFT 0
+         */
+        mt_w: mt_w {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MT_W";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <120>;
+            bindings = <&kp>, <&ak_w>;
+        };
+
+        /*
          * Hyper hold-tap. tap-preferred: a tap shorter than the tapping term
          * is always the tap key, even if another key overlaps. Hyper is
          * Ctrl+Shift+Alt+Gui. The 0 is unused because Hyper takes no
@@ -572,10 +587,10 @@
             label = "Canary";
             bindings = <
                 &eh 0 Q  &ak_l  &ak_y  &ak_p  &kp B
-                &mt LSHFT Z  &ak_f  &kp O  &kp U  &kp SEMI
+                &kp Z  &ak_f  &kp O  &kp U  &kp SEMI
                 &a_nav NAV C  &hrm_l LALT R  &hrm_l LSHFT S  &hrm_l LCTRL T  &hrm_in_l LGUI G
                 &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp A
-                &trans  &ak_w  &ak_j  &ak_v  &kp D  &kp K
+                &trans  &mt_w LSHFT 0  &ak_j  &ak_v  &kp D  &kp K
                 &ak_x  &kp H  &kp COMMA  &kp DOT  &ak_sl  &trans
                 &trans  &trans  &trans
                 &trans  &trans  &trans
@@ -654,17 +669,17 @@
 
         /*
          * On while Lower and Raise are both held. Lower is the middle thumb
-         * on either hand. Raise is the outer right thumb. Bluetooth, boot,
-         * and reset are
+         * on either hand. Raise is the outer right thumb. The right top
+         * row switches the alpha layout. Bluetooth, boot, and reset are
          * duplicated from Adjust so either path still works.
          */
         sys_layer {
             label = "System";
             bindings = <
                 &os_mac  &os_win  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
-                &bt BT_CLR  &kp LG(S)  &kp LG(F)  &os_ac  &none
+                &to BASE  &to QWERTY  &to CANARY  &os_ac  &bt BT_CLR
                 &bootloader  &sys_reset  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-                &none  &none  &none  &none  &kp SYS_SLEEP
+                &kp LG(S)  &kp LG(F)  &none  &none  &kp SYS_SLEEP
                 &none  &none  &none  &none  &none  &none
                 &none  &none  &none  &none  &none  &none
                 &none  &none  &trans
