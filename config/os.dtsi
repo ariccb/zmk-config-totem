@@ -22,7 +22,8 @@
  * the &lt thumb override (balanced, 200 ms, 120 ms quick-tap).
  *
  * System comes on while Lower and Sym are both held. Lower is the middle
- * left thumb. Sym is the inner right thumb. Nothing else toggles System.
+ * thumb on either hand. Sym is the outer right thumb. The layer is still
+ * named Sym; rename it to Raise later. Nothing else toggles System.
  */
 
 / {

@@ -57,20 +57,22 @@ Hold-taps below are written `hold/tap`.
 ## Base, Colemak-DH
 
 ```
- q   w*  f*  p*  b          j*  l*  u   y*  ;
+Q/Hy w*  f*  p*  b          j*  l*  u   y*  ;
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  o
-Esc  z   x*  c   d   v*     k   h   ,   .   /* Bsp
-   Cmd/Enter  Lower/Space  Cmd+Alt/Tab  Sym/Enter  Adjust/Bsp  Del
+Esc  Z/Sf x*  c   d   v*     k   h   ,   .   /* '/Bs
+   Cmd/Enter  Lower/Space  Cmd+Alt/Tab   `   Lower/Bsp  Sym/Del
 ```
 
 A star is an adaptive key, the second key of a rule. Home-row mods, Mac
 mode: ring Alt, middle Shift, index Ctrl, inner column Cmd (`g` and `m`).
-`a` taps A and holds Nav. `o` is a plain letter. The left outer pinky (the
-key below the home pinky) is Esc on tap and Hyper on hold. The right outer
-pinky is Backspace on tap and Hyper on hold. QWERTY and Canary leave those
-keys transparent, so they inherit the same pair. Hyper is Left Ctrl + Left
-Shift + Left Alt + Left GUI in both OS modes. Windows mode swaps Ctrl and
-GUI, and a chord that already holds both still sends both.
+`a` taps A and holds Nav. `o` is a plain letter. `q` taps Q and holds
+Hyper. `z` taps Z and holds Shift. The left outer pinky (the key below
+the home pinky) is Esc on tap and Hyper on hold. The right outer pinky
+is apostrophe on tap and Backspace on hold; the hold stays down, so the
+OS repeats it. QWERTY and Canary leave the pinkies transparent, so they
+inherit that pair. Hyper is Left Ctrl + Left Shift + Left Alt + Left GUI
+in both OS modes. Windows mode swaps Ctrl and GUI, and a chord that
+already holds both still sends both.
 
 Thumbs:
 
@@ -79,18 +81,20 @@ Thumbs:
 | Left outer | 32 | Enter | Command (`LGUI`) |
 | Left middle | 33 | Space | Lower |
 | Left inner | 34 | Tab | Command+Alt |
-| Right inner | 35 | Enter | Sym |
-| Right middle | 36 | Backspace | Adjust |
-| Right outer | 37 | Delete | |
+| Right inner | 35 | `` ` `` | |
+| Right middle | 36 | Backspace | Lower |
+| Right outer | 37 | Delete | Sym |
 
-Space stays on the middle left thumb, and that hold is Lower. The outer
-thumb is `&mt LGUI ENTER`, balanced at 200 ms like the other thumb
-holds. Windows mode swaps that Command to Ctrl, the
-same as the other Cmd keys. The inner thumb is `&os_galt_tab 0 TAB`:
-tap Tab, hold Command+Alt. Mac sends Cmd+Option. Windows sends Win+Alt.
-The `0` is unused, because that hold takes no parameter. Nav is the left
-home pinky (`a`, or `c` on Canary). Repeat is not on a thumb; it is on
-Adjust.
+Space on the middle left thumb and Backspace on the middle right thumb
+both hold Lower. The outer left thumb is `&mt LGUI ENTER`, balanced at
+200 ms, and `z` uses that same mod-tap. Windows mode swaps that Command
+to Ctrl, the same as the other Cmd keys. The inner left thumb is
+`&os_galt_tab 0 TAB`: tap Tab, hold Command+Alt. Mac sends Cmd+Option.
+Windows sends Win+Alt. The `0` is unused, because that hold takes no
+parameter. The inner right thumb is backtick. The outer right thumb holds
+Sym; that layer will be renamed Raise later, and the binding stays
+`&lt SYM DEL` until then. Nav is the left home pinky (`a`, or `c` on
+Canary). Adjust is not on a thumb. Repeat stays on the Adjust layer.
 
 QWERTY and Canary leave the thumbs and both pinkies transparent, so they
 inherit this row. `&to` keeps Base underneath them.
@@ -98,9 +102,9 @@ inherit this row. `&to` keeps Base underneath them.
 ## QWERTY
 
 ```
- q   w*  e   r   t          y*  u   i   o   p*
+Q/Hy w*  e   r   t          y*  u   i   o   p*
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  ;
-Esc  z   x*  c   v*  b      n   m   ,   .   /* Bsp
+Esc  Z/Sf x*  c   v*  b      n   m   ,   .   /* '/Bs
         (same thumbs and outer pinkies as Base)
 ```
 
@@ -113,9 +117,9 @@ adaptive rule. `g` and `h` are the inner-column Cmd keys.
 The Leeloo Canary, including the Q/W swap noted in that keymap.
 
 ```
- q   l*  y*  p*  b          z   f*  o   u   ;
+Q/Hy l*  y*  p*  b         Z/Sf f*  o   u   ;
 C/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  a
-Esc  w*  j*  v*  d   k      x*  h   ,   .   /* Bsp
+Esc  w*  j*  v*  d   k      x*  h   ,   .   /* '/Bs
         (same thumbs and outer pinkies as Base)
 ```
 
@@ -125,7 +129,7 @@ plain letter.
 
 ## Lower
 
-Hold the left Space thumb. This layer used to be Num. The left hand is the
+Hold either middle thumb (Space on the left, Backspace on the right). This layer used to be Num. The left hand is the
 Leeloo Lower symbol block, in that order. The right hand is the Leeloo
 numpad, with the operators that fit beside it.
 
@@ -176,23 +180,24 @@ Windows mode.
 ## Nav
 
 Hold the left home pinky (`a` on Colemak and QWERTY, `c` on Canary).
-That hold reaches both hands, including the F-keys and the two left
-thumbs on this layer. The inner left thumb taps Tab on the base layer,
-so the pinky is how Nav turns on. The app switcher is the middle thumb
-of this layer, reached by the pinky hold, or with Nav toggled on.
+That hold reaches both hands, including the F-keys and the left thumbs
+on this layer. The pinky is how Nav turns on. Apps stays on the outer
+left thumb. Space is the middle thumb of this layer. The app switcher
+is the inner thumb, reached by the pinky hold, or with Nav toggled on.
 
 ```
  ·   F9  F10 F11 F12       C-PgUp  Home  Up   End  (unlock)
 Nav  F5  F6  F7  F8       Cmd-S-Tab Left Down Right Cmd-Tab
-Esc  F1  F2  F3  F4 Zoom0  C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
-   Apps Switch Space       Enter  Backspace  Delete
+Esc  ·   F1  F2  F3  F4    C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
+   Apps  Space  Switch      Enter  Backspace  Delete
 ```
 
-F1–F12 are the four inner columns, bottom row first. The home pinky is
-the Nav hold and stays transparent. The top pinky is blank (`&none`).
-The outer pinky still falls through to Esc/Hyper. Zoom reset (`Cmd+0`,
-Ctrl+0 in Windows mode) stays on the inner bottom key. F3 and F4 took
-the keys that were zoom out and zoom in.
+F9–F12 and F5–F8 are the four inner columns. F1–F4 are one key to the
+right of that, so the key beside the outer pinky is blank and F4 is the
+inner bottom key. The home pinky is the Nav hold and stays transparent.
+The top pinky is blank (`&none`). The outer pinky still falls through
+to Esc/Hyper. Zoom reset is not on this layer. F3 and F4 took the keys
+that were zoom out and zoom in, and F4 then took the zoom-reset key.
 
 `Apps` shows the windows of the current application: Control+Down on Mac
 (App Exposé), Alt+` (the grave key) on Windows. `Switch` goes to the next
@@ -253,7 +258,7 @@ Where the old Raise keys went:
 | Old Raise key | Now |
 | --- | --- |
 | Mouse move, clicks, scroll | Removed. They were the left hand of Num, and Lower does not keep them |
-| Zoom out, zoom in, zoom reset | Zoom reset stays on Nav, the inner bottom key (`Cmd+0`). F3 and F4 took zoom out and zoom in. Brightness stays on Adjust. Repeat stays on Adjust |
+| Zoom out, zoom in, zoom reset | Off the keymap. F1–F4 took the left bottom of Nav, including the old zoom-reset key. Brightness stays on Adjust. Repeat stays on Adjust |
 | `()` / `<>` macro, arrow snippet, `[]` / `{}` macro | Adjust, in the old non-US `#`, Scroll Lock, and Num Lock spots. Num Lock remains the `L U Y` combo. `` ` `` stays on Adjust |
 | Volume, mute, mic mute, play, next, select word / part / line, browser back and Cmd+] forward | Sym, right top and bottom |
 
@@ -262,8 +267,8 @@ It could not lock the layer. Adjust's Sym toggle is the lock that works.
 
 ## Adjust
 
-Hold the Backspace thumb. This is also where Bluetooth lives; the Leeloo was
-wired.
+Adjust is not on a thumb. The layer is still here, and Bluetooth still
+lives on it. The Leeloo was wired.
 
 ```
 Reset ClearBT OutToggle BT0 BT1     Base  QWERTY Canary ()  (unlock)
@@ -284,9 +289,10 @@ keeps them so one thumb is still enough.
 
 ## System
 
-Hold Lower and Sym together. Lower is the middle left thumb (Space).
-Sym is the inner right thumb (Enter). Nav is the left home pinky, and
-Adjust stays on the Backspace thumb.
+Hold Lower and Sym together. Lower is either middle thumb: Space on the
+left, Backspace on the right. Sym is the outer right thumb (Delete).
+That layer is still named Sym; the rename to Raise comes later. Nav is
+the left home pinky.
 
 ZMK turns System on only while both of those layers are held
 (`conditional_layers` on Lower + Sym). System is not also bound to its own
@@ -301,7 +307,7 @@ covers Lower and Sym.
 ```
 
 The outer pinkies are blank on this layer, so the chord does not fire
-left Esc/Hyper, right Backspace/Hyper, Lower's Shift and `|`, or Sym's `/`
+left Esc/Hyper, the right pinky's apostrophe/Backspace, Lower's Shift and `|`, or Sym's `/`
 and browser forward.
 
 | Key | What it sends |
@@ -460,15 +466,16 @@ If mods fire while typing, raise `require-prior-idle-ms` (try 200) or
 
 ## Esc / Hyper
 
-Both outer pinkies use the `eh` hold-tap. The left is `&eh 0 ESC`. The
-right is `&eh 0 BSPC`. Hold-taps always take two parameters, and the `0`
-is unused because Hyper takes none. The timing is the same on both keys.
+`q` and the left outer pinky use the `eh` hold-tap: `&eh 0 Q` and
+`&eh 0 ESC`. The same node is on QWERTY `q` and Canary `q`. Hold-taps
+always take two parameters, and the `0` is unused because Hyper takes
+none. The timing is the same on both keys.
 
 | Property | Value | Effect |
 | --- | --- | --- |
 | flavor | tap-preferred | A release before the tapping term is always the tap key |
 | tapping-term-ms | 200 | Hyper starts once the key has been down this long |
-| require-prior-idle-ms | 150 | A pinky struck during typing stays Esc or Backspace |
+| require-prior-idle-ms | 150 | A key struck during typing stays Q or Esc |
 
 A fast tap, including a roll from a letter into the pinky, does not become
 Hyper. Hyper+key means a short pause, then holding the pinky past 200 ms.
@@ -476,11 +483,16 @@ If a tap still turns into Hyper, raise `tapping-term-ms`. If Hyper is hard
 to reach, lower `require-prior-idle-ms` or remove that line. The node is
 `eh` in `config/totem.keymap`.
 
+The right outer pinky is `&apos_bspc BSPC SQT`: apostrophe on tap,
+Backspace on hold. Tap-preferred, 200 ms, and no prior-idle requirement,
+so a short tap is `'` even while typing, and a hold keeps Backspace down
+for the OS repeat. QWERTY and Canary inherit it.
+
 Lower replaces the left pinky with Shift and the right pinky with `|`. Sym replaces
 them with `/` and browser forward. Nav keeps Esc/Hyper on the left pinky
 and puts sticky Cmd on the right. System leaves both blank. QWERTY,
 Canary, and Adjust leave them transparent, so the left stays Esc/Hyper
-and the right stays Backspace/Hyper.
+and the right stays apostrophe/Backspace.
 
 ## Combos
 
@@ -512,7 +524,7 @@ Not ported as combos: reset (bootloader key on Adjust and System), the
 four-key sleep chord (Sleep is a key on Adjust and System), F11/F12 (those
 keys are on Nav),
 exclamation from slash+backslash, and the O+quote double-quote chord.
-Quote is not on the base alpha row; `H+,` covers quotes.
+Apostrophe is the right outer pinky. `H+,` still covers quotes.
 
 ## What changed from the Leeloo
 
@@ -520,19 +532,19 @@ The Leeloo is a 4x6 plus four thumbs and two encoders. The Totem is a 3x5
 plus one outer pinky and three thumbs per side. The number row, the outer
 column, and both encoders had to move.
 
-- F-keys moved to Nav, on the four inner columns: F9–F12, F5–F8, F1–F4.
-  The outer left thumb shows the current app's windows, and the middle
-  left thumb switches apps, both through OS mode. Zoom reset stays on the
-  inner bottom key. Brightness stays on Adjust.
-- Lower, on the Space thumb, is the Leeloo Lower layer: symbols on the
+- F-keys moved to Nav: F9–F12, F5–F8, then F1–F4 one key to the right.
+  Apps, Space, and the app switcher are the Nav left thumbs. Zoom is off
+  this layer. Brightness stays on Adjust.
+- Lower, on either middle thumb, is the Leeloo Lower layer: symbols on the
   left, numpad and operators on the right. The Leeloo mouse stays off this
-  layer. Sym, on the Enter thumb, is the other symbol and media layer.
+  layer. Sym, on the outer right thumb, is the other symbol and media
+  layer. It will be renamed Raise later.
 - Left thumbs are Enter/Command, Space/Lower, and Tab/Command+Alt.
-  Enter/Sym, Backspace/Adjust, Delete stay on the right. The Leeloo's
+  Right thumbs are backtick, Backspace/Lower, and Delete/Sym. The Leeloo's
   repeat thumb is on Adjust, and play/pause is on Sym.
-- The left outer pinky is Esc/Hyper and the right outer pinky is
-  Backspace/Hyper, not a full-height outer column.
-  Backslash is on Sym. Quote is the `H+,` combo.
+- The left outer pinky is Esc/Hyper, `q` is also Hyper, `z` is Shift, and
+  the right outer pinky is apostrophe/Backspace.
+  Backslash is on Sym. `H+,` is the quote combo.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
   pinky holds Nav. The right home pinky is a plain letter.
@@ -581,8 +593,9 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
    then a roll from a letter into that pinky. A paused hold of either pinky
    plus a letter is Hyper: Ctrl+Alt+Shift+Cmd in Mac mode and in Windows mode.
 5. Enter on the outer left thumb, Command while it is held. Space/Lower
-   on the middle left thumb. Tab on the inner left thumb, Command+Alt
-   while it is held (Win+Alt in Windows mode). Enter/Sym, Backspace/Adjust.
+   on the middle left thumb, Backspace/Lower on the middle right.
+   Tab on the inner left thumb, Command+Alt while it is held (Win+Alt in
+   Windows mode). Backtick, then Delete/Sym, on the other right thumbs.
    Hold `a` and a right-hand arrow for Nav from the pinky.
 6. A same-hand roll (`as` on QWERTY, `ar` on Colemak) stays letters. Hold
    `g` or `m` after a short pause, then a key on the other hand: that is
@@ -591,7 +604,8 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 7. Caps word from the two index keys (they are Ctrl), then a shifted bigram.
 8. `U` and `Y` together produce `-`. A roll produces `UE`.
 9. Hold Adjust, tap Lower, release Adjust. Lower should stay. `&to Base` clears it.
-10. Hold Space/Lower and Enter/Sym together. System should come up. A fresh
+10. Hold either Lower thumb and the outer right Delete/Sym thumb together.
+    System should come up. A fresh
     board is already in Windows mode: W+F is Ctrl+Z and F+P is Ctrl+Y.
     `Mac` puts those on Cmd+Z and Cmd+Shift+Z. `Win` puts them back, and
     one press is also how a previously saved Mac choice is replaced.
