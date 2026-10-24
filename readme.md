@@ -155,7 +155,7 @@ tap is the symbol.
  !   <   >   =   ^          *   7   8   9   +
  #   [   (   )   ]          &   4   5   6   -
 Sft  @   $   {   }   %      ~   1   2   3   /   |
-   `   S-Tab   ·             Space   .   0
+   `   S-Tab   ·             Sent   .   0
 ```
 
 `! @ # $ % ^ & * +` are the shifted number-row symbols (`*` is Shift+8,
@@ -167,7 +167,8 @@ after an operator.
 The right index column is `* & ~`. `7 8 9` / `4 5 6` / `1 2 3` sit to its
 right. `+` and `-` are the outer column, where the markup put them. `/`
 is the key that used to be adaptive `0`. `|` is the right outer pinky.
-Space is the inner right thumb while Lower is held. `.` is the middle
+The inner right thumb is next sentence. It types `.`, then a space, then
+one-shot Shift, so the next letter is capitalized. `.` is the middle
 right thumb. `0` is the outer right thumb.
 
 `:` is Shift plus the base semicolon. The base layer's dot key is

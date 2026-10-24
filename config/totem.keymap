@@ -363,6 +363,21 @@
                 ;
         };
 
+        /*
+         * Getreuer next sentence: period, space, then one-shot Shift.
+         * &sk is pressed and released by the macro. Release starts the
+         * sticky timer (1000 ms, quick-release), so the next letter is
+         * capitalized and Shift drops after that letter.
+         */
+        next_sentence: next_sentence {
+            label = "NEXT_SENTENCE";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_tap &kp DOT &kp SPACE &sk LSHFT>;
+        };
+
         console_log: console_log {
             label = "CONSOLE_LOG";
             compatible = "zmk,behavior-macro";
@@ -603,7 +618,7 @@
          * far-left Leeloo column (outer thumb, middle thumb, outer pinky).
          * Right hand is the Leeloo numpad. + and - sit on the outer column
          * where the markup put them. / is where &ak_0 was. | is the pinky.
-         * ~ is where 0 was. The right thumbs are Space, dot, and 0.
+         * ~ is where 0 was. The right thumbs are next sentence, dot, and 0.
          */
         lower_layer {
             label = "Lower";
@@ -615,7 +630,7 @@
                 &kp LSHFT  &kp AT  &kp DLLR  &kp LBRC  &kp RBRC  &kp PRCNT
                 &kp LS(GRAVE)  &kp N1  &kp N2  &kp N3  &kp FSLH  &kp PIPE
                 &kp GRAVE  &kp LS(TAB)  &trans
-                &kp SPACE  &kp DOT  &kp N0
+                &next_sentence  &kp DOT  &kp N0
             >;
         };
 
