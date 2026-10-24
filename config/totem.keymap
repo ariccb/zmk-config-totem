@@ -15,6 +15,9 @@
  * Backspace, latched Nav, and the System conditional layer live in os.dtsi.
  * Do not remove either include. The keymap editor keeps the includes and
  * the &ak_* / &os_* / &quop / &exp_bspc / &nav_lock bindings.
+ * Mouse move, scroll, and clicks need dt-bindings/zmk/pointing.h. Do not
+ * remove that include. The editor keeps it and the &mmv / &mkp / &msc
+ * bindings.
  * See docs/adaptive-keys-analysis.md and the readme.
  */
 
@@ -22,6 +25,7 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
 #include <dt-bindings/zmk/modifiers.h>
 #include "adaptive.dtsi"
 
@@ -660,16 +664,23 @@
             >;
         };
 
+        /*
+         * Left hand is the old Num mouse block. Right hand is volume and
+         * media on the Colemak letters: J vol-, L vol+, U speaker mute,
+         * Y transparent, M mic mute, N previous. Play stays on E, where
+         * it already was. Next stays off J/L/U/M/N. The outer left thumb
+         * is Cmd+Enter / Ctrl+Enter.
+         */
         raise_layer {
             label = "Raise";
             bindings = <
-                &kp LBRC  &kp RBRC  &kp LT  &kp GT  &kp PIPE
-                &kp C_VOL_UP  &kp C_MUTE  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT
-                &kp LPAR  &kp RPAR  &kp LBKT  &kp RBKT  &kp BSLH
-                &trans  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT  &trans
-                &kp EQUAL  &kp PLUS  &kp MINUS  &kp UNDER  &kp STAR  &kp FSLH
-                &kp C_VOL_DN  &os_selword  &kp LA(LC(LS(RIGHT)))  &os_selline  &os_back  &os_fwd_br
-                &trans  &trans  &trans
+                &msc SCRL_UP  &mkp MB2  &mmv MOVE_UP  &mkp MB1  &mkp MB3
+                &kp C_VOL_DN  &kp C_VOL_UP  &kp C_MUTE  &trans  &kp C_NEXT
+                &trans  &trans  &trans  &trans  &trans
+                &kp LC(LA(LG(M)))  &kp C_PREV  &kp C_PP  &kp C_NEXT  &trans
+                &msc SCRL_DOWN  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &trans  &trans
+                &none  &os_selword  &kp LA(LC(LS(RIGHT)))  &os_selline  &os_back  &os_fwd_br
+                &os_enter  &trans  &trans
                 &trans  &kp BSPC  &kp DEL
             >;
         };
@@ -690,18 +701,20 @@
 
         /*
          * On while Lower and Raise are both held. Lower is the middle thumb
-         * on either hand. Raise is the outer right thumb. The right top
-         * row switches the alpha layout. Bluetooth, boot, and reset are
-         * duplicated from Adjust so either path still works.
+         * on either hand. Raise is the outer right thumb. Nothing else
+         * turns System on. Mac is the left top key, Win is the home key
+         * under it, and the bootloader is the left outer pinky. Next
+         * profile takes the slot Win left. Previous is the bottom key
+         * under reset. The right top row still switches the alpha layout.
          */
         sys_layer {
             label = "System";
             bindings = <
-                &os_mac  &os_win  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
+                &os_mac  &bt BT_NXT  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
                 &to BASE  &to QWERTY  &to CANARY  &os_ac  &bt BT_CLR
-                &bootloader  &sys_reset  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
+                &os_win  &sys_reset  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
                 &kp LG(S)  &kp LG(F)  &none  &none  &kp SYS_SLEEP
-                &none  &none  &none  &none  &none  &none
+                &bootloader  &bt BT_PRV  &none  &none  &none  &none
                 &none  &none  &none  &none  &none  &none
                 &none  &none  &trans
                 &trans  &none  &none
