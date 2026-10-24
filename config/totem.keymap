@@ -506,21 +506,13 @@
             key-positions = <13 16>;
             bindings = <&caps_word>;
         };
-        combo_numlock {
-            timeout-ms = <70>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <6 7 8>;
-            bindings = <&kp KP_NUMLOCK>;
-        };
         /*
-         * Sticky Nav on the left top row. Omitting layers leaves the combo
-         * mask at 0, which ZMK treats as every layer. Undo is 1+2 and redo
-         * is 2+3. The two-key chord stays pending until this timeout, so
-         * two keys still undo or redo and three keys toggle Nav.
+         * Sticky Nav on the right top row (index, middle, ring). Omitting
+         * layers leaves the combo mask at 0, which ZMK treats as every layer.
          */
         combo_nav_sticky {
             timeout-ms = <70>;
-            key-positions = <1 2 3>;
+            key-positions = <6 7 8>;
             bindings = <&tog NAV>;
         };
 

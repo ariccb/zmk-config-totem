@@ -215,7 +215,7 @@ stays browser forward (Cmd+Right on Mac, Alt+Right on Windows).
 right pinky of this layer are blank. The Leeloo's 800 ms app-switch timer
 and the encoder super-tab are not reproduced.
 
-Sticky Nav is W+F+P (positions 1, 2, and 3), 70 ms, on every layer.
+Sticky Nav is L+U+Y (positions 6, 7, and 8), 70 ms, on every layer.
 The binding is `&tog NAV`, so the same chord turns it off. Adjust still
 has its own Nav toggle.
 
@@ -261,7 +261,7 @@ Where the old Raise keys went:
 | --- | --- |
 | Mouse move, clicks, scroll | Removed. They were the left hand of Num, and Lower does not keep them |
 | Zoom out, zoom in, zoom reset | Off the keymap. F1–F4 took the left bottom of Nav, including the old zoom-reset key. Brightness stays on Adjust. Repeat stays on Adjust |
-| `()` / `<>` macro, arrow snippet, `[]` / `{}` macro | Adjust, in the old non-US `#`, Scroll Lock, and Num Lock spots. Num Lock remains the `L U Y` combo. `` ` `` stays on Adjust |
+| `()` / `<>` macro, arrow snippet, `[]` / `{}` macro | Adjust, in the old non-US `#`, Scroll Lock, and Num Lock spots. `L U Y` toggles Nav. `` ` `` stays on Adjust |
 | Volume, mute, mic mute, play, next, select word / part / line, browser back and Cmd+] forward | Raise, right top, home, and bottom |
 
 The on-Raise key that toggled Raise while the layer was held is not copied.
@@ -523,8 +523,7 @@ default; see Mac and Windows.
 | H , | `"` | same |
 | I O | Apostrophe | same |
 | T N | Caps word (the two index keys, which are Ctrl) | same |
-| L U Y | Num Lock | same |
-| W F P | Toggle Nav (70 ms, every layer) | same |
+| L U Y | Toggle Nav (70 ms, every layer) | same |
 | D . | `<div></div>` | same |
 | R . | `<body></body>` | same |
 | H . | `console.log('')` | same |
