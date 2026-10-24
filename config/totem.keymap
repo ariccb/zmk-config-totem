@@ -666,7 +666,7 @@
          */
         combo_nav_sticky {
             timeout-ms = <70>;
-            key-positions = <2 12 13>;
+            key-positions = <11 12 13>;
             bindings = <&tog NAV>;
         };
 
