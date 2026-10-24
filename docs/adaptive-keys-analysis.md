@@ -46,15 +46,18 @@ so the first letter would not lag.
 | B | W | BD | `BD` |
 | U | Y | UE | `UE` |
 | D | X | DG | `DG`. An older `DZ → DB` rule was removed |
-| Keypad `-` | `0` | `-` then Space | Operator, then a space, from the number row |
-| `=` | `0` | `=` then Space | Same |
-| Keypad `+` | `0` | `+` then Space | Same. On the Leeloo this `+` lived on the outer column |
-| Keypad `/` | `0` | `/` then Space | Same. The comment in the `.def` says "backslash"; the keycode is `KC_PSLS`, keypad slash |
-| Keypad `*` | `0` | `*` then Space | Dormant. The number layer's `*` is `KC_ASTR` (shifted 8), not `KC_PAST`, so this trigger is never pressed |
+| Keypad `-` | `0` | `-` then Space | Leeloo only. Not in `adaptive.dtsi` |
+| `=` | `0` | `=` then Space | Leeloo only. Not in `adaptive.dtsi` |
+| Keypad `+` | `0` | `+` then Space | Leeloo only. Not in `adaptive.dtsi` |
+| Keypad `/` | `0` | `/` then Space | Leeloo only. The `.def` comment says "backslash"; the keycode is `KC_PSLS` |
+| Keypad `*` | `0` | `*` then Space | Leeloo only, and dormant there: `*` is `KC_ASTR`, not keypad `*` |
 
-`X` has two triggers (`C` and `D`). `W` has two (`F` and `B`). `0` has five.
-The first matching trigger wins. In the ZMK nodes, `CX` is listed before `DX`,
-and the operator rules are listed in the order above.
+The five operator-then-`0` rules are the Leeloo behavior. They are not
+compiled here. Lower's `0` is `&kp N0`, and the key that used to be
+`&ak_0` is `/`. Nothing else referenced `&ak_0`, so the node is gone.
+
+`X` has two triggers (`C` and `D`). `W` has two (`F` and `B`).
+The first matching trigger wins. In the ZMK nodes, `CX` is listed before `DX`.
 
 `U` then `Y` is also a combo when the two keys land together. A roll inside
 350 ms becomes `UE`. A chord inside the 50 ms combo window becomes `-`.
@@ -204,12 +207,11 @@ Edit the rules in the dtsi. Deleting the include drops every adaptive key.
 - The QMK "leave mods cleared" side effect is not reproduced. A held shift
   still applies to the replacement.
 - `&key_repeat` does not re-run a rule.
-- Keypad `*` then `0` has no key that sends keypad `*`. The number layer's
-  `*` is `STAR`.
+- Operator-then-`0` is not implemented. See the rules table.
 - Caps word plus a substitution has not been confirmed on hardware.
 - `SV` and `E/` depend on the home-row mod emitting its tap before the
   captured follower is replayed. That is what the current ZMK hold-tap
   source does; it is still the first thing to try on the keyboard.
-- Combos are limited to the alpha layers (and the terminal chords to Num).
+- Combos are limited to the alpha layers (and the terminal chords to Lower).
   QMK's `combo_ref_from_layer` made them positional on every layer. Symbol
   layers were eating letter combos, so the ZMK combos name their layers.

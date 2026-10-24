@@ -14,7 +14,7 @@
  *   back    Sym browser back: Mac Cmd+[,  Windows Alt+Left
  *   fwd_br  Sym browser forward: Mac Cmd+],  Windows Alt+Right
  *
- * System comes on while Num and Sym are both held (the inner thumbs).
+ * System comes on while Lower and Sym are both held (the inner thumbs).
  * Nothing else toggles that layer.
  */
 
@@ -74,7 +74,7 @@
         compatible = "zmk,conditional-layers";
 
         sys_tri {
-            if-layers = <NUM SYM>;
+            if-layers = <LOWER SYM>;
             then-layer = <SYS>;
         };
     };

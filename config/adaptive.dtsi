@@ -90,18 +90,5 @@
             /* E/ -> E, */
             e_comma { trigger-keys = <E>; max-prior-idle-ms = <350>; bindings = <&kp COMMA>; };
         };
-
-        ak_0: ak_0 {
-            compatible = "zmk,behavior-adaptive-key";
-            #binding-cells = <0>;
-            bindings = <&kp N0>;
-            /* Keypad operator, then 0, becomes operator + space. */
-            minus0 { trigger-keys = <KP_MINUS>; max-prior-idle-ms = <350>; bindings = <&kp SPACE>; };
-            equal0 { trigger-keys = <EQUAL>; max-prior-idle-ms = <350>; bindings = <&kp SPACE>; };
-            plus0 { trigger-keys = <KP_PLUS>; max-prior-idle-ms = <350>; bindings = <&kp SPACE>; };
-            slash0 { trigger-keys = <KP_SLASH>; max-prior-idle-ms = <350>; bindings = <&kp SPACE>; };
-            /* Dormant on the current Num layer: * there is STAR, not keypad *. */
-            star0 { trigger-keys = <KP_MULTIPLY>; max-prior-idle-ms = <350>; bindings = <&kp SPACE>; };
-        };
     };
 };

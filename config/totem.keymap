@@ -21,14 +21,13 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
-#include <dt-bindings/zmk/pointing.h>
 #include <dt-bindings/zmk/modifiers.h>
 #include "adaptive.dtsi"
 
 #define BASE   0
 #define QWERTY 1
 #define CANARY 2
-#define NUM    3
+#define LOWER  3
 #define NAV    4
 #define SYM    5
 #define ADJ    6
@@ -796,26 +795,26 @@
 
         combo_term_open {
             timeout-ms = <50>;
-            layers = <NUM>;
-            key-positions = <6 7>;
+            layers = <LOWER>;
+            key-positions = <7 8>;
             bindings = <&kp LC(GRAVE)>;
         };
         combo_term_next {
             timeout-ms = <50>;
-            layers = <NUM>;
-            key-positions = <5 6>;
+            layers = <LOWER>;
+            key-positions = <6 7>;
             bindings = <&kp LS(LG(LBKT))>;
         };
         combo_term_prev {
             timeout-ms = <50>;
-            layers = <NUM>;
-            key-positions = <7 30>;
+            layers = <LOWER>;
+            key-positions = <8 26>;
             bindings = <&kp LS(LG(RBKT))>;
         };
         combo_term_new {
             timeout-ms = <70>;
-            layers = <NUM>;
-            key-positions = <5 6 7>;
+            layers = <LOWER>;
+            key-positions = <6 7 8>;
             bindings = <&kp LC(LS(GRAVE))>;
         };
     };
@@ -832,7 +831,7 @@
                 &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
                 &eh 0 ESC  &kp Z  &ak_x  &kp C  &kp D  &ak_v
                 &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &eh 0 BSPC
-                &sk LSHFT  &lt NAV TAB  &lt NUM SPACE
+                &sk LSHFT  &lt NAV TAB  &lt LOWER SPACE
                 &lt SYM RET  &lt ADJ BSPC  &kp DEL
             >;
         };
@@ -865,17 +864,24 @@
             >;
         };
 
-        num_layer {
-            label = "Num";
+        /*
+         * Leeloo Lower, folded onto the Totem. Left symbols keep Leeloo's
+         * inner-column order. Grave, Shift-Tab, and plain Shift are the
+         * far-left Leeloo column (outer thumb, middle thumb, outer pinky).
+         * Right hand is the Leeloo numpad. + and - sit on the outer column
+         * where the markup put them. / is where &ak_0 was. | is the pinky.
+         */
+        lower_layer {
+            label = "Lower";
             bindings = <
-                &msc SCRL_UP  &mkp MB2  &mmv MOVE_UP  &mkp MB1  &mkp MB3
-                &kp N7  &kp N8  &kp N9  &kp KP_MINUS  &kp KP_SLASH
-                &trans  &trans  &trans  &trans  &trans
-                &kp N4  &kp N5  &kp N6  &kp STAR  &kp EQUAL
-                &msc SCRL_DOWN  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &trans  &trans
-                &kp N1  &kp N2  &kp N3  &kp DOT  &ak_0  &kp KP_PLUS
-                &trans  &trans  &trans
-                &kp RET  &kp BSPC  &kp DEL
+                &kp EXCL  &kp LT  &kp GT  &kp EQUAL  &kp CARET
+                &kp STAR  &kp N7  &kp N8  &kp N9  &kp PLUS
+                &kp HASH  &kp LBKT  &kp LPAR  &kp RPAR  &kp RBKT
+                &kp AMPS  &kp N4  &kp N5  &kp N6  &kp MINUS
+                &kp LSHFT  &kp AT  &kp DLLR  &kp LBRC  &kp RBRC  &kp PRCNT
+                &kp N0  &kp N1  &kp N2  &kp N3  &kp FSLH  &kp PIPE
+                &kp GRAVE  &kp LS(TAB)  &trans
+                &kp SPACE  &kp BSPC  &kp DEL
             >;
         };
 
@@ -913,7 +919,7 @@
                 &sys_reset  &bt BT_CLR  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
                 &to BASE  &to QWERTY  &to CANARY  &brc_morph  &tog ADJ
                 &bootloader  &bt BT_NXT  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-                &tog NUM  &tog NAV  &tog SYM  &kp GRAVE  &kp SYS_SLEEP
+                &tog LOWER  &tog NAV  &tog SYM  &kp GRAVE  &kp SYS_SLEEP
                 &trans  &bt BT_PRV  &kp C_BRI_UP  &kp C_BRI_DN  &key_repeat  &kp CAPS
                 &kp INS  &kp PSCRN  &arrow_morph  &brc2_morph  &caps_word  &trans
                 &trans  &kp TAB  &kp SPACE
@@ -922,7 +928,7 @@
         };
 
         /*
-         * On while both inner thumbs are held (Num and Sym). The two
+         * On while both inner thumbs are held (Lower and Sym). The two
          * held positions stay transparent. Bluetooth, boot, and reset are
          * duplicated from Adjust so either path still works.
          */
