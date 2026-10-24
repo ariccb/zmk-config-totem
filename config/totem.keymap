@@ -366,18 +366,6 @@
             bindings = <&macro_tap &kp LG(LEFT) &kp LG(LS(RIGHT))>;
         };
 
-        arrow_fn: arrow_fn {
-            label = "ARROW_FN";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LPAR &kp RPAR &kp SPACE &kp EQUAL &kp GT &kp SPACE &kp LBRC &kp RBRC>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                ;
-        };
-
         console_log: console_log {
             label = "CONSOLE_LOG";
             compatible = "zmk,behavior-macro";
@@ -404,71 +392,6 @@
                 ;
         };
 
-        html_p: html_p {
-            label = "HTML_P";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LT &kp P &kp GT &kp LT &kp FSLH &kp P &kp GT>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                ;
-        };
-
-        html_title: html_title {
-            label = "HTML_TITLE";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LT &kp T &kp I &kp T &kp L &kp E &kp GT &kp LT>
-                , <&macro_tap &kp FSLH &kp T &kp I &kp T &kp L &kp E &kp GT>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                ;
-        };
-
-        html_style: html_style {
-            label = "HTML_STYLE";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LT &kp S &kp T &kp Y &kp L &kp E &kp GT &kp LT>
-                , <&macro_tap &kp FSLH &kp S &kp T &kp Y &kp L &kp E &kp GT>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                ;
-        };
-
-        html_html: html_html {
-            label = "HTML_HTML";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LT &kp H &kp T &kp M &kp L &kp SPACE &kp L &kp A>
-                , <&macro_tap &kp N &kp G &kp EQUAL &kp DQT &kp E &kp N &kp DQT &kp GT>
-                , <&macro_tap &kp LT &kp FSLH &kp H &kp T &kp M &kp L &kp GT>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                ;
-        };
-
-        html_head: html_head {
-            label = "HTML_HEAD";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LT &kp H &kp E &kp A &kp D &kp GT &kp LT &kp FSLH>
-                , <&macro_tap &kp H &kp E &kp A &kp D &kp GT>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                ;
-        };
-
         html_body: html_body {
             label = "HTML_BODY";
             compatible = "zmk,behavior-macro";
@@ -482,83 +405,6 @@
                 ;
         };
 
-        html_footer: html_footer {
-            label = "HTML_FOOTER";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LT &kp F &kp O &kp O &kp T &kp E &kp R &kp GT>
-                , <&macro_tap &kp LT &kp FSLH &kp F &kp O &kp O &kp T &kp E &kp R>
-                , <&macro_tap &kp GT>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                , <&macro_tap &kp LEFT>
-                ;
-        };
-
-        html_href: html_href {
-            label = "HTML_HREF";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <4>;
-            bindings
-                = <&macro_tap &kp LT &kp A &kp SPACE &kp H &kp R &kp E &kp F &kp EQUAL>
-                , <&macro_tap &kp DQT &kp L &kp I &kp N &kp K &kp UNDER &kp G &kp O>
-                , <&macro_tap &kp E &kp S &kp UNDER &kp H &kp E &kp R &kp E &kp DQT>
-                , <&macro_tap &kp GT &kp N &kp A &kp M &kp E &kp UNDER &kp O &kp F>
-                , <&macro_tap &kp UNDER &kp L &kp I &kp N &kp K &kp UNDER &kp G &kp O>
-                , <&macro_tap &kp E &kp S &kp UNDER &kp H &kp E &kp R &kp E &kp LT>
-                , <&macro_tap &kp FSLH &kp A &kp GT>
-                , <&macro_tap &kp HOME>
-                , <&macro_tap &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT>
-                , <&macro_tap &kp RIGHT &kp RIGHT>
-                ;
-        };
-
-        html_img: html_img {
-            label = "HTML_IMG";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <4>;
-            bindings
-                = <&macro_tap &kp LT &kp I &kp M &kp G &kp SPACE &kp S &kp R &kp C>
-                , <&macro_tap &kp EQUAL &kp DQT &kp I &kp M &kp A &kp G &kp E &kp UNDER>
-                , <&macro_tap &kp S &kp O &kp U &kp R &kp C &kp E &kp UNDER &kp O>
-                , <&macro_tap &kp R &kp UNDER &kp L &kp I &kp N &kp K &kp UNDER &kp G>
-                , <&macro_tap &kp O &kp E &kp S &kp UNDER &kp H &kp E &kp R &kp E>
-                , <&macro_tap &kp DQT &kp SPACE &kp A &kp L &kp T &kp EQUAL &kp DQT &kp N>
-                , <&macro_tap &kp A &kp M &kp E &kp UNDER &kp I &kp F &kp UNDER &kp C>
-                , <&macro_tap &kp A &kp N &kp T &kp UNDER &kp L &kp O &kp A &kp D>
-                , <&macro_tap &kp DQT &kp SPACE &kp W &kp I &kp D &kp T &kp H &kp EQUAL>
-                , <&macro_tap &kp DQT &kp N &kp U &kp M &kp UNDER &kp P &kp I &kp X>
-                , <&macro_tap &kp E &kp L &kp S &kp DQT &kp SPACE &kp H &kp E &kp I>
-                , <&macro_tap &kp G &kp H &kp T &kp EQUAL &kp DQT &kp N &kp U &kp M>
-                , <&macro_tap &kp UNDER &kp P &kp I &kp X &kp E &kp L &kp S &kp DQT>
-                , <&macro_tap &kp GT>
-                , <&macro_tap &kp HOME>
-                , <&macro_tap &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT &kp RIGHT>
-                , <&macro_tap &kp RIGHT &kp RIGHT &kp RIGHT>
-                ;
-        };
-
-        html_tag: html_tag {
-            label = "HTML_TAG";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <5>;
-            bindings
-                = <&macro_tap &kp LT &kp LS(T) &kp LS(A) &kp LS(G) &kp GT &kp LT &kp FSLH &kp LS(T)>
-                , <&macro_tap &kp LS(A) &kp LS(G) &kp GT>
-                , <&macro_tap &kp ESC>
-                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
-                , <&macro_tap &kp LEFT>
-                , <&macro_tap &kp LG(D) &kp LG(D) &kp BSPC>
-                ;
-        };
     };
 
     combos {
@@ -672,29 +518,11 @@
             bindings = <&tog NAV>;
         };
 
-        combo_arrow_fn {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <10 29>;
-            bindings = <&arrow_fn>;
-        };
         combo_console {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
             key-positions = <27 29>;
             bindings = <&console_log>;
-        };
-        combo_html_p {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <3 29>;
-            bindings = <&html_p>;
-        };
-        combo_html_title {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <13 29>;
-            bindings = <&html_title>;
         };
         combo_html_div {
             timeout-ms = <50>;
@@ -702,53 +530,11 @@
             key-positions = <24 29>;
             bindings = <&html_div>;
         };
-        combo_html_html {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <0 29>;
-            bindings = <&html_html>;
-        };
-        combo_html_head {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <1 29>;
-            bindings = <&html_head>;
-        };
         combo_html_body {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
             key-positions = <11 29>;
             bindings = <&html_body>;
-        };
-        combo_html_footer {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <22 29>;
-            bindings = <&html_footer>;
-        };
-        combo_html_href {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <2 29>;
-            bindings = <&html_href>;
-        };
-        combo_html_img {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <18 29>;
-            bindings = <&html_img>;
-        };
-        combo_html_style {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <12 29>;
-            bindings = <&html_style>;
-        };
-        combo_html_tag {
-            timeout-ms = <50>;
-            layers = <BASE QWERTY CANARY>;
-            key-positions = <14 29>;
-            bindings = <&html_tag>;
         };
 
         combo_term_open {

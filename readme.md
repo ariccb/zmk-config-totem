@@ -524,7 +524,9 @@ default; see Mac and Windows.
 | T N | Caps word (the two index keys, which are Ctrl) | same |
 | L U Y | Num Lock | same |
 | W F P | Toggle Nav (70 ms, every layer) | same |
-| letter + `.` | The Leeloo HTML / snippet macros (div, p, title, href, img, style, the generic tag, `console.log`, `() =>`) | same, except the generic tag's Cmd+D becomes Ctrl+D |
+| D . | `<div></div>` | same |
+| R . | `<body></body>` | same |
+| H . | `console.log('')` | same |
 
 Not ported as combos: reset (bootloader key on Adjust and System), the
 four-key sleep chord (Sleep is a key on Adjust and System), F11/F12 (those
