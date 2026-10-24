@@ -15,7 +15,9 @@
  *   fwd_br  Raise browser forward: Mac Cmd+],  Windows Alt+Right
  *   apps    Current-app windows: Mac Control+Down,  Windows Alt+`
  *   switch  Next app: Mac Cmd+Tab (Cmd held),  Windows Alt+Tab (Alt held)
- *   galt    Command+Alt, held: Mac Cmd+Option,  Windows Win+Alt
+ *   galt     Command+Alt, held: Mac Cmd+Option,  Windows Win+Alt
+ *   tab_prev Previous tab: Ctrl+Shift+Tab on Mac and Windows
+ *   tab_next Next tab: Ctrl+Tab on Mac and Windows
  *
  * os_galt_tab is the inner left thumb: tap Tab, hold galt. The 0 passed
  * at the key is unused, because galt takes no parameter. Timing matches
@@ -89,6 +91,20 @@
             label = "OS_SWITCH";
             #binding-cells = <0>;
             command = "switch";
+        };
+
+        os_tab_prev: os_tab_prev {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_TAB_PREV";
+            #binding-cells = <0>;
+            command = "tab_prev";
+        };
+
+        os_tab_next: os_tab_next {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_TAB_NEXT";
+            #binding-cells = <0>;
+            command = "tab_next";
         };
 
         os_galt: os_galt {

@@ -18,10 +18,11 @@
  * Alt+` versus Control+Down, Alt+Tab versus Cmd+Tab, Win+Alt versus
  * Cmd+Alt). Those behaviors send the finished chord with os_passthrough
  * set so this listener leaves it alone. The app switcher holds its
- * modifier until release and taps Tab once, the same shape as the
- * cmd_tab macro. The inner left thumb's Command+Alt hold is the same
- * GUI+Alt chord in both modes, so Windows mode does not turn it into
- * Ctrl+Alt.
+ * modifier until release and taps Tab once. The inner left thumb's
+ * Command+Alt hold is the same GUI+Alt chord in both modes, so Windows
+ * mode does not turn it into Ctrl+Alt. Previous and next tab are
+ * Ctrl+Shift+Tab and Ctrl+Tab on both Mac and Windows, so those chords
+ * are sent with passthrough too.
  *
  * The choice is stored in ZMK settings (totem/os/win) when settings are
  * enabled, which they are on this BLE keyboard. Until a Mac or Windows key
@@ -68,6 +69,8 @@ enum os_command {
     OS_APPS,
     OS_SWITCH,
     OS_GALT,
+    OS_TAB_PREV,
+    OS_TAB_NEXT,
 };
 
 struct behavior_os_mode_config {
@@ -219,6 +222,12 @@ static uint32_t chord_for(uint8_t command) {
     case OS_APPS:
         /* Current-app windows: Mac App Exposé, Windows Alt+` (grave). */
         return windows_mode ? LA(GRAVE) : LC(DOWN);
+    case OS_TAB_PREV:
+        /* Ctrl+Shift+Tab on both Mac and Windows. */
+        return LC(LS(TAB));
+    case OS_TAB_NEXT:
+        /* Ctrl+Tab on both Mac and Windows. */
+        return LC(TAB);
     default:
         return 0;
     }
@@ -226,8 +235,8 @@ static uint32_t chord_for(uint8_t command) {
 
 /*
  * Hold Cmd (Mac) or Alt (Windows) and tap Tab once. The modifier stays
- * down until the key is released, so the switcher stays open, matching
- * cmd_tab. The modifier is stored so release uses the same key if the
+ * down until the key is released, so the switcher stays open. The
+ * modifier is stored so release uses the same key if the
  * mode changes while the thumb is held.
  */
 static int press_app_switch(struct behavior_os_mode_data *data,

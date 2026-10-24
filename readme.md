@@ -186,8 +186,8 @@ is the inner thumb, reached by the pinky hold, or with Nav toggled on.
 
 ```
  ·   F9  F10 F11 F12       C-PgUp  Home  Up   End  (unlock)
-Nav  F5  F6  F7  F8       Cmd-S-Tab Left Down Right Cmd-Tab
-Esc  ·   F1  F2  F3  F4    C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
+Nav  F5  F6  F7  F8       C-S-Tab Left Down Right C-Tab
+Esc  ·   F1  F2  F3  F4    Back   PgUp  AddCur PgDn Fwd  sticky Cmd
    Apps  Space  Switch      Enter  Backspace  Delete
 ```
 
@@ -201,18 +201,20 @@ that were zoom out and zoom in, and F4 then took the zoom-reset key.
 `Apps` shows the windows of the current application: Control+Down on Mac
 (App Exposé), Alt+` (the grave key) on Windows. `Switch` goes to the next
 most recent application: Cmd+Tab on Mac, Alt+Tab on Windows. Tab is tapped
-once (10 ms) and the modifier stays down until the key is released, the
-same shape as the right-hand Cmd-Tab macro. Both are `&os_apps` and
-`&os_switch`, so they follow Mac/Windows mode. The right-hand Cmd-Tab
-macro still presses GUI, which the Windows swap turns into Ctrl.
+once (10 ms) and the modifier stays down until the key is released.
+Both are `&os_apps` and `&os_switch`, so they follow Mac/Windows mode.
 
-`AddCur` is Cmd+Alt+Down (VS Code add cursor). `Fwd` is browser forward
-(Cmd+Right on Mac, Alt+Right on Windows). Cmd-Tab, Cmd-Shift-Tab, and
-Ctrl-Tab hold the modifier until the key is released. In Windows mode those
-follow the Ctrl/Cmd swap, so Cmd-Tab becomes Ctrl-Tab and Ctrl-Tab becomes
-Win-Tab. The Leeloo's 800 ms app-switch timer and the encoder super-tab
-are not reproduced; sticky Cmd on the right pinky of this layer is the
-way to tap Tab repeatedly. Windows mode makes that sticky key Ctrl.
+Previous tab and next tab sit beside the left and right arrows. They are
+`&os_tab_prev` and `&os_tab_next`: Ctrl+Shift+Tab and Ctrl+Tab on Mac and
+on Windows. A plain `&kp LC(TAB)` would become Win+Tab after the Windows
+swap, so these go out with passthrough. Browser Back is `&os_back` on the
+bottom-left of that block (Cmd+[ on Mac, Alt+Left on Windows). `Fwd`
+stays browser forward (Cmd+Right on Mac, Alt+Right on Windows).
+
+`AddCur` is Cmd+Alt+Down (VS Code add cursor). The Leeloo's 800 ms
+app-switch timer and the encoder super-tab are not reproduced; sticky
+Cmd on the right pinky of this layer is the way to tap Tab repeatedly.
+Windows mode makes that sticky key Ctrl.
 
 The `(unlock)` key turns Nav off after it was toggled on from Adjust. Holding
 this layer and tapping it does not lock the layer. ZMK keeps one bit per
@@ -374,6 +376,8 @@ behaviors in `config/os.dtsi` and do not get swapped a second time:
 | Nav `Fwd` | Cmd+Right | Alt+Right |
 | Nav `Apps` | Control+Down (App Exposé) | Alt+` |
 | Nav `Switch` | Cmd+Tab, Cmd held until release | Alt+Tab, Alt held until release |
+| Nav previous tab | Ctrl+Shift+Tab | Ctrl+Shift+Tab |
+| Nav next tab | Ctrl+Tab | Ctrl+Tab |
 | Raise `Back` | Cmd+[ | Alt+Left |
 | Raise `Fwd` | Cmd+] | Alt+Right |
 | Inner left thumb hold | Cmd+Alt | Win+Alt |

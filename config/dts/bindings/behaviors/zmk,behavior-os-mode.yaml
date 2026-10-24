@@ -3,7 +3,8 @@
 description: |
   Mac/Windows shortcut mode, and the few shortcuts that are not a straight
   Ctrl/GUI swap (redo, clipboard history, browser back and forward,
-  current-app windows, the app switcher, and Command+Alt).
+  current-app windows, the app switcher, Command+Alt, and
+  previous/next tab).
 
 compatible: "zmk,behavior-os-mode"
 
@@ -24,3 +25,5 @@ properties:
       - "apps"
       - "switch"
       - "galt"
+      - "tab_prev"
+      - "tab_next"
