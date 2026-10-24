@@ -215,7 +215,7 @@ stays browser forward (Cmd+Right on Mac, Alt+Right on Windows).
 right pinky of this layer are blank. The Leeloo's 800 ms app-switch timer
 and the encoder super-tab are not reproduced.
 
-Sticky Nav is R+S+T (positions 11, 12, and 13), 70 ms, on every layer.
+Sticky Nav is W+F+P (positions 1, 2, and 3), 70 ms, on every layer.
 The binding is `&tog NAV`, so the same chord turns it off. Adjust still
 has its own Nav toggle.
 
@@ -523,7 +523,7 @@ default; see Mac and Windows.
 | H , | Apostrophe | same |
 | T N | Caps word (the two index keys, which are Ctrl) | same |
 | L U Y | Num Lock | same |
-| R S T | Toggle Nav (70 ms, every layer) | same |
+| W F P | Toggle Nav (70 ms, every layer) | same |
 | letter + `.` | The Leeloo HTML / snippet macros (div, p, title, href, img, style, the generic tag, `console.log`, `() =>`) | same, except the generic tag's Cmd+D becomes Ctrl+D |
 
 Not ported as combos: reset (bootloader key on Adjust and System), the

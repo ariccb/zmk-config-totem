@@ -661,12 +661,14 @@
             bindings = <&kp KP_NUMLOCK>;
         };
         /*
-         * Sticky Nav. Omitting layers leaves the combo mask at 0, which
-         * ZMK treats as every layer, so the same chord toggles Nav off.
+         * Sticky Nav on the left top row. Omitting layers leaves the combo
+         * mask at 0, which ZMK treats as every layer. Undo is 1+2 and redo
+         * is 2+3. The two-key chord stays pending until this timeout, so
+         * two keys still undo or redo and three keys toggle Nav.
          */
         combo_nav_sticky {
             timeout-ms = <70>;
-            key-positions = <11 12 13>;
+            key-positions = <1 2 3>;
             bindings = <&tog NAV>;
         };
 
