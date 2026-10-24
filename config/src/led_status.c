@@ -7,7 +7,8 @@
  * latched Nav, and a one-shot OS-mode flash are not in it, and running
  * both would fight over the pins. This drives the gpio-leds device
  * directly and leaves the widget out. The right half does not link this
- * file. Idle is off.
+ * file. Idle is off. Caps Lock comes from CONFIG_ZMK_HID_INDICATORS,
+ * which is set on the left half.
  *
  * Tick is 150 ms, Getreuer's fast-blink half period. Patterns, one bit
  * per tick over eight ticks:
