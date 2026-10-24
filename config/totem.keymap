@@ -553,12 +553,6 @@
             key-positions = <7 8>;
             bindings = <&kp LS(LG(RBKT))>;
         };
-        combo_term_new {
-            timeout-ms = <70>;
-            layers = <LOWER>;
-            key-positions = <6 7 8>;
-            bindings = <&kp LC(LS(GRAVE))>;
-        };
     };
 
     keymap {

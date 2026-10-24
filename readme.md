@@ -170,8 +170,9 @@ side already has its own symbols. The firmware still
 compiles pointing, so the Bluetooth report does not change.
 
 Terminal chords follow the digit keys: `7+9` opens a terminal (`Ctrl+Grave`
-on Mac, `Win+Grave` in Windows mode), `7+8` next, `8+9` previous. `7+8+9`
-is sticky Nav on every layer, including Lower, so that chord toggles Nav.
+on Mac, `Win+Grave` in Windows mode), `7+8` next, `8+9` previous. There is
+no three-key new-terminal chord. `7+8+9` is sticky Nav on every layer,
+including Lower.
 Next and previous are Shift+Cmd+[ / ] on Mac and Shift+Ctrl+[ / ] in
 Windows mode.
 
