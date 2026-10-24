@@ -1,9 +1,13 @@
-# Link the OS-mode listener immediately before hid_listener.c.
-# Sticky key, caps word, and key repeat must observe the original keycode.
-# HID must observe Ctrl and GUI already swapped. This file is included from
-# the end of the application CMakeLists, after those sources exist.
+# Link listeners that must see keycodes in a fixed order:
+# sticky key, caps word, and key repeat keep their earlier slots;
+# autocorrect is immediately before the OS-mode swap; the swap is
+# immediately before hid_listener.c. HID must observe Ctrl and GUI
+# already swapped, and must not see a trigger autocorrect swallowed.
+# This file is included from the end of the application CMakeLists,
+# after those sources exist.
 
 get_filename_component(_os_src "${CMAKE_CURRENT_LIST_DIR}/../src/behaviors/behavior_os_mode.c" ABSOLUTE)
+get_filename_component(_ac_src "${CMAKE_CURRENT_LIST_DIR}/../src/behaviors/behavior_autocorrect.c" ABSOLUTE)
 
 get_target_property(_sources app SOURCES)
 if(NOT _sources)
@@ -11,8 +15,12 @@ if(NOT _sources)
 endif()
 
 set(_filtered "")
+set(_have_ac FALSE)
 foreach(_src ${_sources})
-    if(NOT _src MATCHES "behavior_os_mode\\.c$")
+    if(_src MATCHES "behavior_autocorrect\\.c$")
+        set(_have_ac TRUE)
+    endif()
+    if(NOT _src MATCHES "behavior_autocorrect\\.c$" AND NOT _src MATCHES "behavior_os_mode\\.c$")
         list(APPEND _filtered "${_src}")
     endif()
 endforeach()
@@ -21,6 +29,9 @@ set(_reordered "")
 set(_inserted FALSE)
 foreach(_src ${_filtered})
     if(NOT _inserted AND _src MATCHES "hid_listener\\.c$")
+        if(_have_ac)
+            list(APPEND _reordered "${_ac_src}")
+        endif()
         list(APPEND _reordered "${_os_src}")
         set(_inserted TRUE)
     endif()

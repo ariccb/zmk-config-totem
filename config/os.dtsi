@@ -18,6 +18,12 @@
  *   galt     Command+Alt, held: Mac Cmd+Option,  Windows Win+Alt
  *   tab_prev Previous tab: Ctrl+Shift+Tab on Mac and Windows
  *   tab_next Next tab: Ctrl+Tab on Mac and Windows
+ *   selword  Select word: Mac Option+Shift+Right, Windows Ctrl+Shift+Right
+ *   selline  Select line: Mac Cmd+Left then Cmd+Shift+Right,
+ *            Windows Home then Shift+End
+ *
+ * os_ac toggles autocorrect. It is on until this key stores the other
+ * choice (totem/ac/en). The key sits on System, to the right of Find.
  *
  * os_galt_tab is the inner left thumb: tap Tab, hold galt. The 0 passed
  * at the key is unused, because galt takes no parameter. Timing matches
@@ -105,6 +111,26 @@
             label = "OS_TAB_NEXT";
             #binding-cells = <0>;
             command = "tab_next";
+        };
+
+        os_selword: os_selword {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_SELWORD";
+            #binding-cells = <0>;
+            command = "selword";
+        };
+
+        os_selline: os_selline {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_SELLINE";
+            #binding-cells = <0>;
+            command = "selline";
+        };
+
+        os_ac: os_ac {
+            compatible = "zmk,behavior-autocorrect";
+            label = "OS_AC";
+            #binding-cells = <0>;
         };
 
         os_galt: os_galt {

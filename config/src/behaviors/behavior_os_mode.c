@@ -22,7 +22,11 @@
  * Command+Alt hold is the same GUI+Alt chord in both modes, so Windows
  * mode does not turn it into Ctrl+Alt. Previous and next tab are
  * Ctrl+Shift+Tab and Ctrl+Tab on both Mac and Windows, so those chords
- * are sent with passthrough too.
+ * are sent with passthrough too. Select word and select line are taps.
+ * Select word is Option+Shift+Right on Mac and Ctrl+Shift+Right on
+ * Windows. Select line is Cmd+Left then Cmd+Shift+Right on Mac, and
+ * Home then Shift+End on Windows. Passthrough keeps Windows mode from
+ * rewriting the Mac GUI chords into Ctrl.
  *
  * The choice is stored in ZMK settings (totem/os/win) when settings are
  * enabled, which they are on this BLE keyboard. Until a Mac or Windows key
@@ -71,6 +75,8 @@ enum os_command {
     OS_GALT,
     OS_TAB_PREV,
     OS_TAB_NEXT,
+    OS_SELWORD,
+    OS_SELLINE,
 };
 
 struct behavior_os_mode_config {
@@ -252,6 +258,37 @@ static int press_app_switch(struct behavior_os_mode_data *data,
     return ZMK_BEHAVIOR_OPAQUE;
 }
 
+/* One finished chord, pressed and released, so the swap listener skips it. */
+static void tap_passthrough(uint32_t encoded, struct zmk_behavior_binding_event event) {
+    send_encoded(encoded, event, true);
+    k_msleep(10);
+    send_encoded(encoded, event, false);
+}
+
+/* Option+Shift+Right on Mac, Ctrl+Shift+Right on Windows. */
+static int press_selword(struct zmk_behavior_binding_event event) {
+    tap_passthrough(windows_mode ? LC(LS(RIGHT)) : LA(LS(RIGHT)), event);
+    return ZMK_BEHAVIOR_OPAQUE;
+}
+
+/*
+ * Mac selects the line with Cmd+Left then Cmd+Shift+Right. Windows uses
+ * Home then Shift+End. A Ctrl chord would move by word, so this is not
+ * the GUI/Ctrl swap.
+ */
+static int press_selline(struct zmk_behavior_binding_event event) {
+    if (windows_mode) {
+        tap_passthrough(HOME, event);
+        k_msleep(10);
+        tap_passthrough(LS(END), event);
+    } else {
+        tap_passthrough(LG(LEFT), event);
+        k_msleep(10);
+        tap_passthrough(LG(LS(RIGHT)), event);
+    }
+    return ZMK_BEHAVIOR_OPAQUE;
+}
+
 /* Cmd+Option on Mac, Win+Alt on Windows. Passthrough keeps GUI as GUI. */
 static int press_gui_alt(struct behavior_os_mode_data *data,
                          struct zmk_behavior_binding_event event) {
@@ -283,6 +320,10 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
         return press_app_switch(data, event);
     case OS_GALT:
         return press_gui_alt(data, event);
+    case OS_SELWORD:
+        return press_selword(event);
+    case OS_SELLINE:
+        return press_selline(event);
     default:
         break;
     }

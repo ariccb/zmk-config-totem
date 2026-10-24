@@ -5,9 +5,14 @@ if((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
     target_sources_ifdef(CONFIG_ZMK_BEHAVIOR_ADAPTIVE_KEY app PRIVATE src/behaviors/behavior_adaptive_key.c)
     zephyr_include_directories(include)
 
-    # The listener has to sit after sticky-key and before HID. The reorder
-    # runs at the end of the application CMakeLists, once hid_listener.c
-    # is already a source. See cmake/link_os_mode.cmake.
+    # OS mode has to sit after sticky-key and before HID. Autocorrect sits
+    # immediately before that, so it sees unswapped keycodes and a swallowed
+    # trigger never reaches HID. The reorder runs at the end of the
+    # application CMakeLists, once hid_listener.c is already a source.
+    # See cmake/link_os_mode.cmake.
+    if(CONFIG_ZMK_BEHAVIOR_AUTOCORRECT)
+        target_sources(app PRIVATE src/behaviors/behavior_autocorrect.c)
+    endif()
     if(CONFIG_ZMK_BEHAVIOR_OS_MODE)
         target_sources(app PRIVATE src/behaviors/behavior_os_mode.c)
         cmake_language(EVAL CODE "

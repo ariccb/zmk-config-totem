@@ -242,13 +242,14 @@ row: Ctrl+Alt+Cmd+M, play/pause, and next track. The two outer home-row
 keys stay transparent.
 
 `|` is the pipe. `\` is backslash. `Mic` is Ctrl+Alt+Cmd+M, so swapping
-Ctrl and Cmd does not change it. `SelWd` is Alt+Shift+Right (repeat
-extends the selection). `SelPart` is Alt+Ctrl+Shift+Right, which becomes
-Alt+Win+Shift+Right in Windows mode. `Line` is Cmd+Left then
-Cmd+Shift+Right (Ctrl+Left then Ctrl+Shift+Right in Windows mode). `Back`
-and `Fwd` are browser back and forward: Cmd+[ and Cmd+] on Mac, Alt+Left
-and Alt+Right on Windows. Nav still has the other forward, Cmd+Right /
-Alt+Right.
+Ctrl and Cmd does not change it. `SelWd` taps Option+Shift+Right on Mac
+and Ctrl+Shift+Right on Windows. Each tap extends the selection by one
+word. `SelPart` is Alt+Ctrl+Shift+Right, which becomes
+Alt+Win+Shift+Right in Windows mode. `Line` taps Cmd+Left, then
+Cmd+Shift+Right, on Mac. On Windows it taps Home, then Shift+End.
+`Back` and `Fwd` are browser back and forward: Cmd+[ and Cmd+] on Mac,
+Alt+Left and Alt+Right on Windows. Nav still has the other forward,
+Cmd+Right / Alt+Right.
 
 `?` is Shift plus the `/` key. `! @ # $ % ^ & *` are keys on Lower. Backtick is the outer left
 thumb there, and Shift plus that key is `~`. Adjust still has a backtick
@@ -302,7 +303,7 @@ hold or toggle. Let go of either thumb and System drops. While it is up it
 covers Lower and Raise.
 
 ```
- Mac  Win  Out  BT0  BT1       Clear  Save  Find
+ Mac  Win  Out  BT0  BT1       Clear  Save  Find  AC
  Boot Rst  BT2  BT3  BT4                            Sleep
 
           (held Lower)            (held Raise)
@@ -323,6 +324,7 @@ and browser forward.
 | Rst | `&sys_reset` |
 | Save | Cmd+S, or Ctrl+S in Windows mode |
 | Find | Cmd+F, or Ctrl+F in Windows mode |
+| AC | Toggle autocorrect. On until this key stores the other choice |
 | Sleep | System sleep |
 
 Save and Find were not Leeloo combos. They live here so both modes have
@@ -379,10 +381,12 @@ behaviors in `config/os.dtsi` and do not get swapped a second time:
 | Raise `Back` | Cmd+[ | Alt+Left |
 | Raise `Fwd` | Cmd+] | Alt+Right |
 | Inner left thumb hold | Cmd+Alt | Win+Alt |
+| Raise `SelWd` | Option+Shift+Right | Ctrl+Shift+Right |
+| Raise `Line` | Cmd+Left, then Cmd+Shift+Right | Home, then Shift+End |
 
 Everything else that is Cmd in the keymap becomes Ctrl, and a bare Ctrl
 becomes Win. That includes undo, cut, copy, paste, paste-without-formatting,
-select-all, save, find, zoom, add-cursor, select-line, the HTML tag's
+select-all, save, find, zoom, add-cursor, the HTML tag's
 Cmd+D, the home-row mods, and the outer left thumb's Command hold.
 Terminal chords on Lower follow the same rule:
 Ctrl+Grave becomes Win+Grave, and Shift+Cmd+[ / ] become Shift+Ctrl+[ / ].
@@ -576,7 +580,30 @@ column, and both encoders had to move.
   across reboots.
 - The TVPaint layers from the previous Totem keymap are not in the Leeloo
   map and are not in this one.
-- Autocorrect is not ported.
+- Autocorrect is on. The Leeloo dictionary is checked in and matched on
+  the central half. System's `AC` key, to the right of Find, toggles it
+  and the choice is saved.
+
+## Autocorrect
+
+On by default. The dictionary is the Leeloo list in
+`config/autocorrect/autocorrection_dict.txt` (426 entries, a 6318-byte
+trie checked in at `config/include/autocorrection_data.h`). Regenerate
+that header with `config/autocorrect/make_autocorrection_data.py` after
+editing the list.
+
+A listener on the central half matches the keycodes hold-taps actually
+produce, so a home-row tap is the letter and a hold is the modifier.
+Adaptive-key replacements are matched as the letters they send. Matching
+is case-insensitive. Ctrl, Alt, or Cmd, including a home-row hold, clears
+the buffer so a shortcut is not corrected. Shift does not. Backspace
+walks the buffer back one letter. The listener runs after caps word,
+sticky key, and key repeat, and before the Windows Ctrl/Cmd swap.
+
+System's `AC` key, the key to the right of Find, toggles it. The choice
+is stored in ZMK settings (`totem/ac/en`) and comes back after a reboot.
+A board with no saved value leaves autocorrect on. Clearing settings
+returns to on.
 
 ## Adaptive keys
 
@@ -618,3 +645,6 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
     `Mac` puts those on Cmd+Z and Cmd+Shift+Z. `Win` puts them back, and
     one press is also how a previously saved Mac choice is replaced.
     Power-cycle and the last choice should still be selected.
+11. Type `becuase`. The last letter should correct it to `because`.
+    System's `AC` key, to the right of Find, turns autocorrect off, and
+    that choice survives a reboot.

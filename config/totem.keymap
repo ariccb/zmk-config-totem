@@ -348,24 +348,6 @@
                 ;
         };
 
-        selword: selword {
-            label = "SELWORD";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <8>;
-            bindings = <&macro_tap &kp LA(LS(RIGHT))>;
-        };
-
-        selline: selline {
-            label = "SELLINE";
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            wait-ms = <0>;
-            tap-ms = <8>;
-            bindings = <&macro_tap &kp LG(LEFT) &kp LG(LS(RIGHT))>;
-        };
-
         console_log: console_log {
             label = "CONSOLE_LOG";
             compatible = "zmk,behavior-macro";
@@ -650,7 +632,7 @@
                 &kp LPAR  &kp RPAR  &kp LBKT  &kp RBKT  &kp BSLH
                 &trans  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT  &trans
                 &kp EQUAL  &kp PLUS  &kp MINUS  &kp UNDER  &kp STAR  &kp FSLH
-                &kp C_VOL_DN  &selword  &kp LA(LC(LS(RIGHT)))  &selline  &os_back  &os_fwd_br
+                &kp C_VOL_DN  &os_selword  &kp LA(LC(LS(RIGHT)))  &os_selline  &os_back  &os_fwd_br
                 &trans  &trans  &trans
                 &trans  &kp BSPC  &kp DEL
             >;
@@ -680,7 +662,7 @@
             label = "System";
             bindings = <
                 &os_mac  &os_win  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
-                &bt BT_CLR  &kp LG(S)  &kp LG(F)  &none  &none
+                &bt BT_CLR  &kp LG(S)  &kp LG(F)  &os_ac  &none
                 &bootloader  &sys_reset  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
                 &none  &none  &none  &none  &kp SYS_SLEEP
                 &none  &none  &none  &none  &none  &none
