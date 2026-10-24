@@ -169,10 +169,10 @@ They are not on Lower, and they were not moved onto Raise. Raise's left
 side already has its own symbols. The firmware still
 compiles pointing, so the Bluetooth report does not change.
 
-Terminal chords follow the digit keys: `8+9` opens a terminal (`Ctrl+Grave`
-on Mac, `Win+Grave` in Windows mode), `7+8` next, `9+0` previous, `7+8+9`
-new terminal. `7+8` is a subset of `7+8+9`; hit all three inside the 70 ms
-window. `0` is the outer right thumb, so previous is that thumb plus `9`.
+Terminal chords follow the digit keys: `7+9` opens a terminal (`Ctrl+Grave`
+on Mac, `Win+Grave` in Windows mode), `7+8` next, `8+9` previous, `7+8+9`
+new terminal. `7+8` and `8+9` are subsets of `7+8+9`; hit all three inside
+the 70 ms window.
 Next and previous are Shift+Cmd+[ / ] on Mac and Shift+Ctrl+[ / ] in
 Windows mode.
 
@@ -252,7 +252,7 @@ Alt+Right.
 
 `?` is Shift plus the `/` key. `! @ # $ % ^ & *` are keys on Lower. Backtick is the outer left
 thumb there, and Shift plus that key is `~`. Adjust still has a backtick
-too. `H+,` types an apostrophe. Shift plus the right pinky apostrophe is `"`.
+too. `H+,` types `"`. `I+O` types an apostrophe. The right pinky also types an apostrophe.
 `;` and `:` stay the base semicolon key. `.` stays the base dot.
 
 Where the old Raise keys went:
@@ -513,14 +513,15 @@ default; see Mac and Windows.
 | X C | Copy, Cmd+C | Ctrl+C |
 | C D | Paste, Cmd+V | Ctrl+V |
 | X D | Clipboard history, Alt+Shift+Cmd+Space | Win+V |
-| Z C | Paste without formatting, Cmd+Shift+V | Ctrl+Shift+V |
-| V Enter | Select all, Cmd+A | Ctrl+A |
+| Z D | Paste without formatting, Cmd+Shift+V | Ctrl+Shift+V |
+| Z V | Select all, Cmd+A | Ctrl+A |
 | . / | ? | same |
 | , . | _ | same |
 | U Y | - (a roll is the adaptive `UE` instead) | same |
 | E I | = | same |
 | T G | @ | same |
-| H , | Apostrophe | same |
+| H , | `"` | same |
+| I O | Apostrophe | same |
 | T N | Caps word (the two index keys, which are Ctrl) | same |
 | L U Y | Num Lock | same |
 | W F P | Toggle Nav (70 ms, every layer) | same |
@@ -532,7 +533,7 @@ Not ported as combos: reset (bootloader key on Adjust and System), the
 four-key sleep chord (Sleep is a key on Adjust and System), F11/F12 (those
 keys are on Nav),
 exclamation from slash+backslash, and the O+quote double-quote chord.
-Apostrophe is the right outer pinky, and `H+,` types an apostrophe too.
+Apostrophe is the right outer pinky, and `I+O` types an apostrophe too. `H+,` types `"`.
 
 ## What changed from the Leeloo
 
@@ -552,7 +553,7 @@ column, and both encoders had to move.
   repeat thumb is on Adjust, and play/pause is on Raise.
 - The left outer pinky is Esc/Hyper, `q` is also Hyper, `z` is Shift, and
   the right outer pinky is apostrophe/Backspace.
-  Backslash is on Raise. `H+,` types an apostrophe.
+  Backslash is on Raise. `H+,` types `"` and `I+O` types an apostrophe.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
   pinky holds Nav. The right home pinky is a plain letter.

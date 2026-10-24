@@ -449,13 +449,13 @@
         combo_paste_txt {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
-            key-positions = <21 23>;
+            key-positions = <21 24>;
             bindings = <&kp LG(LS(V))>;
         };
         combo_select_all {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
-            key-positions = <25 32>;
+            key-positions = <21 25>;
             bindings = <&kp LG(A)>;
         };
         combo_question {
@@ -488,10 +488,16 @@
             key-positions = <13 14>;
             bindings = <&kp AT>;
         };
-        combo_apostrophe {
+        combo_dquote {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
             key-positions = <27 28>;
+            bindings = <&kp DQT>;
+        };
+        combo_squote {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <18 19>;
             bindings = <&kp SQT>;
         };
         combo_caps_word {
@@ -540,7 +546,7 @@
         combo_term_open {
             timeout-ms = <50>;
             layers = <LOWER>;
-            key-positions = <7 8>;
+            key-positions = <6 8>;
             bindings = <&kp LC(GRAVE)>;
         };
         combo_term_next {
@@ -552,7 +558,7 @@
         combo_term_prev {
             timeout-ms = <50>;
             layers = <LOWER>;
-            key-positions = <8 37>;
+            key-positions = <7 8>;
             bindings = <&kp LS(LG(RBKT))>;
         };
         combo_term_new {
