@@ -521,7 +521,7 @@ default; see Mac and Windows.
 | T G | @ | same |
 | H , | `"` | same |
 | I O | Apostrophe | same |
-| T N | Caps word (the two index keys, which are Ctrl) | same |
+| S E | Caps word (the two middle fingers, which are Shift) | same |
 | L U Y | Toggle Nav (70 ms, every layer) | same |
 | D . | `<div></div>` | same |
 | R . | `<body></body>` | same |
@@ -608,7 +608,7 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
    `g` or `m` after a short pause, then a key on the other hand: that is
    Cmd in Mac mode and Ctrl in Windows mode. Hold `a` and tap a right-hand
    key for Nav.
-7. Caps word from the two index keys (they are Ctrl), then a shifted bigram.
+7. Caps word from the two middle fingers (they are Shift), then a shifted bigram.
 8. `U` and `Y` together produce `-`. A roll produces `UE`.
 9. Hold Adjust, tap Lower, release Adjust. Lower should stay. `&to Base` clears it.
 10. Hold either Lower thumb and the outer right Delete/Raise thumb together.
