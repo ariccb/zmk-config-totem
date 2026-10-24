@@ -37,6 +37,24 @@ config ZMK_BEHAVIOR_AUTOCORRECT
     bool
     default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_AUTOCORRECT))
 
+DT_COMPAT_ZMK_BEHAVIOR_QUOPOSTROKEY := zmk,behavior-quopostrokey
+
+config ZMK_BEHAVIOR_QUOPOSTROKEY
+    bool
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_QUOPOSTROKEY))
+
+DT_COMPAT_ZMK_BEHAVIOR_EXP_BSPC := zmk,behavior-exp-bspc
+
+config ZMK_BEHAVIOR_EXP_BSPC
+    bool
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_EXP_BSPC))
+
+DT_COMPAT_ZMK_BEHAVIOR_NAV_LOCK := zmk,behavior-nav-lock
+
+config ZMK_BEHAVIOR_NAV_LOCK
+    bool
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_NAV_LOCK))
+
 config TOTEM_OS_MODE_DEFAULT_WINDOWS
     bool "Boot into Windows shortcut mode before a Mac or Windows key is saved"
     depends on ZMK_BEHAVIOR_OS_MODE

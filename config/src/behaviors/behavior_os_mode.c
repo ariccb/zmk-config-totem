@@ -60,6 +60,8 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/modifiers.h>
 
+#include "totem_status.h"
+
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 enum os_command {
@@ -309,11 +311,13 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
     case OS_MAC:
         windows_mode = false;
         os_mode_save();
+        totem_led_os_mode_changed();
         LOG_INF("OS mode set to mac");
         return ZMK_BEHAVIOR_OPAQUE;
     case OS_WIN:
         windows_mode = true;
         os_mode_save();
+        totem_led_os_mode_changed();
         LOG_INF("OS mode set to windows");
         return ZMK_BEHAVIOR_OPAQUE;
     case OS_SWITCH:

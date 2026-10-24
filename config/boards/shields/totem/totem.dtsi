@@ -12,6 +12,13 @@
         zmk,matrix_transform = &default_transform;
     };
 
+    /* XIAO nRF52840 RGB: red P0.26, green P0.30, blue P0.06, active low. */
+    aliases {
+        led-red = &led0;
+        led-green = &led1;
+        led-blue = &led2;
+    };
+
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
         columns = <10>;

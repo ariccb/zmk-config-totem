@@ -25,6 +25,10 @@
  * os_ac toggles autocorrect. It is on until this key stores the other
  * choice (totem/ac/en). The key sits on System, to the right of Canary.
  *
+ * quop is the right-pinky tap: apostrophe after a letter, otherwise "".
+ * exp_bspc is the right-pinky hold: accelerating Backspace.
+ * nav_lock toggles Nav and marks it latched for the status LED.
+ *
  * os_galt_tab is the inner left thumb: tap Tab, hold galt. The 0 passed
  * at the key is unused, because galt takes no parameter. Timing matches
  * the &lt thumb override (balanced, 200 ms, 120 ms quick-tap).
@@ -138,6 +142,24 @@
             label = "OS_GALT";
             #binding-cells = <0>;
             command = "galt";
+        };
+
+        quop: quop {
+            compatible = "zmk,behavior-quopostrokey";
+            label = "QUOP";
+            #binding-cells = <0>;
+        };
+
+        exp_bspc: exp_bspc {
+            compatible = "zmk,behavior-exp-bspc";
+            label = "EXP_BSPC";
+            #binding-cells = <0>;
+        };
+
+        nav_lock: nav_lock {
+            compatible = "zmk,behavior-nav-lock";
+            label = "NAV_LOCK";
+            #binding-cells = <1>;
         };
 
         os_galt_tab: os_galt_tab {

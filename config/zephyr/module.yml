@@ -1,5 +1,6 @@
 # In-tree behaviors compiled with this config: adaptive keys, the
-# Mac/Windows shortcut listener, and the autocorrect trie.
+# Mac/Windows shortcut listener, autocorrect, quopostrokey, exponential
+# backspace, latched Nav, and the left-half status LED.
 # dts/bindings is picked up automatically. dts_root is intentionally unset:
 # this directory is already the ZMK config root, and a second dts root would
 # scan the Totem shield twice.

@@ -11,9 +11,10 @@
  *  20 and 31 are the outer pinky keys. 32-34 are the left thumbs
  *  (outer, middle, inner). 35-37 are the right thumbs (inner, middle, outer).
  *
- * Adaptive keys live in adaptive.dtsi. OS mode and the System conditional
- * layer live in os.dtsi. Do not remove either include. The keymap editor
- * keeps the includes and the &ak_* / &os_* bindings.
+ * Adaptive keys live in adaptive.dtsi. OS mode, Quopostrokey, exponential
+ * Backspace, latched Nav, and the System conditional layer live in os.dtsi.
+ * Do not remove either include. The keymap editor keeps the includes and
+ * the &ak_* / &os_* / &quop / &exp_bspc / &nav_lock bindings.
  * See docs/adaptive-keys-analysis.md and the readme.
  */
 
@@ -227,10 +228,13 @@
         };
 
         /*
-         * Right outer pinky: tap apostrophe, hold Backspace. The hold is
-         * a real &kp, so the OS repeats Backspace while the key is down.
-         * No prior-idle requirement, so the hold is reachable while typing.
-         * Usage: &apos_bspc BSPC SQT
+         * Right outer pinky. Tap is Quopostrokey (&quop): apostrophe after
+         * a letter, otherwise "" and Left. Hold is exponential Backspace
+         * (&exp_bspc): one delete immediately, then an accelerating repeat
+         * that stops on release. Tap-preferred, 200 ms, no prior-idle, so
+         * a short tap stays the quote while typing and a hold is reachable.
+         * Both children take no parameter. The 0s fill the hold-tap slots.
+         * Usage: &apos_bspc 0 0
          */
         apos_bspc: apos_bspc {
             compatible = "zmk,behavior-hold-tap";
@@ -238,7 +242,7 @@
             #binding-cells = <2>;
             flavor = "tap-preferred";
             tapping-term-ms = <200>;
-            bindings = <&kp>, <&kp>;
+            bindings = <&exp_bspc>, <&quop>;
         };
 
         brc_morph: brc_morph {
@@ -521,11 +525,13 @@
         /*
          * Sticky Nav on the right top row (index, middle, ring). Omitting
          * layers leaves the combo mask at 0, which ZMK treats as every layer.
+         * &nav_lock marks the layer latched so the left LED slow-blinks.
+         * The pinky hold is momentary and does not.
          */
         combo_nav_sticky {
             timeout-ms = <70>;
             key-positions = <6 7 8>;
-            bindings = <&tog NAV>;
+            bindings = <&nav_lock NAV>;
         };
 
         combo_console {
@@ -578,7 +584,7 @@
                 &a_nav NAV A  &hrm_l LALT R  &hrm_l LSHFT S  &hrm_l LCTRL T  &hrm_in_l LGUI G
                 &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
                 &eh 0 ESC  &mt LSHFT Z  &ak_x  &kp C  &kp D  &ak_v
-                &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &apos_bspc BSPC SQT
+                &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &apos_bspc 0 0
                 &mt LGUI ENTER  &lt LOWER SPACE  &os_galt_tab 0 TAB
                 &kp GRAVE  &lt LOWER BSPC  &lt RAISE DEL
             >;
@@ -674,7 +680,7 @@
                 &sys_reset  &bt BT_CLR  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
                 &to BASE  &to QWERTY  &to CANARY  &brc_morph  &tog ADJ
                 &bootloader  &bt BT_NXT  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-                &tog LOWER  &tog NAV  &tog RAISE  &kp GRAVE  &kp SYS_SLEEP
+                &tog LOWER  &nav_lock NAV  &tog RAISE  &kp GRAVE  &kp SYS_SLEEP
                 &trans  &bt BT_PRV  &kp C_BRI_UP  &kp C_BRI_DN  &key_repeat  &kp CAPS
                 &kp INS  &kp PSCRN  &arrow_morph  &brc2_morph  &caps_word  &trans
                 &trans  &kp TAB  &kp SPACE

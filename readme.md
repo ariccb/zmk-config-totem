@@ -59,7 +59,7 @@ Hold-taps below are written `hold/tap`.
 ```
 Q/Hy w*  f*  p*  b          j*  l*  u   y*  ;
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  o
-Esc  Z/Sf x*  c   d   v*     k   h   ,   .   /* '/Bs
+Esc  Z/Sf x*  c   d   v*     k   h   ,   .   /* Qp/Bs
    Cmd/Enter  Lower/Space  Cmd+Alt/Tab   `   Lower/Bsp  Raise/Del
 ```
 
@@ -68,9 +68,9 @@ mode: ring Alt, middle Shift, index Ctrl, inner column Cmd (`g` and `m`).
 `a` taps A and holds Nav. `o` is a plain letter. `q` taps Q and holds
 Hyper. `z` taps Z and holds Shift. The left outer pinky (the key below
 the home pinky) is Esc on tap and Hyper on hold. The right outer pinky
-is apostrophe on tap and Backspace on hold; the hold stays down, so the
-OS repeats it. QWERTY and Canary leave the pinkies transparent, so they
-inherit that pair. Hyper is Left Ctrl + Left Shift + Left Alt + Left GUI
+is Quopostrokey on tap and exponential Backspace on hold. QWERTY and
+Canary leave the pinkies transparent, so they inherit that pair. Hyper
+is Left Ctrl + Left Shift + Left Alt + Left GUI
 in both OS modes. Windows mode swaps Ctrl and GUI, and a chord that
 already holds both still sends both.
 
@@ -103,7 +103,7 @@ inherit this row. `&to` keeps Base underneath them.
 ```
 Q/Hy w*  e   r   t          y*  u   i   o   p*
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  ;
-Esc  Z/Sf x*  c   v*  b      n   m   ,   .   /* '/Bs
+Esc  Z/Sf x*  c   v*  b      n   m   ,   .   /* Qp/Bs
         (same thumbs and outer pinkies as Base)
 ```
 
@@ -123,7 +123,7 @@ The Leeloo Canary, including the Q/W swap noted in that keymap.
 ```
 Q/Hy l*  y*  p*  b          z   f*  o   u   ;
 C/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  a
-Esc  w*/Sf j* v*  d   k      x*  h   ,   .   /* '/Bs
+Esc  w*/Sf j* v*  d   k      x*  h   ,   .   /* Qp/Bs
         (same thumbs and outer pinkies as Base)
 ```
 
@@ -226,8 +226,9 @@ right pinky of this layer are blank. The Leeloo's 800 ms app-switch timer
 and the encoder super-tab are not reproduced.
 
 Sticky Nav is L+U+Y (positions 6, 7, and 8), 70 ms, on every layer.
-The binding is `&tog NAV`, so the same chord turns it off. Adjust still
-has its own Nav toggle.
+The binding is `&nav_lock NAV`, so the same chord turns it off. While it
+is latched, the left XIAO LED slow-blinks blue. Holding the left pinky
+is momentary Nav and does not blink. Adjust uses the same `&nav_lock`.
 
 ## Raise
 
@@ -263,7 +264,9 @@ Cmd+Right / Alt+Right.
 
 `?` is Shift plus the `/` key. `! @ # $ % ^ & *` are keys on Lower. Backtick is the outer left
 thumb there, and Shift plus that key is `~`. Adjust still has a backtick
-too. `H+,` types `"`. `I+O` types an apostrophe. The right pinky also types an apostrophe.
+too. `H+,` types `"`. `I+O` types an apostrophe. The right pinky is
+Quopostrokey: apostrophe after a letter, and `""` with the cursor between
+the quotes otherwise.
 `;` and `:` stay the base semicolon key. `.` stays the base dot.
 
 Where the old Raise keys went:
@@ -325,7 +328,7 @@ row before you let go.
 ```
 
 The outer pinkies are blank on this layer, so the chord does not fire
-left Esc/Hyper, the right pinky's apostrophe/Backspace, Lower's Shift and `|`, or Raise's `/`
+left Esc/Hyper, the right pinky's Quopostrokey, Lower's Shift and `|`, or Raise's `/`
 and browser forward.
 
 | Key | What it sends |
@@ -351,6 +354,30 @@ them. ZMK Studio is not enabled in this build, so there is no
 
 Release Ctrl and Cmd before pressing Mac or Win. A modifier that is already
 down is released with the other mode's code and can stick on the host.
+
+## Status LED
+
+The left XIAO's RGB LED reports state. The right half stays off. Mac and
+Win are the first two keys on System's left top row. System is Lower plus
+Raise: hold either middle thumb (Space on the left, Backspace on the
+right) and the outer right thumb (Delete), then tap Mac or Win before
+letting go.
+
+Caps Word, latched Nav, and a one-shot OS flash need the LED to
+themselves, so this firmware drives the XIAO RGB directly (red P0.26,
+green P0.30, blue P0.06). Battery and connection blinks stay off.
+
+| State | LED |
+| --- | --- |
+| Caps Lock | Solid white, until the host clears it |
+| Caps Word | Fast yellow blink while it is on |
+| Nav lock | Slow blue blink while Nav is latched with `&nav_lock` |
+| OS mode | A short magenta flash when Mac or Win is pressed, then the LED returns to the persistent indicator |
+| Idle | Off |
+
+Caps Lock wins over Caps Word, which wins over Nav lock. Holding the left
+pinky for momentary Nav does not blink. The tick is 150 ms. Fast toggles
+every tick. Slow is about 600 ms on and 600 ms off.
 
 ## Mac and Windows
 
@@ -509,16 +536,27 @@ If a tap still turns into Hyper, raise `tapping-term-ms`. If Hyper is hard
 to reach, lower `require-prior-idle-ms` or remove that line. The node is
 `eh` in `config/totem.keymap`.
 
-The right outer pinky is `&apos_bspc BSPC SQT`: apostrophe on tap,
-Backspace on hold. Tap-preferred, 200 ms, and no prior-idle requirement,
-so a short tap is `'` even while typing, and a hold keeps Backspace down
-for the OS repeat. QWERTY and Canary inherit it.
+The right outer pinky is `&apos_bspc 0 0`. The hold-tap's children are
+`&exp_bspc` and `&quop`, and the `0`s are unused because neither takes a
+parameter. Tap-preferred, 200 ms, and no prior-idle requirement, so a
+short tap is Quopostrokey even while typing.
+
+Quopostrokey looks at the last key that was actually sent. A letter,
+including a shifted letter and a letter that came out of a home-row tap
+or an adaptive key, types `'`. Space, punctuation, a modifier with no
+letter, or a layer key types `""` and then Left, so the cursor sits
+between the quotes. The hold is exponential Backspace: one delete as
+soon as the hold wins, another 250 ms later, then faster, down to 10 ms.
+Release stops it. The key is tapped each time, so the OS does not also
+repeat Backspace.
+
+QWERTY and Canary inherit it.
 
 Lower replaces the left pinky with Shift and the right pinky with `|`. Raise replaces
 them with `/` and browser forward. Nav keeps Esc/Hyper on the left pinky
 and leaves the right pinky blank. System leaves both blank. QWERTY,
 Canary, and Adjust leave them transparent, so the left stays Esc/Hyper
-and the right stays apostrophe/Backspace.
+and the right stays Quopostrokey / exponential Backspace.
 
 ## Combos
 
@@ -554,7 +592,7 @@ Not ported as combos: reset (bootloader key on Adjust and System), the
 four-key sleep chord (Sleep is a key on Adjust and System), F11/F12 (those
 keys are on Nav),
 exclamation from slash+backslash, and the O+quote double-quote chord.
-Apostrophe is the right outer pinky, and `I+O` types an apostrophe too. `H+,` types `"`.
+The right outer pinky is Quopostrokey, and `I+O` types an apostrophe too. `H+,` types `"`.
 
 ## What changed from the Leeloo
 
@@ -574,7 +612,7 @@ column, and both encoders had to move.
   repeat thumb is on Adjust, and play/pause is on Raise.
 - The left outer pinky is Esc/Hyper, `q` is also Hyper, position 21 is
   Shift (Colemak and QWERTY Z, Canary W), and the right outer pinky is
-  apostrophe/Backspace.
+  Quopostrokey on tap and exponential Backspace on hold.
   Backslash is on Raise. `H+,` types `"` and `I+O` types an apostrophe.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
@@ -648,9 +686,11 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 1. Forget the keyboard and pair it again. Mouse keys changed the HID report.
 2. `sv` → `sc`, and `e/` → `e,`. Both start on a home-row mod.
 3. `pf` → `pt`, `fw` → `fs`, `lj` → `lk`, `jl` → `ju`.
-4. A fast Esc on the left outer pinky and a fast Backspace on the right,
-   then a roll from a letter into that pinky. A paused hold of either pinky
-   plus a letter is Hyper: Ctrl+Alt+Shift+Cmd in Mac mode and in Windows mode.
+4. A fast Esc on the left outer pinky. On the right, a fast tap after a
+   letter types `'`, and a fast tap after Space types `""` with the cursor
+   between the quotes. Hold that pinky and Backspace speeds up until you
+   let go. A paused hold of the left pinky plus a letter is Hyper:
+   Ctrl+Alt+Shift+Cmd in Mac mode and in Windows mode.
 5. Enter on the outer left thumb, Command while it is held. Space/Lower
    on the middle left thumb, Backspace/Lower on the middle right.
    Tab on the inner left thumb, Command+Alt while it is held (Win+Alt in

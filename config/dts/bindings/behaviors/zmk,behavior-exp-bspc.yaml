@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: MIT
+
+description: |
+  Backspace that repeats on an accelerating curve. The first delete is
+  immediate. Later deletes follow Getreuer's REP_DELAY_MS delays.
+  Release cancels the repeat.
+
+compatible: "zmk,behavior-exp-bspc"
+
+include: zero_param.yaml

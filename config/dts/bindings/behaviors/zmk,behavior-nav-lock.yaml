@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MIT
+
+description: |
+  Toggle a layer and remember it as latched. The status LED slow-blinks
+  while that layer stays on. A momentary hold of the same layer does not.
+
+compatible: "zmk,behavior-nav-lock"
+
+include: one_param.yaml
