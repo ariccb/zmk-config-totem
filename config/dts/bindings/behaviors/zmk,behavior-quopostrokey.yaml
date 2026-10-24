@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MIT
+
+description: |
+  Getreuer Quopostrokey. After a letter, tap apostrophe. Otherwise type
+  a pair of double quotes and move the cursor between them.
+
+compatible: "zmk,behavior-quopostrokey"
+
+include: zero_param.yaml

@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: MIT
+
+description: |
+  Mac/Windows shortcut mode, and the few shortcuts that are not a straight
+  Ctrl/GUI swap (redo, clipboard history, browser back and forward,
+  current-app windows, the app switcher, Command+Alt,
+  previous/next tab, select word, and select line).
+
+compatible: "zmk,behavior-os-mode"
+
+include: zero_param.yaml
+
+properties:
+  command:
+    type: string
+    required: true
+    enum:
+      - "mac"
+      - "win"
+      - "redo"
+      - "clip"
+      - "fwd"
+      - "back"
+      - "fwd_br"
+      - "apps"
+      - "switch"
+      - "galt"
+      - "tab_prev"
+      - "tab_next"
+      - "selword"
+      - "selline"

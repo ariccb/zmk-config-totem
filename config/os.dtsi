@@ -1,0 +1,184 @@
+/*
+ * Mac/Windows mode and the System conditional layer.
+ *
+ * Included from totem.keymap. The keymap editor keeps this include and the
+ * &os_* references. Do not delete the include.
+ *
+ * Windows is the default (CONFIG_TOTEM_OS_MODE_DEFAULT_WINDOWS). It swaps
+ * Ctrl and GUI (Cmd) as each report goes out, including home-row mods and
+ * LG() shortcuts. A saved mode overrides that default. The nodes below are
+ * the shortcuts that are not that swap:
+ *   redo    Mac Cmd+Shift+Z,  Windows Ctrl+Y
+ *   clip    Mac Alt+Shift+Cmd+Space,  Windows Win+V
+ *   fwd     Nav browser forward: Mac Cmd+Right,  Windows Alt+Right
+ *   back    Raise browser back: Mac Cmd+[,  Windows Alt+Left
+ *   fwd_br  Raise browser forward: Mac Cmd+],  Windows Alt+Right
+ *   apps    Current-app windows: Mac Control+Down,  Windows Alt+`
+ *   switch  Next app: Mac Cmd+Tab (Cmd held),  Windows Alt+Tab (Alt held)
+ *   galt     Command+Alt, held: Mac Cmd+Option,  Windows Win+Alt
+ *   tab_prev Previous tab: Ctrl+Shift+Tab on Mac and Windows
+ *   tab_next Next tab: Ctrl+Tab on Mac and Windows
+ *   selword  Select word: Mac Option+Shift+Right, Windows Ctrl+Shift+Right
+ *   selline  Select line: Mac Cmd+Left then Cmd+Shift+Right,
+ *            Windows Home then Shift+End
+ *
+ * os_ac toggles autocorrect. It is on until this key stores the other
+ * choice (totem/ac/en). The key sits on System, to the right of Canary.
+ *
+ * quop is the right-pinky tap: apostrophe after a letter, otherwise "".
+ * exp_bspc is the right-pinky hold: accelerating Backspace.
+ * nav_lock toggles Nav and marks it latched for the status LED.
+ *
+ * os_galt_tab is the inner left thumb: tap Tab, hold galt. The 0 passed
+ * at the key is unused, because galt takes no parameter. Timing matches
+ * the &lt thumb override (balanced, 200 ms, 120 ms quick-tap).
+ *
+ * System comes on while Lower and Raise are both held. Lower is the middle
+ * thumb on either hand. Raise is the outer right thumb. Nothing else
+ * toggles System.
+ */
+
+/ {
+    behaviors {
+        os_mac: os_mac {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_MAC";
+            #binding-cells = <0>;
+            command = "mac";
+        };
+
+        os_win: os_win {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_WIN";
+            #binding-cells = <0>;
+            command = "win";
+        };
+
+        os_redo: os_redo {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_REDO";
+            #binding-cells = <0>;
+            command = "redo";
+        };
+
+        os_clip: os_clip {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_CLIP";
+            #binding-cells = <0>;
+            command = "clip";
+        };
+
+        os_fwd: os_fwd {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_FWD";
+            #binding-cells = <0>;
+            command = "fwd";
+        };
+
+        os_back: os_back {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_BACK";
+            #binding-cells = <0>;
+            command = "back";
+        };
+
+        os_fwd_br: os_fwd_br {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_FWD_BR";
+            #binding-cells = <0>;
+            command = "fwd_br";
+        };
+
+        os_apps: os_apps {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_APPS";
+            #binding-cells = <0>;
+            command = "apps";
+        };
+
+        os_switch: os_switch {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_SWITCH";
+            #binding-cells = <0>;
+            command = "switch";
+        };
+
+        os_tab_prev: os_tab_prev {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_TAB_PREV";
+            #binding-cells = <0>;
+            command = "tab_prev";
+        };
+
+        os_tab_next: os_tab_next {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_TAB_NEXT";
+            #binding-cells = <0>;
+            command = "tab_next";
+        };
+
+        os_selword: os_selword {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_SELWORD";
+            #binding-cells = <0>;
+            command = "selword";
+        };
+
+        os_selline: os_selline {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_SELLINE";
+            #binding-cells = <0>;
+            command = "selline";
+        };
+
+        os_ac: os_ac {
+            compatible = "zmk,behavior-autocorrect";
+            label = "OS_AC";
+            #binding-cells = <0>;
+        };
+
+        os_galt: os_galt {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_GALT";
+            #binding-cells = <0>;
+            command = "galt";
+        };
+
+        quop: quop {
+            compatible = "zmk,behavior-quopostrokey";
+            label = "QUOP";
+            #binding-cells = <0>;
+        };
+
+        exp_bspc: exp_bspc {
+            compatible = "zmk,behavior-exp-bspc";
+            label = "EXP_BSPC";
+            #binding-cells = <0>;
+        };
+
+        nav_lock: nav_lock {
+            compatible = "zmk,behavior-nav-lock";
+            label = "NAV_LOCK";
+            #binding-cells = <1>;
+        };
+
+        os_galt_tab: os_galt_tab {
+            compatible = "zmk,behavior-hold-tap";
+            label = "OS_GALT_TAB";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <120>;
+            bindings = <&os_galt>, <&kp>;
+        };
+    };
+
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+
+        sys_tri {
+            if-layers = <LOWER RAISE>;
+            then-layer = <SYS>;
+        };
+    };
+};

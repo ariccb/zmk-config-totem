@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: MIT
+
+description: |
+  Toggle the Totem autocorrect trie. Autocorrect is on until this key
+  stores the other choice. The saved value is totem/ac/en.
+
+compatible: "zmk,behavior-autocorrect"
+
+include: zero_param.yaml

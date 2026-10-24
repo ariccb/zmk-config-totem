@@ -1,0 +1,94 @@
+/*
+ * Colemak-DH adaptive keys.
+ *
+ * Included from totem.keymap. The keymap editor does not load behavior
+ * nodes from an included dtsi (it keeps the #include line and the &ak_*
+ * references). Edit the rules here.
+ *
+ * Each node is the SECOND key of a bigram. The first key is sent normally.
+ * If it was the trigger and fewer than 350 ms have passed, the second key
+ * sends the replacement instead. See docs/adaptive-keys-analysis.md.
+ *
+ * Last enabled QMK rules (dev_branch, 2025-07-24), not the commented copy
+ * left behind on 2025-07-25.
+ */
+
+/ {
+    behaviors {
+        ak_j: ak_j {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp J>;
+            /* LJ -> LK (same-finger LK, rolled into the index stretch) */
+            lj { trigger-keys = <L>; max-prior-idle-ms = <350>; bindings = <&kp K>; };
+        };
+
+        ak_l: ak_l {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp L>;
+            /* JL -> JU */
+            jl { trigger-keys = <J>; max-prior-idle-ms = <350>; bindings = <&kp U>; };
+        };
+
+        ak_v: ak_v {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp V>;
+            /* SV -> SC */
+            sv { trigger-keys = <S>; max-prior-idle-ms = <350>; bindings = <&kp C>; };
+        };
+
+        ak_x: ak_x {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp X>;
+            /* CX -> CS. Checked before DX so a shared second key stays ordered. */
+            cx { trigger-keys = <C>; max-prior-idle-ms = <350>; bindings = <&kp S>; };
+            /* DX -> DG */
+            dx { trigger-keys = <D>; max-prior-idle-ms = <350>; bindings = <&kp G>; };
+        };
+
+        ak_f: ak_f {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp F>;
+            /* PF -> PT ("option") */
+            pf { trigger-keys = <P>; max-prior-idle-ms = <350>; bindings = <&kp T>; };
+        };
+
+        ak_w: ak_w {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp W>;
+            /* FW -> FS. The keymap readme's "FP -> FS" is an older rule. */
+            fw { trigger-keys = <F>; max-prior-idle-ms = <350>; bindings = <&kp S>; };
+            /* BW -> BD */
+            bw { trigger-keys = <B>; max-prior-idle-ms = <350>; bindings = <&kp D>; };
+        };
+
+        ak_p: ak_p {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp P>;
+            /* WP -> WR */
+            wp { trigger-keys = <W>; max-prior-idle-ms = <350>; bindings = <&kp R>; };
+        };
+
+        ak_y: ak_y {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp Y>;
+            /* UY -> UE */
+            uy { trigger-keys = <U>; max-prior-idle-ms = <350>; bindings = <&kp E>; };
+        };
+
+        ak_sl: ak_sl {
+            compatible = "zmk,behavior-adaptive-key";
+            #binding-cells = <0>;
+            bindings = <&kp FSLH>;
+            /* E/ -> E, */
+            e_comma { trigger-keys = <E>; max-prior-idle-ms = <350>; bindings = <&kp COMMA>; };
+        };
+    };
+};

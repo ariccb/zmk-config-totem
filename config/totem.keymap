@@ -1,219 +1,711 @@
-//
-//                                                        ▀▀▀▀▀     ▀▀▀▀▀          ▀▀█▀▀
-//                                                        ▄▀▀▀▄  ▄  ▄▀▀▀▄  ▄  ▄▀▀▀▄  █  ▄▀▀▀▄
-//                                                        █   █  █  █   █  █  █   █  █  █   █
-//                                                         ▀▀▀   █   ▀▀▀   █   ▀▀▀   ▀   ▀▀▀
-//                                                               █      ▄▄▄█▄▄▄    █   █  
-//                                                               ▀      █  █  █     █▄█
-//                                                             ▀▀▀▀▀    █  █  █      ▀
-//                                                                      ▀  ▀  ▀
-//
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-       
+/*
+ * Totem keymap ported from Aric's Clickety Split Leeloo (Colemak-DH).
+ *
+ * Key index (this is the order of every bindings list):
+ *
+ *   0  1  2  3  4        5  6  7  8  9
+ *  10 11 12 13 14       15 16 17 18 19
+ *  20 21 22 23 24 25    26 27 28 29 30 31
+ *        32 33 34       35 36 37
+ *
+ *  20 and 31 are the outer pinky keys. 32-34 are the left thumbs
+ *  (outer, middle, inner). 35-37 are the right thumbs (inner, middle, outer).
+ *
+ * Adaptive keys live in adaptive.dtsi. OS mode, Quopostrokey, exponential
+ * Backspace, latched Nav, and the System conditional layer live in os.dtsi.
+ * Do not remove either include. The keymap editor keeps the includes and
+ * the &ak_* / &os_* / &quop / &exp_bspc / &nav_lock bindings.
+ * See docs/adaptive-keys-analysis.md and the readme.
+ */
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/modifiers.h>
+#include "adaptive.dtsi"
 
-#define BASE 0
-#define NAV  1
-#define SYM  2
-#define ADJ  3
-#define TVP1 4
-#define TVP2 5
+#define BASE   0
+#define QWERTY 1
+#define CANARY 2
+#define LOWER  3
+#define NAV    4
+#define RAISE  5
+#define ADJ    6
+#define SYS    7
 
+#include "os.dtsi"
+
+/* Layer thumbs: balanced, so a quick tap stays the letter/space/tab. */
+&lt {
+    flavor = "balanced";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <120>;
+};
+
+/* Enter/Command thumb and Z/Shift. Same timing as the layer thumbs. */
 &mt {
-  quick-tap-ms = <100>;
-  global-quick-tap;
-  flavor = "tap-preferred";
-  tapping-term-ms = <170>;
+    flavor = "balanced";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <120>;
+};
+
+/* One-shot shift matches the Leeloo ONESHOT_TIMEOUT of 1000 ms. */
+&sk {
+    release-after-ms = <1000>;
+    quick-release;
+};
+
+&caps_word {
+    continue-list = <UNDER MINUS BSPC DEL>;
 };
 
 / {
-     combos {
-            compatible = "zmk,combos";
-            combo_esc {
-                timeout-ms = <50>;
-                key-positions = <0 1>;
-                bindings = <&kp ESC>;
-            };
-            combo_tvp {
-                timeout-ms = <100>;
-                key-positions = <11 12 13>;
-                bindings = <&tog TVP1>;
-            };
+    behaviors {
+        /*
+         * Positional home-row mods, urob timeless tuning.
+         * Hold fires only with a key on the other hand, and only after the
+         * hands have been idle, so same-hand rolls stay taps.
+         * Left hand positions:  0-4 10-14 20-25 32-34
+         * Right hand positions: 5-9 15-19 26-31 35-37
+         */
+        hrm_l: hrm_l {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_L";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 35 36 37>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        hrm_r: hrm_r {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_R";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25 32 33 34>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        /*
+         * Inner-column Cmd (Colemak G/M, QWERTY G/H, Canary G/M).
+         * These letters are rolled constantly, including cross-hand rolls
+         * such as "ng", so the prior-idle and tapping term are stricter
+         * than the other home-row mods. A real Cmd chord needs a short
+         * pause, then a hold with the other hand. Hold-trigger positions
+         * stay the whole other hand: carving out roll partners would also
+         * block real shortcuts on those keys, and the partners differ on
+         * QWERTY and Canary.
+         */
+        hrm_in_l: hrm_in_l {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_IN_L";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <320>;
+            quick-tap-ms = <200>;
+            require-prior-idle-ms = <200>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 35 36 37>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        hrm_in_r: hrm_in_r {
+            compatible = "zmk,behavior-hold-tap";
+            label = "HRM_IN_R";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <320>;
+            quick-tap-ms = <200>;
+            require-prior-idle-ms = <200>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25 32 33 34>;
+            bindings = <&kp>, <&kp>;
+        };
+
+        /*
+         * Left home pinky: tap the letter, hold Nav.
+         * Same timing family as the home-row mods, but the layer turns on
+         * when the other key is pressed, not when it is released, so an
+         * arrow on the Nav layer can repeat while this key is held.
+         * Hold-trigger is the right hand only, so a same-hand roll stays
+         * the letter. Usage: &a_nav NAV A
+         */
+        a_nav: a_nav {
+            compatible = "zmk,behavior-hold-tap";
+            label = "A_NAV";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 35 36 37>;
+            bindings = <&mo>, <&kp>;
+        };
+
+        /*
+         * QWERTY puts F, J, and L on home-row-mod keys that are also adaptive.
+         * Hold-taps always take two parameters. The 0 passed at the keymap
+         * is unused: the tap behavior does not take a parameter.
+         * Usage: &qw_f LCTRL 0
+         */
+        qw_f: qw_f {
+            compatible = "zmk,behavior-hold-tap";
+            label = "QW_F";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <5 6 7 8 9 15 16 17 18 19 26 27 28 29 30 31 35 36 37>;
+            bindings = <&kp>, <&ak_f>;
+        };
+
+        qw_j: qw_j {
+            compatible = "zmk,behavior-hold-tap";
+            label = "QW_J";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25 32 33 34>;
+            bindings = <&kp>, <&ak_j>;
+        };
+
+        qw_l: qw_l {
+            compatible = "zmk,behavior-hold-tap";
+            label = "QW_L";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <280>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <150>;
+            hold-trigger-on-release;
+            hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 25 32 33 34>;
+            bindings = <&kp>, <&ak_l>;
+        };
+
+        /*
+         * Canary W sits on the Colemak Z key (position 21). The hold is
+         * Shift, with the same timing as &mt. The tap is adaptive W.
+         * The 0 is unused. Usage: &mt_w LSHFT 0
+         */
+        mt_w: mt_w {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MT_W";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <120>;
+            bindings = <&kp>, <&ak_w>;
+        };
+
+        /*
+         * Hyper hold-tap. tap-preferred: a tap shorter than the tapping term
+         * is always the tap key, even if another key overlaps. Hyper is
+         * Ctrl+Shift+Alt+Gui. The 0 is unused because Hyper takes no
+         * parameter. Left pinky is &eh 0 ESC. Q is &eh 0 Q.
+         */
+        eh: esc_hyper {
+            compatible = "zmk,behavior-hold-tap";
+            label = "ESC_HYPER";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            require-prior-idle-ms = <150>;
+            bindings = <&hyper>, <&kp>;
+        };
+
+        /*
+         * Right outer pinky. Tap is Quopostrokey (&quop): apostrophe after
+         * a letter, otherwise "" and Left. Hold is exponential Backspace
+         * (&exp_bspc): one delete immediately, then an accelerating repeat
+         * that stops on release. Tap-preferred, 200 ms, no prior-idle, so
+         * a short tap stays the quote while typing and a hold is reachable.
+         * Both children take no parameter. The 0s fill the hold-tap slots.
+         * Usage: &apos_bspc 0 0
+         */
+        apos_bspc: apos_bspc {
+            compatible = "zmk,behavior-hold-tap";
+            label = "APOS_BSPC";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&exp_bspc>, <&quop>;
+        };
+
+        brc_morph: brc_morph {
+            compatible = "zmk,behavior-mod-morph";
+            label = "BRACES";
+            #binding-cells = <0>;
+            bindings = <&braces>, <&braces_ang>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        brc2_morph: brc2_morph {
+            compatible = "zmk,behavior-mod-morph";
+            label = "BRACES2";
+            #binding-cells = <0>;
+            bindings = <&braces2>, <&braces2_curly>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        arrow_morph: arrow_morph {
+            compatible = "zmk,behavior-mod-morph";
+            label = "ARROW";
+            #binding-cells = <0>;
+            bindings = <&arrow>, <&arrow_shift>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
     };
 
     macros {
-        gif: gif {
-            label = "giphy";
+        hyper: hyper {
+            label = "HYPER";
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <1>;
             bindings
-                = <&macro_press &kp LSHFT>
-                , <&macro_tap &kp N2>
-                , <&macro_release &kp LSHFT>
-                , <&macro_tap &kp G &kp I &kp F>
+                = <&macro_press &kp LCTRL &kp LSHIFT &kp LALT &kp LGUI>
+                , <&macro_pause_for_release>
+                , <&macro_release &kp LCTRL &kp LSHIFT &kp LALT &kp LGUI>
                 ;
+        };
+
+        braces: braces {
+            label = "PARENS";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <8>;
+            bindings
+                = <&macro_release &kp LSHFT &kp RSHFT>
+                , <&macro_tap &kp LPAR &kp RPAR &kp LEFT>
+                ;
+        };
+
+        braces_ang: braces_ang {
+            label = "ANGLES";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <8>;
+            bindings
+                = <&macro_release &kp LSHFT &kp RSHFT>
+                , <&macro_tap &kp LT &kp GT &kp LEFT>
+                ;
+        };
+
+        braces2: braces2 {
+            label = "BRACKETS";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <8>;
+            bindings
+                = <&macro_release &kp LSHFT &kp RSHFT>
+                , <&macro_tap &kp LBKT &kp RBKT &kp LEFT>
+                ;
+        };
+
+        braces2_curly: braces2_curly {
+            label = "CURLIES";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <8>;
+            bindings
+                = <&macro_release &kp LSHFT &kp RSHFT>
+                , <&macro_tap &kp LBRC &kp RBRC &kp LEFT>
+                ;
+        };
+
+        arrow: arrow {
+            label = "ARROW";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <8>;
+            bindings
+                = <&macro_release &kp LSHFT &kp RSHFT>
+                , <&macro_tap &kp LPAR &kp RPAR &kp SPACE &kp EQUAL &kp GT &kp SPACE>
+                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
+                ;
+        };
+
+        arrow_shift: arrow_shift {
+            label = "ARROW_SHIFT";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings
+                = <&macro_release &kp LSHFT &kp RSHFT>
+                , <&macro_tap &kp C &kp O &kp N &kp S &kp T &kp SPACE &kp Y &kp O>
+                , <&macro_tap &kp U &kp R &kp LS(F) &kp U &kp N &kp C &kp LS(V) &kp A>
+                , <&macro_tap &kp R &kp I &kp A &kp B &kp L &kp E &kp SPACE &kp EQUAL>
+                , <&macro_tap &kp SPACE &kp LPAR &kp X &kp COMMA &kp Y &kp RPAR &kp SPACE &kp EQUAL>
+                , <&macro_tap &kp GT &kp SPACE &kp X &kp SPACE &kp PLUS &kp SPACE &kp Y &kp DOT>
+                , <&macro_tap &kp M &kp E &kp T &kp H &kp O &kp D &kp SEMI>
+                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
+                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
+                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
+                , <&macro_tap &kp LEFT>
+                , <&macro_tap &kp LA(LS(LEFT))>
+                ;
+        };
+
+        /*
+         * Getreuer next sentence: period, space, then one-shot Shift.
+         * &sk is pressed and released by the macro. Release starts the
+         * sticky timer (1000 ms, quick-release), so the next letter is
+         * capitalized and Shift drops after that letter.
+         */
+        next_sentence: next_sentence {
+            label = "NEXT_SENTENCE";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings = <&macro_tap &kp DOT &kp SPACE &sk LSHFT>;
+        };
+
+        console_log: console_log {
+            label = "CONSOLE_LOG";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings
+                = <&macro_tap &kp C &kp O &kp N &kp S &kp O &kp L &kp E &kp DOT>
+                , <&macro_tap &kp L &kp O &kp G &kp LPAR &kp SQT &kp SQT &kp RPAR>
+                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
+                ;
+        };
+
+        html_div: html_div {
+            label = "HTML_DIV";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings
+                = <&macro_tap &kp LT &kp D &kp I &kp V &kp GT &kp LT &kp FSLH &kp D>
+                , <&macro_tap &kp I &kp V &kp GT>
+                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
+                ;
+        };
+
+        html_body: html_body {
+            label = "HTML_BODY";
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            wait-ms = <0>;
+            tap-ms = <5>;
+            bindings
+                = <&macro_tap &kp LT &kp B &kp O &kp D &kp Y &kp GT &kp LT &kp FSLH>
+                , <&macro_tap &kp B &kp O &kp D &kp Y &kp GT>
+                , <&macro_tap &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT &kp LEFT>
+                ;
+        };
+
+    };
+
+    combos {
+        compatible = "zmk,combos";
+
+        combo_undo {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <1 2>;
+            bindings = <&kp LG(Z)>;
+        };
+        combo_redo {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <2 3>;
+            bindings = <&os_redo>;
+        };
+        combo_cut {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <21 22>;
+            bindings = <&kp LG(X)>;
+        };
+        combo_copy {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <22 23>;
+            bindings = <&kp LG(C)>;
+        };
+        combo_paste {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <23 24>;
+            bindings = <&kp LG(V)>;
+        };
+        combo_paste_clip {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <22 24>;
+            bindings = <&os_clip>;
+        };
+        combo_paste_txt {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <21 24>;
+            bindings = <&kp LG(LS(V))>;
+        };
+        combo_select_all {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <21 25>;
+            bindings = <&kp LG(A)>;
+        };
+        combo_question {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <29 30>;
+            bindings = <&kp QMARK>;
+        };
+        combo_underscore {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <28 29>;
+            bindings = <&kp UNDER>;
+        };
+        combo_dash {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <7 8>;
+            bindings = <&kp MINUS>;
+        };
+        combo_equal {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <17 18>;
+            bindings = <&kp EQUAL>;
+        };
+        combo_at {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <13 14>;
+            bindings = <&kp AT>;
+        };
+        combo_dquote {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <27 28>;
+            bindings = <&kp DQT>;
+        };
+        combo_squote {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <18 19>;
+            bindings = <&kp SQT>;
+        };
+        combo_caps_word {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <12 17>;
+            bindings = <&caps_word>;
+        };
+        /*
+         * Sticky Nav on the right top row (index, middle, ring). Omitting
+         * layers leaves the combo mask at 0, which ZMK treats as every layer.
+         * &nav_lock marks the layer latched so the left LED slow-blinks.
+         * The pinky hold is momentary and does not.
+         */
+        combo_nav_sticky {
+            timeout-ms = <70>;
+            key-positions = <6 7 8>;
+            bindings = <&nav_lock NAV>;
+        };
+
+        combo_console {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <27 29>;
+            bindings = <&console_log>;
+        };
+        combo_html_div {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <24 29>;
+            bindings = <&html_div>;
+        };
+        combo_html_body {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <11 29>;
+            bindings = <&html_body>;
+        };
+
+        combo_term_open {
+            timeout-ms = <50>;
+            layers = <LOWER>;
+            key-positions = <6 8>;
+            bindings = <&kp LC(GRAVE)>;
+        };
+        combo_term_next {
+            timeout-ms = <50>;
+            layers = <LOWER>;
+            key-positions = <6 7>;
+            bindings = <&kp LS(LG(LBKT))>;
+        };
+        combo_term_prev {
+            timeout-ms = <50>;
+            layers = <LOWER>;
+            key-positions = <7 8>;
+            bindings = <&kp LS(LG(RBKT))>;
         };
     };
 
-        keymap {
-                compatible = "zmk,keymap";
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+    keymap {
+        compatible = "zmk,keymap";
 
-                base_layer {
-// ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "BASE"                              ;
-// ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-//             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-//             ┃     Q     ┃     W     ┃     F     ┃     P     ┃     G     ┃   ┃     J     ┃     L     ┃     U     ┃     Y     ┃     ;     ┃
-//             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-//             ┃     A     ┃     R     ┃     S     ┃     T     ┃     D     ┃   ┃     H     ┃     N     ┃     E     ┃     I     ┃     O     ┃
-// ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-// ┃     Q     ┃     Z     ┃     X     ┃     C     ┃     V     ┃     B     ┃   ┃     K     ┃     M     ┃     ,     ┃     .     ┃     /     ┃     \     ┃
-// ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃    DEL    ┃    TAB    ┃    SPC    ┃   ┃   ENTER   ┃           ┃   BSPC    ┃
-//                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
- bindings = <
-// ╷           ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷           ╷
-
-                &kp Q       &kp W       &kp F       &kp P       &kp G           &kp J       &kp L       &kp U       &kp Y       &kp SEMI
-                &mt LGUI A  &mt LALT R  &mt LCTRL S &mt LSHFT T &kp D           &kp H       &mt RSHFT N &mt RCTRL E &mt RALT I  &mt RGUI O
-    &kp Q       &kp Z       &kp X       &kp C       &kp V       &kp B           &kp K       &kp M       &kp COMMA   &kp DOT     &kp FSLH    &kp BSLH
-                                        &kp DEL   &lt NAV TAB   &kp SPACE       &kp RET   &lt SYM ESC   &kp BSPC
-                        >;
-                };
-
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-
-
-                nav_layer {
-// ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "NAVI"                              ;
-// ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-//             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-//             ┃           ┃           ┃     UP    ┃           ┃     {     ┃   ┃     }     ┃     7     ┃     8     ┃     9     ┃     +     ┃
-//             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-//             ┃   SHIFT   ┃   LEFT    ┃    DOWN   ┃   RIGHT   ┃     [     ┃   ┃     ]     ┃     4     ┃     5     ┃     6     ┃     -     ┃
-// ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-// ┃           ┃           ┃   P UP    ┃  C LOCK   ┃  P DOWN   ┃     (     ┃   ┃     )     ┃     1     ┃     2     ┃     3     ┃     *     ┃           ┃
-// ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃           ┃    TAB    ┃    SPC    ┃   ┃    DEL    ┃     0     ┃           ┃
-//                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
- bindings = <
-// ╷           ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷           ╷
-
-                &kp ESC     &bt BT_CLR  &kp UP      &kp EQUAL   &kp LBRC        &kp RBRC    &kp KP_N7   &kp KP_N8   &kp KP_N9   &kp KP_PLUS
-                &kp LSHFT   &kp LEFT    &kp DOWN    &kp RIGHT   &kp LBKT        &kp RBKT    &kp KP_N4   &kp KP_N5   &kp KP_N6   &kp KP_MINUS
-    &trans      &kp DEL     &kp PG_UP   &kp CAPS    &kp PG_DN   &kp LPAR        &kp RPAR    &kp KP_N1   &kp KP_N2   &kp KP_N3   &kp KP_MULTIPLY &trans      
-                                        &trans      &trans      &trans          &mo ADJ     &kp KP_N0   &trans      
-                        >;
-                };
-
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-
-
-                sim_layer {
-// ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "SYM"                               ;
-// ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-//             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-//             ┃     !     ┃     @     ┃     #     ┃     $     ┃     %     ┃   ┃     ˆ     ┃     &     ┃     Ü     ┃     '     ┃     "     ┃
-//             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-//             ┃     Ä     ┃           ┃    SZ     ┃           ┃           ┃   ┃   MUTE    ┃   YEN     ┃   EURO    ┃  POUND    ┃     Ö     ┃
-// ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-// ┃           ┃  EMAIL1   ┃  EMAIL2   ┃           ┃           ┃           ┃   ┃   VOL-    ┃   VOL+    ┃   LAST    ┃   NEXT    ┃     \     ┃           ┃
-// ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃           ┃    GIF    ┃    ADJ    ┃   ┃           ┃           ┃           ┃
-//                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
- bindings = <
-// ╷           ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷           ╷
-
-                &kp EXCL    &kp AT      &kp HASH    &kp DLLR    &kp PRCNT       &kp CARET   &kp AMPS    &kp RA(U)   &kp SQT     &kp DQT       
-                &kp RA(A)   &trans      &kp RA(S)   &trans      &trans          &kp C_MUTE  &kp LS(RA(N4)) &kp RA(N5) &kp RA(N4)   &kp RA(O) 
-    &trans      &kp RA(F18) &kp RA(F19) &trans      &trans      &trans          &kp C_VOL_DN &kp C_VOL_UP &kp C_PREV &kp C_NEXT  &kp BSLH   &trans         
-                                        &trans      &gif        &mo ADJ         &trans      &kp C_PP    &trans      
-                        >;
-                };
-
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-
-
-                adjust_layer {
-// ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "ADJ"                               ;
-// ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-//             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-//             ┃   RESET   ┃ BT CLEAR  ┃  OUT TOG  ┃           ┃           ┃   ┃           ┃    F7     ┃    F8     ┃    F9     ┃    F12    ┃
-//             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-//             ┃ BOOTLOAD  ┃ BT NEXT   ┃           ┃           ┃           ┃   ┃           ┃    F4     ┃    F5     ┃    F6     ┃    F11    ┃
-// ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-// ┃           ┃           ┃ BT PREV   ┃           ┃           ┃           ┃   ┃           ┃    F1     ┃    F2     ┃    F3     ┃    F10    ┃           ┃
-// ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃           ┃           ┃           ┃   ┃           ┃           ┃           ┃
-//                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
- bindings = <
-// ╷           ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷           ╷
-
-                &sys_reset  &bt BT_CLR &out OUT_TOG &trans      &trans          &trans      &kp F7      &kp F8      &kp F9      &kp F12
-                &bootloader &bt BT_NXT  &trans      &trans      &trans          &trans      &kp F4      &kp F5      &kp F6      &kp F11  
-    &trans      &trans      &bt BT_PRV  &trans      &trans      &trans          &trans      &kp F1      &kp F2      &kp F3      &kp F10     &trans         
-                                        &trans      &trans      &trans          &trans      &trans      &trans      
-                        >;
-                };
-
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-
-
-                tvp1_layer {
-// ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "TVP 1"                             ;
-// ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-//             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-//             ┃ NEXT FILE ┃ MARK IN   ┃ ROTATE    ┃ MARK OUT  ┃ SHOW SNAP ┃   ┃           ┃           ┃           ┃           ┃           ┃
-//             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-//             ┃ TVP II    ┃ LEFT      ┃ PAN       ┃ RIGHT     ┃ PLAY/FLIP ┃   ┃           ┃           ┃           ┃           ┃           ┃
-// ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-// ┃ FULLSCR   ┃ SHIFT     ┃ COPY      ┃ DELETE    ┃ PASTE     ┃ IMG MARK  ┃   ┃           ┃           ┃           ┃           ┃           ┃           ┃
-// ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃           ┃ UNDO/SAVE ┃  SEL/MOV  ┃   ┃           ┃           ┃           ┃
-//                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
- bindings = <
-// ╷           ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷           ╷
-
-                &kp TAB     &kp I       &kp LC(LALT) &kp O      &kp LC(F20)     &none       &none       &none       &none       &none
-                &lt TVP2 L  &kp LEFT    &kp LALT    &kp RIGHT   &kp SPACE       &none       &none       &none       &none       &none
-    &kp J       &kp LSHFT   &kp LC(C)   &kp BSPC    &kp LC(V)   &kp LC(F19)     &none       &none       &none       &none       &none       &none        
-                                        &trans      &kp LC(F14) &kp LC(F13)     &none       &none       &none    
-                        >;
-                };
-
-// ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
-
-
-                tvp2_layer {
-// ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-label= "TVP 2"                             ;
-// ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-//             ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓   ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-//             ┃ SOLO      ┃ TOGGLE IN ┃ RESET ROT ┃ TOGGLE OUT┃ TAKE SNAP ┃   ┃           ┃           ┃           ┃           ┃           ┃
-//             ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫
-//             ┃ ---       ┃ LAST KEY  ┃ NEW KEY   ┃ NEXT KEY  ┃ ENTER     ┃   ┃           ┃           ┃           ┃           ┃           ┃
-// ┏━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┓
-// ┃           ┃ FULLSCR   ┃ CPY2BRUSH ┃ DEL HEAD  ┃ PSTinPLACE┃ BOOK MARK ┃   ┃           ┃           ┃           ┃           ┃           ┃           ┃
-// ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┫   ┣━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
-//                                     ┃           ┃ REDO/SAV1 ┃TRANS/WARP ┃   ┃           ┃           ┃           ┃
-//                                     ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛   ┗━━━━━━━━━━━┻━━━━━━━━━━━┻━━━━━━━━━━━┛
- bindings = <
-// ╷           ╷           ╷           ╷           ╷           ╷           ╷   ╷           ╷           ╷           ╷           ╷           ╷           ╷
-
-                &kp LC(F18) &kp LS(I)  &kp LS(HOME) &kp LS(O)   &kp LS(F)       &trans      &kp F7      &kp F8      &kp F9      &kp F12
-                &trans      &kp LS(LEFT) &kp LC(F17) &kp LS(RIGHT) &kp RET      &trans      &kp F4      &kp F5      &kp F6      &kp F11  
-    &trans      &kp J       &kp LS(C)   &kp LC(F16) &kp LS(V)   &kp LC(F15)     &trans      &kp F1      &kp F2      &kp F3      &kp F10     &trans         
-                                        &trans      &kp LC(F12) &kp LC(F11)     &trans      &trans      &trans      
-                        >;
-                };
+        base_layer {
+            label = "Colemak";
+            bindings = <
+                &eh 0 Q      &ak_w          &ak_f          &ak_p          &kp B
+                &ak_j        &ak_l          &kp U          &ak_y          &kp SEMI
+                &a_nav NAV A  &hrm_l LALT R  &hrm_l LSHFT S  &hrm_l LCTRL T  &hrm_in_l LGUI G
+                &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
+                &eh 0 ESC  &mt LSHFT Z  &ak_x  &kp C  &kp D  &ak_v
+                &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &apos_bspc 0 0
+                &mt LGUI ENTER  &lt LOWER SPACE  &os_galt_tab 0 TAB
+                &kp GRAVE  &lt LOWER BSPC  &lt RAISE DEL
+            >;
         };
+
+        qwerty_layer {
+            label = "QWERTY";
+            bindings = <
+                &eh 0 Q  &ak_w  &kp E  &kp R  &kp T
+                &ak_y  &kp U  &kp I  &kp O  &ak_p
+                &a_nav NAV A  &hrm_l LALT S  &hrm_l LSHFT D  &qw_f LCTRL 0  &hrm_in_l LGUI G
+                &hrm_in_r RGUI H  &qw_j RCTRL 0  &hrm_r RSHFT K  &qw_l RALT 0  &kp SEMI
+                &trans  &mt LSHFT Z  &ak_x  &kp C  &ak_v  &kp B
+                &kp N  &kp M  &kp COMMA  &kp DOT  &ak_sl  &trans
+                &trans  &trans  &trans
+                &trans  &trans  &trans
+            >;
+        };
+
+        canary_layer {
+            label = "Canary";
+            bindings = <
+                &eh 0 Q  &ak_l  &ak_y  &ak_p  &kp B
+                &kp Z  &ak_f  &kp O  &kp U  &kp SEMI
+                &a_nav NAV C  &hrm_l LALT R  &hrm_l LSHFT S  &hrm_l LCTRL T  &hrm_in_l LGUI G
+                &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp A
+                &trans  &mt_w LSHFT 0  &ak_j  &ak_v  &kp D  &kp K
+                &ak_x  &kp H  &kp COMMA  &kp DOT  &ak_sl  &trans
+                &trans  &trans  &trans
+                &trans  &trans  &trans
+            >;
+        };
+
+        /*
+         * Leeloo Lower, folded onto the Totem. Left symbols keep Leeloo's
+         * inner-column order. Grave, Shift-Tab, and plain Shift are the
+         * far-left Leeloo column (outer thumb, middle thumb, outer pinky).
+         * Right hand is the Leeloo numpad. + and - sit on the outer column
+         * where the markup put them. / is where &ak_0 was. | is the pinky.
+         * ~ is where 0 was. The right thumbs are next sentence, dot, and 0.
+         */
+        lower_layer {
+            label = "Lower";
+            bindings = <
+                &kp EXCL  &kp LT  &kp GT  &kp EQUAL  &kp CARET
+                &kp STAR  &kp N7  &kp N8  &kp N9  &kp PLUS
+                &kp HASH  &kp LBKT  &kp LPAR  &kp RPAR  &kp RBKT
+                &kp AMPS  &kp N4  &kp N5  &kp N6  &kp MINUS
+                &kp LSHFT  &kp AT  &kp DLLR  &kp LBRC  &kp RBRC  &kp PRCNT
+                &kp LS(GRAVE)  &kp N1  &kp N2  &kp N3  &kp FSLH  &kp PIPE
+                &kp GRAVE  &kp LS(TAB)  &trans
+                &next_sentence  &kp DOT  &kp N0
+            >;
+        };
+
+        /*
+         * F9–F12 and F5–F8 are the four inner columns. F1–F4 sit one key
+         * to the right of that, so the key beside the outer pinky is blank.
+         * The home pinky stays transparent (the Nav hold). Apps, Space, and
+         * Switch are the left thumbs.
+         */
+        nav_layer {
+            label = "Nav";
+            bindings = <
+                &none  &kp F9  &kp F10  &kp F11  &kp F12
+                &kp LC(PG_UP)  &kp HOME  &kp UP  &kp END  &none
+                &trans  &kp F5  &kp F6  &kp F7  &kp F8
+                &os_tab_prev  &kp LEFT  &kp DOWN  &kp RIGHT  &os_tab_next
+                &trans  &none  &kp F1  &kp F2  &kp F3  &kp F4
+                &os_back  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &os_fwd  &none
+                &os_apps  &kp SPACE  &os_switch
+                &kp RET  &kp BSPC  &kp DEL
+            >;
+        };
+
+        raise_layer {
+            label = "Raise";
+            bindings = <
+                &kp LBRC  &kp RBRC  &kp LT  &kp GT  &kp PIPE
+                &kp C_VOL_UP  &kp C_MUTE  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT
+                &kp LPAR  &kp RPAR  &kp LBKT  &kp RBKT  &kp BSLH
+                &trans  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT  &trans
+                &kp EQUAL  &kp PLUS  &kp MINUS  &kp UNDER  &kp STAR  &kp FSLH
+                &kp C_VOL_DN  &os_selword  &kp LA(LC(LS(RIGHT)))  &os_selline  &os_back  &os_fwd_br
+                &trans  &trans  &trans
+                &trans  &kp BSPC  &kp DEL
+            >;
+        };
+
+        adjust_layer {
+            label = "Adjust";
+            bindings = <
+                &sys_reset  &bt BT_CLR  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
+                &to BASE  &to QWERTY  &to CANARY  &brc_morph  &tog ADJ
+                &bootloader  &bt BT_NXT  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
+                &tog LOWER  &nav_lock NAV  &tog RAISE  &kp GRAVE  &kp SYS_SLEEP
+                &trans  &bt BT_PRV  &kp C_BRI_UP  &kp C_BRI_DN  &key_repeat  &kp CAPS
+                &kp INS  &kp PSCRN  &arrow_morph  &brc2_morph  &caps_word  &trans
+                &trans  &kp TAB  &kp SPACE
+                &kp RET  &trans  &kp DEL
+            >;
+        };
+
+        /*
+         * On while Lower and Raise are both held. Lower is the middle thumb
+         * on either hand. Raise is the outer right thumb. The right top
+         * row switches the alpha layout. Bluetooth, boot, and reset are
+         * duplicated from Adjust so either path still works.
+         */
+        sys_layer {
+            label = "System";
+            bindings = <
+                &os_mac  &os_win  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
+                &to BASE  &to QWERTY  &to CANARY  &os_ac  &bt BT_CLR
+                &bootloader  &sys_reset  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
+                &kp LG(S)  &kp LG(F)  &none  &none  &kp SYS_SLEEP
+                &none  &none  &none  &none  &none  &none
+                &none  &none  &none  &none  &none  &none
+                &none  &none  &trans
+                &trans  &none  &none
+            >;
+        };
+    };
 };

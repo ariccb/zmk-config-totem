@@ -1,0 +1,33 @@
+# In-tree adaptive-key behavior. The driver calls HID helpers that the
+# split peripheral image does not link, and the peripheral does not run
+# the keymap. Compile it on the central half only, matching upstream.
+if((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+    target_sources_ifdef(CONFIG_ZMK_BEHAVIOR_ADAPTIVE_KEY app PRIVATE src/behaviors/behavior_adaptive_key.c)
+    zephyr_include_directories(include)
+
+    # OS mode has to sit after sticky-key and before HID. Autocorrect sits
+    # immediately before that, so it sees unswapped keycodes and a swallowed
+    # trigger never reaches HID. The reorder runs at the end of the
+    # application CMakeLists, once hid_listener.c is already a source.
+    # See cmake/link_os_mode.cmake.
+    if(CONFIG_ZMK_BEHAVIOR_AUTOCORRECT)
+        target_sources(app PRIVATE src/behaviors/behavior_autocorrect.c)
+    endif()
+    if(CONFIG_ZMK_BEHAVIOR_QUOPOSTROKEY)
+        target_sources(app PRIVATE src/behaviors/behavior_quopostrokey.c)
+    endif()
+    if(CONFIG_ZMK_BEHAVIOR_EXP_BSPC)
+        target_sources(app PRIVATE src/behaviors/behavior_exp_bspc.c)
+    endif()
+    if(CONFIG_ZMK_BEHAVIOR_NAV_LOCK)
+        target_sources(app PRIVATE src/behaviors/behavior_nav_lock.c)
+    endif()
+    # Left XIAO RGB. Needs the gpio-leds device (CONFIG_LED on totem_left).
+    target_sources(app PRIVATE src/led_status.c)
+    if(CONFIG_ZMK_BEHAVIOR_OS_MODE)
+        target_sources(app PRIVATE src/behaviors/behavior_os_mode.c)
+        cmake_language(EVAL CODE "
+            cmake_language(DEFER DIRECTORY [[${CMAKE_SOURCE_DIR}]] CALL include [[${CMAKE_CURRENT_LIST_DIR}/cmake/link_os_mode.cmake]])
+        ")
+    endif()
+endif()
