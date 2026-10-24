@@ -514,7 +514,7 @@ before the swap. Windows mode is the boot default; see Mac and Windows.
 | C D | Paste, Cmd+V | Ctrl+V |
 | X D | Clipboard history, Alt+Shift+Cmd+Space | Win+V |
 | Z C | Paste without formatting, Cmd+Shift+V | Ctrl+Shift+V |
-| Z D | Select all, Cmd+A | Ctrl+A |
+| V Enter | Select all, Cmd+A | Ctrl+A |
 | . / | ? | same |
 | , . | _ | same |
 | U Y | - (a roll is the adaptive `UE` instead) | same |

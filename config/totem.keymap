@@ -641,7 +641,7 @@
         combo_select_all {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
-            key-positions = <21 24>;
+            key-positions = <25 32>;
             bindings = <&kp LG(A)>;
         };
         combo_question {
