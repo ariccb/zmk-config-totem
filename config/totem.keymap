@@ -635,7 +635,7 @@
         combo_paste_txt {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
-            key-positions = <22 25>;
+            key-positions = <21 23>;
             bindings = <&kp LG(LS(V))>;
         };
         combo_select_all {
@@ -879,7 +879,7 @@
                 &trans  &kp F5  &kp F6  &kp F7  &kp F8
                 &os_tab_prev  &kp LEFT  &kp DOWN  &kp RIGHT  &os_tab_next
                 &trans  &none  &kp F1  &kp F2  &kp F3  &kp F4
-                &os_back  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &os_fwd  &sk LGUI
+                &os_back  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &os_fwd  &none
                 &os_apps  &kp SPACE  &os_switch
                 &kp RET  &kp BSPC  &kp DEL
             >;

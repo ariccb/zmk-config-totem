@@ -187,7 +187,7 @@ is the inner thumb, reached by the pinky hold, or with Nav toggled on.
 ```
  ·   F9  F10 F11 F12       C-PgUp  Home  Up   End  (unlock)
 Nav  F5  F6  F7  F8       C-S-Tab Left Down Right C-Tab
-Esc  ·   F1  F2  F3  F4    Back   PgUp  AddCur PgDn Fwd  sticky Cmd
+Esc  ·   F1  F2  F3  F4    Back   PgUp  AddCur PgDn Fwd  ·
    Apps  Space  Switch      Enter  Backspace  Delete
 ```
 
@@ -211,10 +211,9 @@ swap, so these go out with passthrough. Browser Back is `&os_back` on the
 bottom-left of that block (Cmd+[ on Mac, Alt+Left on Windows). `Fwd`
 stays browser forward (Cmd+Right on Mac, Alt+Right on Windows).
 
-`AddCur` is Cmd+Alt+Down (VS Code add cursor). The Leeloo's 800 ms
-app-switch timer and the encoder super-tab are not reproduced; sticky
-Cmd on the right pinky of this layer is the way to tap Tab repeatedly.
-Windows mode makes that sticky key Ctrl.
+`AddCur` is Cmd+Alt+Down (VS Code add cursor). The right pinky of this
+layer is blank. The Leeloo's 800 ms app-switch timer and the encoder
+super-tab are not reproduced.
 
 The `(unlock)` key turns Nav off after it was toggled on from Adjust. Holding
 this layer and tapping it does not lock the layer. ZMK keeps one bit per
@@ -496,7 +495,7 @@ for the OS repeat. QWERTY and Canary inherit it.
 
 Lower replaces the left pinky with Shift and the right pinky with `|`. Raise replaces
 them with `/` and browser forward. Nav keeps Esc/Hyper on the left pinky
-and puts sticky Cmd on the right. System leaves both blank. QWERTY,
+and leaves the right pinky blank. System leaves both blank. QWERTY,
 Canary, and Adjust leave them transparent, so the left stays Esc/Hyper
 and the right stays apostrophe/Backspace.
 
@@ -514,7 +513,7 @@ before the swap. Windows mode is the boot default; see Mac and Windows.
 | X C | Copy, Cmd+C | Ctrl+C |
 | C D | Paste, Cmd+V | Ctrl+V |
 | X D | Clipboard history, Alt+Shift+Cmd+Space | Win+V |
-| X V | Paste without formatting, Cmd+Shift+V | Ctrl+Shift+V |
+| Z C | Paste without formatting, Cmd+Shift+V | Ctrl+Shift+V |
 | Z D | Select all, Cmd+A | Ctrl+A |
 | . / | ? | same |
 | , . | _ | same |
