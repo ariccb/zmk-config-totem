@@ -15,10 +15,13 @@
  * Redo, clipboard history, browser back/forward, current-app windows, and
  * the app switcher are not a pure swap (Ctrl+Y versus Cmd+Shift+Z, Win+V
  * versus Alt+Shift+Cmd+Space, Alt+arrows versus Cmd+[ / Cmd+] / Cmd+Right,
- * Alt+` versus Control+Down, Alt+Tab versus Cmd+Tab). Those behaviors send
- * the finished chord with os_passthrough set so this listener leaves it
- * alone. The app switcher holds its modifier until release and taps Tab
- * once, the same shape as the cmd_tab macro.
+ * Alt+` versus Control+Down, Alt+Tab versus Cmd+Tab, Win+Alt versus
+ * Cmd+Alt). Those behaviors send the finished chord with os_passthrough
+ * set so this listener leaves it alone. The app switcher holds its
+ * modifier until release and taps Tab once, the same shape as the
+ * cmd_tab macro. The inner left thumb's Command+Alt hold is the same
+ * GUI+Alt chord in both modes, so Windows mode does not turn it into
+ * Ctrl+Alt.
  *
  * The choice is stored in ZMK settings (totem/os/win) when settings are
  * enabled, which they are on this BLE keyboard. Until a Mac or Windows key
@@ -64,6 +67,7 @@ enum os_command {
     OS_FWD_BR,
     OS_APPS,
     OS_SWITCH,
+    OS_GALT,
 };
 
 struct behavior_os_mode_config {
@@ -239,6 +243,16 @@ static int press_app_switch(struct behavior_os_mode_data *data,
     return ZMK_BEHAVIOR_OPAQUE;
 }
 
+/* Cmd+Option on Mac, Win+Alt on Windows. Passthrough keeps GUI as GUI. */
+static int press_gui_alt(struct behavior_os_mode_data *data,
+                         struct zmk_behavior_binding_event event) {
+    data->held = true;
+    data->keycode = LGUI;
+    send_encoded(LGUI, event, true);
+    send_encoded(LALT, event, true);
+    return ZMK_BEHAVIOR_OPAQUE;
+}
+
 static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
                                      struct zmk_behavior_binding_event event) {
     const struct device *dev = zmk_behavior_get_binding(binding->behavior_dev);
@@ -258,6 +272,8 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
         return ZMK_BEHAVIOR_OPAQUE;
     case OS_SWITCH:
         return press_app_switch(data, event);
+    case OS_GALT:
+        return press_gui_alt(data, event);
     default:
         break;
     }
@@ -278,7 +294,16 @@ static int on_keymap_binding_released(struct zmk_behavior_binding *binding,
     const struct device *dev = zmk_behavior_get_binding(binding->behavior_dev);
     struct behavior_os_mode_data *data = dev->data;
 
+    const struct behavior_os_mode_config *config = dev->config;
+
     if (!data->held) {
+        return ZMK_BEHAVIOR_OPAQUE;
+    }
+
+    if (config->command == OS_GALT) {
+        send_encoded(LALT, event, false);
+        send_encoded(LGUI, event, false);
+        data->held = false;
         return ZMK_BEHAVIOR_OPAQUE;
     }
 

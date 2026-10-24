@@ -42,6 +42,13 @@
     quick-tap-ms = <120>;
 };
 
+/* Outer left thumb is Enter/Command. Same timing as the layer thumbs. */
+&mt {
+    flavor = "balanced";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <120>;
+};
+
 /* One-shot shift matches the Leeloo ONESHOT_TIMEOUT of 1000 ms. */
 &sk {
     release-after-ms = <1000>;
@@ -831,7 +838,7 @@
                 &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
                 &eh 0 ESC  &kp Z  &ak_x  &kp C  &kp D  &ak_v
                 &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &eh 0 BSPC
-                &sk LSHFT  &lt NAV TAB  &lt LOWER SPACE
+                &mt LGUI ENTER  &lt LOWER SPACE  &os_galt_tab 0 TAB
                 &lt SYM RET  &lt ADJ BSPC  &kp DEL
             >;
         };
@@ -935,8 +942,8 @@
         };
 
         /*
-         * On while both inner thumbs are held (Lower and Sym). The two
-         * held positions stay transparent. Bluetooth, boot, and reset are
+         * On while Lower and Sym are both held. Lower is the middle left
+         * thumb; Sym is the inner right thumb. Bluetooth, boot, and reset are
          * duplicated from Adjust so either path still works.
          */
         sys_layer {

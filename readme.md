@@ -60,7 +60,7 @@ Hold-taps below are written `hold/tap`.
  q   w*  f*  p*  b          j*  l*  u   y*  ;
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  o
 Esc  z   x*  c   d   v*     k   h   ,   .   /* Bsp
-   Shift  Nav/Tab  Lower/Space  Sym/Enter  Adjust/Bsp  Del
+   Cmd/Enter  Lower/Space  Cmd+Alt/Tab  Sym/Enter  Adjust/Bsp  Del
 ```
 
 A star is an adaptive key, the second key of a rule. Home-row mods, Mac
@@ -72,24 +72,25 @@ keys transparent, so they inherit the same pair. Hyper is Left Ctrl + Left
 Shift + Left Alt + Left GUI in both OS modes. Windows mode swaps Ctrl and
 GUI, and a chord that already holds both still sends both.
 
-Thumbs, and why Tab sits where it does:
+Thumbs:
 
 | Thumb | Key | Tap | Hold |
 | --- | --- | --- | --- |
-| Left outer | 32 | one-shot Shift | |
-| Left middle | 33 | Tab | Nav |
-| Left inner | 34 | Space | Lower |
+| Left outer | 32 | Enter | Command (`LGUI`) |
+| Left middle | 33 | Space | Lower |
+| Left inner | 34 | Tab | Command+Alt |
 | Right inner | 35 | Enter | Sym |
 | Right middle | 36 | Backspace | Adjust |
 | Right outer | 37 | Delete | |
 
-Space stays on the inner thumb, which is the resting key. Tab shares the
-middle thumb with Nav, between Shift and Space. That thumb stays: holding
-`a` opens Nav for the right hand, and the Tab thumb still opens Nav when
-the left hand needs the F-keys on that side. The app switcher sits on
-that same thumb once Nav is up, so hold the pinky to reach it. One-shot Shift
-is the outer left thumb (1 second, quick-release), matching the Leeloo
-one-shot shift. Repeat is not on a thumb; it is on Adjust.
+Space stays on the middle left thumb, and that hold is Lower. The outer
+thumb is `&mt LGUI ENTER`, balanced at 200 ms like the other thumb
+holds. Windows mode swaps that Command to Ctrl, the
+same as the other Cmd keys. The inner thumb is `&os_galt_tab 0 TAB`:
+tap Tab, hold Command+Alt. Mac sends Cmd+Option. Windows sends Win+Alt.
+The `0` is unused, because that hold takes no parameter. Nav is the left
+home pinky (`a`, or `c` on Canary). Repeat is not on a thumb; it is on
+Adjust.
 
 QWERTY and Canary leave the thumbs and both pinkies transparent, so they
 inherit this row. `&to` keeps Base underneath them.
@@ -130,8 +131,9 @@ numpad, with the operators that fit beside it.
 
 Leeloo's far-left column does not have its own column here. Plain Shift is
 the left outer pinky. Backtick is the outer left thumb, and Shift plus that
-key is tilde. Shift-Tab is the middle left thumb. The inner left thumb is
-the key that is holding the layer.
+key is tilde. Shift-Tab is the middle left thumb of this layer, reached
+when Lower is toggled on. The inner left thumb is transparent, so it
+falls through to Tab.
 
 The left home row is the symbols, not a transparent mod row. Leeloo held
 Alt, Shift, Cmd, and Ctrl on `[ ( ) ]`. Those holds are not copied, so a
@@ -141,7 +143,7 @@ tap is the symbol.
  !   <   >   =   ^          *   7   8   9   +
  #   [   (   )   ]          &   4   5   6   -
 Sft  @   $   {   }   %      ~   1   2   3   /   |
-   `   S-Tab  (held)          Space   .   0
+   `   S-Tab   ·             Space   .   0
 ```
 
 `! @ # $ % ^ & * +` are the shifted number-row symbols (`*` is Shift+8,
@@ -173,11 +175,11 @@ Windows mode.
 
 ## Nav
 
-Hold the Tab thumb, or hold the left home pinky (`a` on Colemak and
-QWERTY, `c` on Canary). The pinky hold reaches the right-hand Nav keys
-and the two left thumbs on this layer. The Tab thumb still reaches the
-F-keys on the left. The app switcher is the middle thumb of this layer,
-so it is reached by the pinky hold, or with Nav toggled on.
+Hold the left home pinky (`a` on Colemak and QWERTY, `c` on Canary).
+That hold reaches both hands, including the F-keys and the two left
+thumbs on this layer. The inner left thumb taps Tab on the base layer,
+so the pinky is how Nav turns on. The app switcher is the middle thumb
+of this layer, reached by the pinky hold, or with Nav toggled on.
 
 ```
  ·   F9  F10 F11 F12       C-PgUp  Home  Up   End  (unlock)
@@ -282,11 +284,9 @@ keeps them so one thumb is still enough.
 
 ## System
 
-Hold Lower and Sym together. Those are the two inner thumbs: Space/Lower on
-the left, Enter/Sym on the right. Each is already a layer key, and they
-sit under the resting position, one hand each. Nav stays on the middle Tab
-thumb and Adjust stays on the Backspace thumb, so those remain one-thumb
-layers.
+Hold Lower and Sym together. Lower is the middle left thumb (Space).
+Sym is the inner right thumb (Enter). Nav is the left home pinky, and
+Adjust stays on the Backspace thumb.
 
 ZMK turns System on only while both of those layers are held
 (`conditional_layers` on Lower + Sym). System is not also bound to its own
@@ -368,11 +368,13 @@ behaviors in `config/os.dtsi` and do not get swapped a second time:
 | Nav `Switch` | Cmd+Tab, Cmd held until release | Alt+Tab, Alt held until release |
 | Sym `Back` | Cmd+[ | Alt+Left |
 | Sym `Fwd` | Cmd+] | Alt+Right |
+| Inner left thumb hold | Cmd+Alt | Win+Alt |
 
 Everything else that is Cmd in the keymap becomes Ctrl, and a bare Ctrl
 becomes Win. That includes undo, cut, copy, paste, paste-without-formatting,
 select-all, save, find, zoom, add-cursor, select-line, the HTML tag's
-Cmd+D, and the home-row mods. Terminal chords on Lower follow the same rule:
+Cmd+D, the home-row mods, and the outer left thumb's Command hold.
+Terminal chords on Lower follow the same rule:
 Ctrl+Grave becomes Win+Grave, and Shift+Cmd+[ / ] become Shift+Ctrl+[ / ].
 
 The Leeloo did this differently. `guess_os.h` picks Mac or not when the
@@ -525,9 +527,9 @@ column, and both encoders had to move.
 - Lower, on the Space thumb, is the Leeloo Lower layer: symbols on the
   left, numpad and operators on the right. The Leeloo mouse stays off this
   layer. Sym, on the Enter thumb, is the other symbol and media layer.
-- One-shot Shift, Tab/Nav, Space/Lower on the left; Enter/Sym,
-  Backspace/Adjust, Delete on the right. The Leeloo's repeat thumb is on
-  Adjust, and play/pause is on Sym.
+- Left thumbs are Enter/Command, Space/Lower, and Tab/Command+Alt.
+  Enter/Sym, Backspace/Adjust, Delete stay on the right. The Leeloo's
+  repeat thumb is on Adjust, and play/pause is on Sym.
 - The left outer pinky is Esc/Hyper and the right outer pinky is
   Backspace/Hyper, not a full-height outer column.
   Backslash is on Sym. Quote is the `H+,` combo.
@@ -578,8 +580,10 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 4. A fast Esc on the left outer pinky and a fast Backspace on the right,
    then a roll from a letter into that pinky. A paused hold of either pinky
    plus a letter is Hyper: Ctrl+Alt+Shift+Cmd in Mac mode and in Windows mode.
-5. Tab on the middle left thumb, Nav while it is held. Space/Lower, Enter/Sym,
-   Backspace/Adjust. Hold `a` and a right-hand arrow for Nav from the pinky.
+5. Enter on the outer left thumb, Command while it is held. Space/Lower
+   on the middle left thumb. Tab on the inner left thumb, Command+Alt
+   while it is held (Win+Alt in Windows mode). Enter/Sym, Backspace/Adjust.
+   Hold `a` and a right-hand arrow for Nav from the pinky.
 6. A same-hand roll (`as` on QWERTY, `ar` on Colemak) stays letters. Hold
    `g` or `m` after a short pause, then a key on the other hand: that is
    Cmd in Mac mode and Ctrl in Windows mode. Hold `a` and tap a right-hand
