@@ -12,10 +12,13 @@
  * swapped event as a different key. Caps word and key repeat also run before
  * that slot and must see the unswapped event.
  *
- * Redo, clipboard history, and the browser back/forward keys are not a pure
- * swap (Ctrl+Y versus Cmd+Shift+Z, Win+V versus Alt+Shift+Cmd+Space, Alt+arrows
- * versus Cmd+[ / Cmd+] / Cmd+Right). Those behaviors send the finished chord
- * with os_passthrough set so this listener leaves it alone.
+ * Redo, clipboard history, browser back/forward, current-app windows, and
+ * the app switcher are not a pure swap (Ctrl+Y versus Cmd+Shift+Z, Win+V
+ * versus Alt+Shift+Cmd+Space, Alt+arrows versus Cmd+[ / Cmd+] / Cmd+Right,
+ * Alt+` versus Control+Down, Alt+Tab versus Cmd+Tab). Those behaviors send
+ * the finished chord with os_passthrough set so this listener leaves it
+ * alone. The app switcher holds its modifier until release and taps Tab
+ * once, the same shape as the cmd_tab macro.
  *
  * The choice is stored in ZMK settings (totem/os/win) when settings are
  * enabled, which they are on this BLE keyboard. Until a Mac or Windows key
@@ -59,6 +62,8 @@ enum os_command {
     OS_FWD,
     OS_BACK,
     OS_FWD_BR,
+    OS_APPS,
+    OS_SWITCH,
 };
 
 struct behavior_os_mode_config {
@@ -207,9 +212,31 @@ static uint32_t chord_for(uint8_t command) {
         return windows_mode ? LA(LEFT) : LG(LBKT);
     case OS_FWD_BR:
         return windows_mode ? LA(RIGHT) : LG(RBKT);
+    case OS_APPS:
+        /* Current-app windows: Mac App Exposé, Windows Alt+` (grave). */
+        return windows_mode ? LA(GRAVE) : LC(DOWN);
     default:
         return 0;
     }
+}
+
+/*
+ * Hold Cmd (Mac) or Alt (Windows) and tap Tab once. The modifier stays
+ * down until the key is released, so the switcher stays open, matching
+ * cmd_tab. The modifier is stored so release uses the same key if the
+ * mode changes while the thumb is held.
+ */
+static int press_app_switch(struct behavior_os_mode_data *data,
+                            struct zmk_behavior_binding_event event) {
+    uint32_t mod = windows_mode ? LALT : LGUI;
+
+    data->held = true;
+    data->keycode = mod;
+    send_encoded(mod, event, true);
+    send_encoded(TAB, event, true);
+    k_msleep(10);
+    send_encoded(TAB, event, false);
+    return ZMK_BEHAVIOR_OPAQUE;
 }
 
 static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
@@ -229,6 +256,8 @@ static int on_keymap_binding_pressed(struct zmk_behavior_binding *binding,
         os_mode_save();
         LOG_INF("OS mode set to windows");
         return ZMK_BEHAVIOR_OPAQUE;
+    case OS_SWITCH:
+        return press_app_switch(data, event);
     default:
         break;
     }

@@ -13,6 +13,8 @@
  *   fwd     Nav browser forward: Mac Cmd+Right,  Windows Alt+Right
  *   back    Sym browser back: Mac Cmd+[,  Windows Alt+Left
  *   fwd_br  Sym browser forward: Mac Cmd+],  Windows Alt+Right
+ *   apps    Current-app windows: Mac Control+Down,  Windows Alt+`
+ *   switch  Next app: Mac Cmd+Tab (Cmd held),  Windows Alt+Tab (Alt held)
  *
  * System comes on while Lower and Sym are both held (the inner thumbs).
  * Nothing else toggles that layer.
@@ -67,6 +69,20 @@
             label = "OS_FWD_BR";
             #binding-cells = <0>;
             command = "fwd_br";
+        };
+
+        os_apps: os_apps {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_APPS";
+            #binding-cells = <0>;
+            command = "apps";
+        };
+
+        os_switch: os_switch {
+            compatible = "zmk,behavior-os-mode";
+            label = "OS_SWITCH";
+            #binding-cells = <0>;
+            command = "switch";
         };
     };
 

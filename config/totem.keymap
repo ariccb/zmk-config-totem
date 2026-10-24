@@ -885,16 +885,22 @@
             >;
         };
 
+        /*
+         * F1–F12 are the four inner columns, bottom row first. The home
+         * pinky stays transparent (the Nav hold). The top pinky is blank.
+         * The outer pinky falls through to Esc/Hyper. Zoom reset stays on
+         * the inner bottom key. Apps and Switch follow OS mode.
+         */
         nav_layer {
             label = "Nav";
             bindings = <
-                &kp F1  &kp F2  &kp F3  &kp F4  &kp F5
+                &none  &kp F9  &kp F10  &kp F11  &kp F12
                 &kp LC(PG_UP)  &kp HOME  &kp UP  &kp END  &tog NAV
-                &kp F6  &kp F7  &kp F8  &kp F9  &kp F10
+                &trans  &kp F5  &kp F6  &kp F7  &kp F8
                 &cmd_stab  &kp LEFT  &kp DOWN  &kp RIGHT  &cmd_tab
-                &trans  &kp F11  &kp F12  &kp LG(MINUS)  &kp LG(EQUAL)  &kp LG(N0)
+                &trans  &kp F1  &kp F2  &kp F3  &kp F4  &kp LG(N0)
                 &ctrl_tab  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &os_fwd  &sk LGUI
-                &trans  &trans  &kp SPACE
+                &os_apps  &os_switch  &kp SPACE
                 &kp RET  &kp BSPC  &kp DEL
             >;
         };

@@ -86,7 +86,8 @@ Thumbs, and why Tab sits where it does:
 Space stays on the inner thumb, which is the resting key. Tab shares the
 middle thumb with Nav, between Shift and Space. That thumb stays: holding
 `a` opens Nav for the right hand, and the Tab thumb still opens Nav when
-the left hand needs the F-keys and zoom keys on that side. One-shot Shift
+the left hand needs the F-keys on that side. The app switcher sits on
+that same thumb once Nav is up, so hold the pinky to reach it. One-shot Shift
 is the outer left thumb (1 second, quick-release), matching the Leeloo
 one-shot shift. Repeat is not on a thumb; it is on Adjust.
 
@@ -172,24 +173,39 @@ Windows mode.
 ## Nav
 
 Hold the Tab thumb, or hold the left home pinky (`a` on Colemak and
-QWERTY, `c` on Canary). The pinky hold reaches the right-hand Nav keys.
-The Tab thumb still reaches the F-keys and zoom on the left.
+QWERTY, `c` on Canary). The pinky hold reaches the right-hand Nav keys
+and the two left thumbs on this layer. The Tab thumb still reaches the
+F-keys on the left. The app switcher is the middle thumb of this layer,
+so it is reached by the pinky hold, or with Nav toggled on.
 
 ```
- F1  F2  F3  F4  F5       C-PgUp  Home  Up   End  (unlock)
- F6  F7  F8  F9  F10      Cmd-S-Tab Left Down Right Cmd-Tab
-Esc F11 F12 Zoom- Zoom+ Zoom0  C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
-   (held)  (held)  Space       Enter  Backspace  Delete
+ ·   F9  F10 F11 F12       C-PgUp  Home  Up   End  (unlock)
+Nav  F5  F6  F7  F8       Cmd-S-Tab Left Down Right Cmd-Tab
+Esc  F1  F2  F3  F4 Zoom0  C-Tab  PgUp  AddCur PgDn Fwd  sticky Cmd
+   Apps Switch Space       Enter  Backspace  Delete
 ```
+
+F1–F12 are the four inner columns, bottom row first. The home pinky is
+the Nav hold and stays transparent. The top pinky is blank (`&none`).
+The outer pinky still falls through to Esc/Hyper. Zoom reset (`Cmd+0`,
+Ctrl+0 in Windows mode) stays on the inner bottom key. F3 and F4 took
+the keys that were zoom out and zoom in.
+
+`Apps` shows the windows of the current application: Control+Down on Mac
+(App Exposé), Alt+` (the grave key) on Windows. `Switch` goes to the next
+most recent application: Cmd+Tab on Mac, Alt+Tab on Windows. Tab is tapped
+once (10 ms) and the modifier stays down until the key is released, the
+same shape as the right-hand Cmd-Tab macro. Both are `&os_apps` and
+`&os_switch`, so they follow Mac/Windows mode. The right-hand Cmd-Tab
+macro still presses GUI, which the Windows swap turns into Ctrl.
 
 `AddCur` is Cmd+Alt+Down (VS Code add cursor). `Fwd` is browser forward
 (Cmd+Right on Mac, Alt+Right on Windows). Cmd-Tab, Cmd-Shift-Tab, and
 Ctrl-Tab hold the modifier until the key is released. In Windows mode those
 follow the Ctrl/Cmd swap, so Cmd-Tab becomes Ctrl-Tab and Ctrl-Tab becomes
-Win-Tab. Alt-Tab is not substituted. The Leeloo's 800 ms app-switch timer
-and the encoder super-tab are not reproduced; sticky Cmd on the right pinky
-of this layer is the way to tap Tab repeatedly. Windows mode makes that
-sticky key Ctrl.
+Win-Tab. The Leeloo's 800 ms app-switch timer and the encoder super-tab
+are not reproduced; sticky Cmd on the right pinky of this layer is the
+way to tap Tab repeatedly. Windows mode makes that sticky key Ctrl.
 
 The `(unlock)` key turns Nav off after it was toggled on from Adjust. Holding
 this layer and tapping it does not lock the layer. ZMK keeps one bit per
@@ -234,7 +250,7 @@ Where the old Raise keys went:
 | Old Raise key | Now |
 | --- | --- |
 | Mouse move, clicks, scroll | Removed. They were the left hand of Num, and Lower does not keep them |
-| Zoom out, zoom in, zoom reset | Nav, left bottom. Brightness stays on Adjust. Repeat stays on Adjust |
+| Zoom out, zoom in, zoom reset | Zoom reset stays on Nav, the inner bottom key (`Cmd+0`). F3 and F4 took zoom out and zoom in. Brightness stays on Adjust. Repeat stays on Adjust |
 | `()` / `<>` macro, arrow snippet, `[]` / `{}` macro | Adjust, in the old non-US `#`, Scroll Lock, and Num Lock spots. Num Lock remains the `L U Y` combo. `` ` `` stays on Adjust |
 | Volume, mute, mic mute, play, next, select word / part / line, browser back and Cmd+] forward | Sym, right top and bottom |
 
@@ -347,6 +363,8 @@ behaviors in `config/os.dtsi` and do not get swapped a second time:
 | Redo (F P) | Cmd+Shift+Z | Ctrl+Y |
 | Clipboard history (X D) | Alt+Shift+Cmd+Space | Win+V |
 | Nav `Fwd` | Cmd+Right | Alt+Right |
+| Nav `Apps` | Control+Down (App Exposé) | Alt+` |
+| Nav `Switch` | Cmd+Tab, Cmd held until release | Alt+Tab, Alt held until release |
 | Sym `Back` | Cmd+[ | Alt+Left |
 | Sym `Fwd` | Cmd+] | Alt+Right |
 
@@ -499,8 +517,10 @@ The Leeloo is a 4x6 plus four thumbs and two encoders. The Totem is a 3x5
 plus one outer pinky and three thumbs per side. The number row, the outer
 column, and both encoders had to move.
 
-- F-keys, brightness, and the app/tab switchers moved to Nav. Zoom replaced
-  brightness on Nav; brightness stays on Adjust.
+- F-keys moved to Nav, on the four inner columns: F9–F12, F5–F8, F1–F4.
+  The outer left thumb shows the current app's windows, and the middle
+  left thumb switches apps, both through OS mode. Zoom reset stays on the
+  inner bottom key. Brightness stays on Adjust.
 - Lower, on the Space thumb, is the Leeloo Lower layer: symbols on the
   left, numpad and operators on the right. The Leeloo mouse stays off this
   layer. Sym, on the Enter thumb, is the other symbol and media layer.

@@ -2,7 +2,8 @@
 
 description: |
   Mac/Windows shortcut mode, and the few shortcuts that are not a straight
-  Ctrl/GUI swap (redo, clipboard history, browser back and forward).
+  Ctrl/GUI swap (redo, clipboard history, browser back and forward,
+  current-app windows, and the app switcher).
 
 compatible: "zmk,behavior-os-mode"
 
@@ -20,3 +21,5 @@ properties:
       - "fwd"
       - "back"
       - "fwd_br"
+      - "apps"
+      - "switch"
