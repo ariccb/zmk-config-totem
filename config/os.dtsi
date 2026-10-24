@@ -11,8 +11,8 @@
  *   redo    Mac Cmd+Shift+Z,  Windows Ctrl+Y
  *   clip    Mac Alt+Shift+Cmd+Space,  Windows Win+V
  *   fwd     Nav browser forward: Mac Cmd+Right,  Windows Alt+Right
- *   back    Sym browser back: Mac Cmd+[,  Windows Alt+Left
- *   fwd_br  Sym browser forward: Mac Cmd+],  Windows Alt+Right
+ *   back    Raise browser back: Mac Cmd+[,  Windows Alt+Left
+ *   fwd_br  Raise browser forward: Mac Cmd+],  Windows Alt+Right
  *   apps    Current-app windows: Mac Control+Down,  Windows Alt+`
  *   switch  Next app: Mac Cmd+Tab (Cmd held),  Windows Alt+Tab (Alt held)
  *   galt    Command+Alt, held: Mac Cmd+Option,  Windows Win+Alt
@@ -21,9 +21,9 @@
  * at the key is unused, because galt takes no parameter. Timing matches
  * the &lt thumb override (balanced, 200 ms, 120 ms quick-tap).
  *
- * System comes on while Lower and Sym are both held. Lower is the middle
- * thumb on either hand. Sym is the outer right thumb. The layer is still
- * named Sym; rename it to Raise later. Nothing else toggles System.
+ * System comes on while Lower and Raise are both held. Lower is the middle
+ * thumb on either hand. Raise is the outer right thumb. Nothing else
+ * toggles System.
  */
 
 / {
@@ -113,7 +113,7 @@
         compatible = "zmk,conditional-layers";
 
         sys_tri {
-            if-layers = <LOWER SYM>;
+            if-layers = <LOWER RAISE>;
             then-layer = <SYS>;
         };
     };

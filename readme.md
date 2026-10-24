@@ -60,7 +60,7 @@ Hold-taps below are written `hold/tap`.
 Q/Hy w*  f*  p*  b          j*  l*  u   y*  ;
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  o
 Esc  Z/Sf x*  c   d   v*     k   h   ,   .   /* '/Bs
-   Cmd/Enter  Lower/Space  Cmd+Alt/Tab   `   Lower/Bsp  Sym/Del
+   Cmd/Enter  Lower/Space  Cmd+Alt/Tab   `   Lower/Bsp  Raise/Del
 ```
 
 A star is an adaptive key, the second key of a rule. Home-row mods, Mac
@@ -83,7 +83,7 @@ Thumbs:
 | Left inner | 34 | Tab | Command+Alt |
 | Right inner | 35 | `` ` `` | |
 | Right middle | 36 | Backspace | Lower |
-| Right outer | 37 | Delete | Sym |
+| Right outer | 37 | Delete | Raise |
 
 Space on the middle left thumb and Backspace on the middle right thumb
 both hold Lower. The outer left thumb is `&mt LGUI ENTER`, balanced at
@@ -91,9 +91,8 @@ both hold Lower. The outer left thumb is `&mt LGUI ENTER`, balanced at
 to Ctrl, the same as the other Cmd keys. The inner left thumb is
 `&os_galt_tab 0 TAB`: tap Tab, hold Command+Alt. Mac sends Cmd+Option.
 Windows sends Win+Alt. The `0` is unused, because that hold takes no
-parameter. The inner right thumb is backtick. The outer right thumb holds
-Sym; that layer will be renamed Raise later, and the binding stays
-`&lt SYM DEL` until then. Nav is the left home pinky (`a`, or `c` on
+parameter. The inner right thumb is backtick. The outer right thumb is
+`&lt RAISE DEL`. Nav is the left home pinky (`a`, or `c` on
 Canary). Adjust is not on a thumb. Repeat stays on the Adjust layer.
 
 QWERTY and Canary leave the thumbs and both pinkies transparent, so they
@@ -166,8 +165,8 @@ right thumb. `0` is the outer right thumb.
 unchanged. The Leeloo colon was the outer right column; `+` is there instead.
 
 Mouse move, scroll, and clicks used to be the left hand of this layer.
-They are not on Lower, and they were not moved. Leeloo keeps the mouse on
-Raise. Sym's left side already has its own symbols. The firmware still
+They are not on Lower, and they were not moved onto Raise. Raise's left
+side already has its own symbols. The firmware still
 compiles pointing, so the Bluetooth report does not change.
 
 Terminal chords follow the digit keys: `8+9` opens a terminal (`Ctrl+Grave`
@@ -220,23 +219,27 @@ this layer and tapping it does not lock the layer. ZMK keeps one bit per
 layer, so toggling the layer you are holding clears it, and releasing the
 thumb clears it again.
 
-## Sym
+## Raise
 
-Hold the Enter thumb. Coding symbols are on the left hand, pairs next to
-each other, parens and brackets on the home row. The right home row is
-transparent, so Cmd, Ctrl, Shift, and Alt still chord from that hand while
-the thumb holds the layer. `<` and `>` are on the top row. Shift plus the
-right-hand comma and dot (they fall through on layers that leave them
-transparent) is the other way to type them, but on this layer those two
-keys are select-part and select-line, so the dedicated `<` `>` keys are
-the ones to use.
+Hold the outer right thumb (Delete). This layer used to be called Sym.
+Coding symbols are on the left hand, pairs next to each other, parens and
+brackets on the home row. The right home row's outer keys stay
+transparent. `<` and `>` are on the top row. Shift plus the right-hand
+comma and dot (they fall through on layers that leave them transparent)
+is the other way to type them, but on this layer those two keys are
+select-part and select-line, so the dedicated `<` `>` keys are the ones
+to use.
 
 ```
- {   }   <   >   |        Vol+ Mute Mic Play Next
- (   )   [   ]   \        (home row falls through to the mods)
+ {   }   <   >   |        Vol+ Mute Mic  Play Next
+ (   )   [   ]   \          ·   Mic  Play Next  ·
  =   +   -   _   *   /    Vol- SelWd SelPart Line Back Fwd
     (thumbs fall through)        (held)  Backspace  Delete
 ```
+
+The home-row mic, play, and next keys are the same chords as the top
+row: Ctrl+Alt+Cmd+M, play/pause, and next track. The two outer home-row
+keys stay transparent.
 
 `|` is the pipe. `\` is backslash. `Mic` is Ctrl+Alt+Cmd+M, so swapping
 Ctrl and Cmd does not change it. `SelWd` is Alt+Shift+Right (repeat
@@ -247,8 +250,7 @@ and `Fwd` are browser back and forward: Cmd+[ and Cmd+] on Mac, Alt+Left
 and Alt+Right on Windows. Nav still has the other forward, Cmd+Right /
 Alt+Right.
 
-`?` is Shift plus the `/` key (the right-hand Shift falls through on this
-layer). `! @ # $ % ^ & *` are keys on Lower. Backtick is the outer left
+`?` is Shift plus the `/` key. `! @ # $ % ^ & *` are keys on Lower. Backtick is the outer left
 thumb there, and Shift plus that key is `~`. Adjust still has a backtick
 too. Quotes stay the `H+,` combo (`"` unshifted, `'` shifted).
 `;` and `:` stay the base semicolon key. `.` stays the base dot.
@@ -260,10 +262,10 @@ Where the old Raise keys went:
 | Mouse move, clicks, scroll | Removed. They were the left hand of Num, and Lower does not keep them |
 | Zoom out, zoom in, zoom reset | Off the keymap. F1–F4 took the left bottom of Nav, including the old zoom-reset key. Brightness stays on Adjust. Repeat stays on Adjust |
 | `()` / `<>` macro, arrow snippet, `[]` / `{}` macro | Adjust, in the old non-US `#`, Scroll Lock, and Num Lock spots. Num Lock remains the `L U Y` combo. `` ` `` stays on Adjust |
-| Volume, mute, mic mute, play, next, select word / part / line, browser back and Cmd+] forward | Sym, right top and bottom |
+| Volume, mute, mic mute, play, next, select word / part / line, browser back and Cmd+] forward | Raise, right top, home, and bottom |
 
 The on-Raise key that toggled Raise while the layer was held is not copied.
-It could not lock the layer. Adjust's Sym toggle is the lock that works.
+It could not lock the layer. Adjust's Raise toggle is the lock that works.
 
 ## Adjust
 
@@ -272,13 +274,13 @@ lives on it. The Leeloo was wired.
 
 ```
 Reset ClearBT OutToggle BT0 BT1     Base  QWERTY Canary ()  (unlock)
-Boot  NextBT  BT2  BT3  BT4          Lower Nav   Sym   `  Sleep
+Boot  NextBT  BT2  BT3  BT4          Lower Nav  Raise  `  Sleep
 Esc   PrevBT  Bri+ Bri- Repeat Caps  Ins  PrtSc Arrow []  CapsWord Bsp
    (held)   Tab   Space            Enter  (held)  Delete
 ```
 
 `Base`, `QWERTY`, and `Canary` are `&to`. They replace the persistent
-default layer. `Lower`, `Nav`, and `Sym` are toggles on this layer, which
+default layer. `Lower`, `Nav`, and `Raise` are toggles on this layer, which
 is the lock that works: hold Adjust, tap the layer, release Adjust, and
 that layer stays up. `&to Base` (or QWERTY / Canary) turns the toggled
 layers off. The Leeloo's 120 second layer-lock idle timeout is not ported.
@@ -289,25 +291,25 @@ keeps them so one thumb is still enough.
 
 ## System
 
-Hold Lower and Sym together. Lower is either middle thumb: Space on the
-left, Backspace on the right. Sym is the outer right thumb (Delete).
-That layer is still named Sym; the rename to Raise comes later. Nav is
+Hold Lower and Raise together. Lower is either middle thumb: Space on the
+left, Backspace on the right. Raise is the outer right thumb (Delete).
+Nav is
 the left home pinky.
 
 ZMK turns System on only while both of those layers are held
-(`conditional_layers` on Lower + Sym). System is not also bound to its own
+(`conditional_layers` on Lower + Raise). System is not also bound to its own
 hold or toggle. Let go of either thumb and System drops. While it is up it
-covers Lower and Sym.
+covers Lower and Raise.
 
 ```
  Mac  Win  Out  BT0  BT1       Clear  Save  Find
  Boot Rst  BT2  BT3  BT4                            Sleep
 
-          (held Lower)             (held Sym)
+          (held Lower)            (held Raise)
 ```
 
 The outer pinkies are blank on this layer, so the chord does not fire
-left Esc/Hyper, the right pinky's apostrophe/Backspace, Lower's Shift and `|`, or Sym's `/`
+left Esc/Hyper, the right pinky's apostrophe/Backspace, Lower's Shift and `|`, or Raise's `/`
 and browser forward.
 
 | Key | What it sends |
@@ -372,8 +374,8 @@ behaviors in `config/os.dtsi` and do not get swapped a second time:
 | Nav `Fwd` | Cmd+Right | Alt+Right |
 | Nav `Apps` | Control+Down (App Exposé) | Alt+` |
 | Nav `Switch` | Cmd+Tab, Cmd held until release | Alt+Tab, Alt held until release |
-| Sym `Back` | Cmd+[ | Alt+Left |
-| Sym `Fwd` | Cmd+] | Alt+Right |
+| Raise `Back` | Cmd+[ | Alt+Left |
+| Raise `Fwd` | Cmd+] | Alt+Right |
 | Inner left thumb hold | Cmd+Alt | Win+Alt |
 
 Everything else that is Cmd in the keymap becomes Ctrl, and a bare Ctrl
@@ -457,7 +459,7 @@ reach, lower it toward 150.
 There is no global quick-tap. The table is the ring, middle, and index
 (`hrm_l`, `hrm_r`). The inner Cmd keys are `hrm_in_l` and `hrm_in_r`.
 Thumb layer-taps are separate: balanced, 200 ms tapping term, 120 ms
-quick-tap, and no prior-idle requirement, so Lower and Sym do not need a
+quick-tap, and no prior-idle requirement, so Lower and Raise do not need a
 pause. The left pinky's Nav hold is `a_nav`, not that thumb tuning.
 
 If mods fire while typing, raise `require-prior-idle-ms` (try 200) or
@@ -488,7 +490,7 @@ Backspace on hold. Tap-preferred, 200 ms, and no prior-idle requirement,
 so a short tap is `'` even while typing, and a hold keeps Backspace down
 for the OS repeat. QWERTY and Canary inherit it.
 
-Lower replaces the left pinky with Shift and the right pinky with `|`. Sym replaces
+Lower replaces the left pinky with Shift and the right pinky with `|`. Raise replaces
 them with `/` and browser forward. Nav keeps Esc/Hyper on the left pinky
 and puts sticky Cmd on the right. System leaves both blank. QWERTY,
 Canary, and Adjust leave them transparent, so the left stays Esc/Hyper
@@ -537,14 +539,14 @@ column, and both encoders had to move.
   this layer. Brightness stays on Adjust.
 - Lower, on either middle thumb, is the Leeloo Lower layer: symbols on the
   left, numpad and operators on the right. The Leeloo mouse stays off this
-  layer. Sym, on the outer right thumb, is the other symbol and media
-  layer. It will be renamed Raise later.
+  layer. Raise, on the outer right thumb, is the other symbol and media
+  layer.
 - Left thumbs are Enter/Command, Space/Lower, and Tab/Command+Alt.
-  Right thumbs are backtick, Backspace/Lower, and Delete/Sym. The Leeloo's
-  repeat thumb is on Adjust, and play/pause is on Sym.
+  Right thumbs are backtick, Backspace/Lower, and Delete/Raise. The Leeloo's
+  repeat thumb is on Adjust, and play/pause is on Raise.
 - The left outer pinky is Esc/Hyper, `q` is also Hyper, `z` is Shift, and
   the right outer pinky is apostrophe/Backspace.
-  Backslash is on Sym. `H+,` is the quote combo.
+  Backslash is on Raise. `H+,` is the quote combo.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
   pinky holds Nav. The right home pinky is a plain letter.
@@ -595,7 +597,7 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 5. Enter on the outer left thumb, Command while it is held. Space/Lower
    on the middle left thumb, Backspace/Lower on the middle right.
    Tab on the inner left thumb, Command+Alt while it is held (Win+Alt in
-   Windows mode). Backtick, then Delete/Sym, on the other right thumbs.
+   Windows mode). Backtick, then Delete/Raise, on the other right thumbs.
    Hold `a` and a right-hand arrow for Nav from the pinky.
 6. A same-hand roll (`as` on QWERTY, `ar` on Colemak) stays letters. Hold
    `g` or `m` after a short pause, then a key on the other hand: that is
@@ -604,7 +606,7 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
 7. Caps word from the two index keys (they are Ctrl), then a shifted bigram.
 8. `U` and `Y` together produce `-`. A roll produces `UE`.
 9. Hold Adjust, tap Lower, release Adjust. Lower should stay. `&to Base` clears it.
-10. Hold either Lower thumb and the outer right Delete/Sym thumb together.
+10. Hold either Lower thumb and the outer right Delete/Raise thumb together.
     System should come up. A fresh
     board is already in Windows mode: W+F is Ctrl+Z and F+P is Ctrl+Y.
     `Mac` puts those on Cmd+Z and Cmd+Shift+Z. `Win` puts them back, and

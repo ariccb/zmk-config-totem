@@ -29,7 +29,7 @@
 #define CANARY 2
 #define LOWER  3
 #define NAV    4
-#define SYM    5
+#define RAISE  5
 #define ADJ    6
 #define SYS    7
 
@@ -854,7 +854,7 @@
                 &eh 0 ESC  &mt LSHFT Z  &ak_x  &kp C  &kp D  &ak_v
                 &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &apos_bspc BSPC SQT
                 &mt LGUI ENTER  &lt LOWER SPACE  &os_galt_tab 0 TAB
-                &kp GRAVE  &lt LOWER BSPC  &lt SYM DEL
+                &kp GRAVE  &lt LOWER BSPC  &lt RAISE DEL
             >;
         };
 
@@ -928,13 +928,13 @@
             >;
         };
 
-        sym_layer {
-            label = "Sym";
+        raise_layer {
+            label = "Raise";
             bindings = <
                 &kp LBRC  &kp RBRC  &kp LT  &kp GT  &kp PIPE
                 &kp C_VOL_UP  &kp C_MUTE  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT
                 &kp LPAR  &kp RPAR  &kp LBKT  &kp RBKT  &kp BSLH
-                &trans  &trans  &trans  &trans  &trans
+                &trans  &kp LC(LA(LG(M)))  &kp C_PP  &kp C_NEXT  &trans
                 &kp EQUAL  &kp PLUS  &kp MINUS  &kp UNDER  &kp STAR  &kp FSLH
                 &kp C_VOL_DN  &selword  &kp LA(LC(LS(RIGHT)))  &selline  &os_back  &os_fwd_br
                 &trans  &trans  &trans
@@ -948,7 +948,7 @@
                 &sys_reset  &bt BT_CLR  &out OUT_TOG  &bt BT_SEL 0  &bt BT_SEL 1
                 &to BASE  &to QWERTY  &to CANARY  &brc_morph  &tog ADJ
                 &bootloader  &bt BT_NXT  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-                &tog LOWER  &tog NAV  &tog SYM  &kp GRAVE  &kp SYS_SLEEP
+                &tog LOWER  &tog NAV  &tog RAISE  &kp GRAVE  &kp SYS_SLEEP
                 &trans  &bt BT_PRV  &kp C_BRI_UP  &kp C_BRI_DN  &key_repeat  &kp CAPS
                 &kp INS  &kp PSCRN  &arrow_morph  &brc2_morph  &caps_word  &trans
                 &trans  &kp TAB  &kp SPACE
@@ -957,9 +957,9 @@
         };
 
         /*
-         * On while Lower and Sym are both held. Lower is the middle thumb
-         * on either hand. Sym is the outer right thumb (still named Sym;
-         * rename to Raise later). Bluetooth, boot, and reset are
+         * On while Lower and Raise are both held. Lower is the middle thumb
+         * on either hand. Raise is the outer right thumb. Bluetooth, boot,
+         * and reset are
          * duplicated from Adjust so either path still works.
          */
         sys_layer {
