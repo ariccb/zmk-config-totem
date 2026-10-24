@@ -692,6 +692,15 @@
             key-positions = <6 7 8>;
             bindings = <&kp KP_NUMLOCK>;
         };
+        /*
+         * Sticky Nav. Omitting layers leaves the combo mask at 0, which
+         * ZMK treats as every layer, so the same chord toggles Nav off.
+         */
+        combo_nav_sticky {
+            timeout-ms = <70>;
+            key-positions = <2 12 13>;
+            bindings = <&tog NAV>;
+        };
 
         combo_arrow_fn {
             timeout-ms = <50>;
@@ -875,7 +884,7 @@
             label = "Nav";
             bindings = <
                 &none  &kp F9  &kp F10  &kp F11  &kp F12
-                &kp LC(PG_UP)  &kp HOME  &kp UP  &kp END  &tog NAV
+                &kp LC(PG_UP)  &kp HOME  &kp UP  &kp END  &none
                 &trans  &kp F5  &kp F6  &kp F7  &kp F8
                 &os_tab_prev  &kp LEFT  &kp DOWN  &kp RIGHT  &os_tab_next
                 &trans  &none  &kp F1  &kp F2  &kp F3  &kp F4

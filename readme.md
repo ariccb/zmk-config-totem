@@ -180,12 +180,12 @@ Windows mode.
 
 Hold the left home pinky (`a` on Colemak and QWERTY, `c` on Canary).
 That hold reaches both hands, including the F-keys and the left thumbs
-on this layer. The pinky is how Nav turns on. Apps stays on the outer
-left thumb. Space is the middle thumb of this layer. The app switcher
+on this layer. Apps stays on the outer left thumb. Space is the middle
+thumb of this layer. The app switcher
 is the inner thumb, reached by the pinky hold, or with Nav toggled on.
 
 ```
- ·   F9  F10 F11 F12       C-PgUp  Home  Up   End  (unlock)
+ ·   F9  F10 F11 F12       C-PgUp  Home  Up   End  ·
 Nav  F5  F6  F7  F8       C-S-Tab Left Down Right C-Tab
 Esc  ·   F1  F2  F3  F4    Back   PgUp  AddCur PgDn Fwd  ·
    Apps  Space  Switch      Enter  Backspace  Delete
@@ -211,14 +211,13 @@ swap, so these go out with passthrough. Browser Back is `&os_back` on the
 bottom-left of that block (Cmd+[ on Mac, Alt+Left on Windows). `Fwd`
 stays browser forward (Cmd+Right on Mac, Alt+Right on Windows).
 
-`AddCur` is Cmd+Alt+Down (VS Code add cursor). The right pinky of this
-layer is blank. The Leeloo's 800 ms app-switch timer and the encoder
-super-tab are not reproduced.
+`AddCur` is Cmd+Alt+Down (VS Code add cursor). The key beside End and the
+right pinky of this layer are blank. The Leeloo's 800 ms app-switch timer
+and the encoder super-tab are not reproduced.
 
-The `(unlock)` key turns Nav off after it was toggled on from Adjust. Holding
-this layer and tapping it does not lock the layer. ZMK keeps one bit per
-layer, so toggling the layer you are holding clears it, and releasing the
-thumb clears it again.
+Sticky Nav is F+S+T (positions 2, 12, and 13), 70 ms, on every layer.
+The binding is `&tog NAV`, so the same chord turns it off. Adjust still
+has its own Nav toggle.
 
 ## Raise
 
@@ -501,9 +500,10 @@ and the right stays apostrophe/Backspace.
 
 ## Combos
 
-50 ms, alpha layers only (Base, QWERTY, Canary). Positions follow Colemak-DH,
-including while QWERTY or Canary is active. The Mac column is the keymap
-before the swap. Windows mode is the boot default; see Mac and Windows.
+50 ms, alpha layers only (Base, QWERTY, Canary), except sticky Nav.
+Positions follow Colemak-DH, including while QWERTY or Canary is active.
+The Mac column is the keymap before the swap. Windows mode is the boot
+default; see Mac and Windows.
 
 | Chord | Mac | Windows |
 | --- | --- | --- |
@@ -523,6 +523,7 @@ before the swap. Windows mode is the boot default; see Mac and Windows.
 | H , | `"` , or `'` if Shift is held | same |
 | T N | Caps word (the two index keys, which are Ctrl) | same |
 | L U Y | Num Lock | same |
+| F S T | Toggle Nav (70 ms, every layer) | same |
 | letter + `.` | The Leeloo HTML / snippet macros (div, p, title, href, img, style, the generic tag, `console.log`, `() =>`) | same, except the generic tag's Cmd+D becomes Ctrl+D |
 
 Not ported as combos: reset (bootloader key on Adjust and System), the
