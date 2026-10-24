@@ -252,7 +252,7 @@ Alt+Right.
 
 `?` is Shift plus the `/` key. `! @ # $ % ^ & *` are keys on Lower. Backtick is the outer left
 thumb there, and Shift plus that key is `~`. Adjust still has a backtick
-too. Quotes stay the `H+,` combo (`"` unshifted, `'` shifted).
+too. `H+,` types an apostrophe. Shift plus the right pinky apostrophe is `"`.
 `;` and `:` stay the base semicolon key. `.` stays the base dot.
 
 Where the old Raise keys went:
@@ -520,7 +520,7 @@ default; see Mac and Windows.
 | U Y | - (a roll is the adaptive `UE` instead) | same |
 | E I | = | same |
 | T G | @ | same |
-| H , | `"` , or `'` if Shift is held | same |
+| H , | Apostrophe | same |
 | T N | Caps word (the two index keys, which are Ctrl) | same |
 | L U Y | Num Lock | same |
 | F S T | Toggle Nav (70 ms, every layer) | same |
@@ -530,7 +530,7 @@ Not ported as combos: reset (bootloader key on Adjust and System), the
 four-key sleep chord (Sleep is a key on Adjust and System), F11/F12 (those
 keys are on Nav),
 exclamation from slash+backslash, and the O+quote double-quote chord.
-Apostrophe is the right outer pinky. `H+,` still covers quotes.
+Apostrophe is the right outer pinky, and `H+,` types an apostrophe too.
 
 ## What changed from the Leeloo
 
@@ -550,7 +550,7 @@ column, and both encoders had to move.
   repeat thumb is on Adjust, and play/pause is on Raise.
 - The left outer pinky is Esc/Hyper, `q` is also Hyper, `z` is Shift, and
   the right outer pinky is apostrophe/Backspace.
-  Backslash is on Raise. `H+,` is the quote combo.
+  Backslash is on Raise. `H+,` types an apostrophe.
 - Home-row mods replace the Leeloo's corner modifiers. Ring is Alt, middle
   is Shift, index is Ctrl, and the inner column is Cmd. The left home
   pinky holds Nav. The right home pinky is a plain letter.
