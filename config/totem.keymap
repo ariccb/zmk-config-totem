@@ -808,7 +808,7 @@
         combo_term_prev {
             timeout-ms = <50>;
             layers = <LOWER>;
-            key-positions = <8 26>;
+            key-positions = <8 37>;
             bindings = <&kp LS(LG(RBKT))>;
         };
         combo_term_new {
@@ -870,6 +870,7 @@
          * far-left Leeloo column (outer thumb, middle thumb, outer pinky).
          * Right hand is the Leeloo numpad. + and - sit on the outer column
          * where the markup put them. / is where &ak_0 was. | is the pinky.
+         * ~ is where 0 was. The right thumbs are Space, dot, and 0.
          */
         lower_layer {
             label = "Lower";
@@ -879,9 +880,9 @@
                 &kp HASH  &kp LBKT  &kp LPAR  &kp RPAR  &kp RBKT
                 &kp AMPS  &kp N4  &kp N5  &kp N6  &kp MINUS
                 &kp LSHFT  &kp AT  &kp DLLR  &kp LBRC  &kp RBRC  &kp PRCNT
-                &kp N0  &kp N1  &kp N2  &kp N3  &kp FSLH  &kp PIPE
+                &kp LS(GRAVE)  &kp N1  &kp N2  &kp N3  &kp FSLH  &kp PIPE
                 &kp GRAVE  &kp LS(TAB)  &trans
-                &kp SPACE  &kp BSPC  &kp DEL
+                &kp SPACE  &kp DOT  &kp N0
             >;
         };
 

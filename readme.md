@@ -140,23 +140,24 @@ tap is the symbol.
 ```
  !   <   >   =   ^          *   7   8   9   +
  #   [   (   )   ]          &   4   5   6   -
-Sft  @   $   {   }   %      0   1   2   3   /   |
-   `   S-Tab  (held)          Space  Backspace  Delete
+Sft  @   $   {   }   %      ~   1   2   3   /   |
+   `   S-Tab  (held)          Space   .   0
 ```
 
 `! @ # $ % ^ & * +` are the shifted number-row symbols (`*` is Shift+8,
 `&` is Shift+7, `%` is Shift+5, `+` is Shift+=). `-` is the minus key.
-`/` is slash. `|` is pipe. `0` through `9` are the number keys, not the
-keypad. `0` is plain: it does not turn into Space after an operator.
+`/` is slash. `|` is pipe. `~` is Shift+grave. `0` through `9` are the
+number keys, not the keypad. `0` is plain: it does not turn into Space
+after an operator.
 
-The right index column is `* & 0`. `7 8 9` / `4 5 6` / `1 2 3` sit to its
+The right index column is `* & ~`. `7 8 9` / `4 5 6` / `1 2 3` sit to its
 right. `+` and `-` are the outer column, where the markup put them. `/`
 is the key that used to be adaptive `0`. `|` is the right outer pinky.
-Space is the inner right thumb while Lower is held. Backspace and Delete
-stay on the other right thumbs.
+Space is the inner right thumb while Lower is held. `.` is the middle
+right thumb. `0` is the outer right thumb.
 
-`:` is still Shift plus the base semicolon. `.` is still the base dot.
-The Leeloo colon was the outer right column; `+` is there instead.
+`:` is Shift plus the base semicolon. The base layer's dot key is
+unchanged. The Leeloo colon was the outer right column; `+` is there instead.
 
 Mouse move, scroll, and clicks used to be the left hand of this layer.
 They are not on Lower, and they were not moved. Leeloo keeps the mouse on
@@ -166,7 +167,7 @@ compiles pointing, so the Bluetooth report does not change.
 Terminal chords follow the digit keys: `8+9` opens a terminal (`Ctrl+Grave`
 on Mac, `Win+Grave` in Windows mode), `7+8` next, `9+0` previous, `7+8+9`
 new terminal. `7+8` is a subset of `7+8+9`; hit all three inside the 70 ms
-window. `0` is the inner bottom key, so previous is that key plus `9`.
+window. `0` is the outer right thumb, so previous is that thumb plus `9`.
 Next and previous are Shift+Cmd+[ / ] on Mac and Shift+Ctrl+[ / ] in
 Windows mode.
 
