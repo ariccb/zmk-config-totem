@@ -62,7 +62,7 @@ Hold-taps below are written `hold/tap`.
 Q/Hy w*  f*  p*  b          j*  l*  u   y*  ;
 A/Nv Alt Sft Ctl Cmd       Cmd Ctl Sft Alt  o
 Esc  Z/Sf x*  c   d   v*     k   h   ,   .   /* Qp/Bs
-   Cmd/Enter  Lower/Space  Cmd+Alt/Tab   `   Lower/Bsp  Raise/Del
+   Cmd/Enter  Lower/Bsp  Cmd+Alt/Tab   `   Lower/Space  Raise/Del
 ```
 
 A star is an adaptive key, the second key of a rule. Home-row mods, Mac
@@ -81,13 +81,13 @@ Thumbs:
 | Thumb | Key | Tap | Hold |
 | --- | --- | --- | --- |
 | Left outer | 32 | Enter | Command (`LGUI`) |
-| Left middle | 33 | Space | Lower |
+| Left middle | 33 | Backspace | Lower |
 | Left inner | 34 | Tab | Command+Alt |
 | Right inner | 35 | `` ` `` | |
-| Right middle | 36 | Backspace | Lower |
+| Right middle | 36 | Space | Lower |
 | Right outer | 37 | Delete | Raise |
 
-Space on the middle left thumb and Backspace on the middle right thumb
+Backspace on the middle left thumb and Space on the middle right thumb
 both hold Lower. The outer left thumb is `&mt LGUI ENTER`, balanced at
 200 ms, and `z` uses that same mod-tap. Windows mode swaps that Command
 to Ctrl, the same as the other Cmd keys. Raise replaces that thumb with
@@ -140,7 +140,7 @@ stay transparent and inherit Base.
 
 ## Lower
 
-Hold either middle thumb (Space on the left, Backspace on the right). This layer used to be Num. The left hand is the
+Hold either middle thumb (Backspace on the left, Space on the right). This layer used to be Num. The left hand is the
 Leeloo Lower symbol block, in that order. The right hand is the Leeloo
 numpad, with the operators that fit beside it.
 
@@ -276,8 +276,10 @@ not J, L, U, M, or N. `Mic` is Ctrl+Alt+Cmd+M, so swapping Ctrl and Cmd
 does not change it.
 
 The outer left thumb is `&os_enter`: Cmd+Enter on Mac, Ctrl+Enter on
-Windows. The other left thumbs fall through. Backspace and Delete stay
-on the right.
+Windows. The inner left thumb falls through to Tab. The middle left thumb
+falls through to Backspace/Lower. Backspace and Delete stay on the right:
+the middle right thumb is a plain `&kp BSPC` while Raise is held, so that
+key does not become Space.
 
 `SelWd` taps Option+Shift+Right on Mac and Ctrl+Shift+Right on Windows.
 Each tap extends the selection by one word. `SelPart` is
@@ -334,8 +336,8 @@ System. Adjust keeps its copies so one thumb is still enough.
 
 ## System
 
-Hold Lower and Raise together. Lower is either middle thumb: Space on the
-left, Backspace on the right. Raise is the outer right thumb (Delete).
+Hold Lower and Raise together. Lower is either middle thumb: Backspace on
+the left, Space on the right. Raise is the outer right thumb (Delete).
 Nav is
 the left home pinky.
 
@@ -387,8 +389,8 @@ down is released with the other mode's code and can stick on the host.
 
 The left XIAO's RGB LED reports state. The right half stays off. Mac is
 the left top key on System. Win is the home-row key directly under it.
-System is Lower plus Raise: hold either middle thumb (Space on the left,
-Backspace on the right) and the outer right thumb (Delete), then tap Mac
+System is Lower plus Raise: hold either middle thumb (Backspace on the left,
+Space on the right) and the outer right thumb (Delete), then tap Mac
 or Win before letting go.
 
 Caps Word, latched Nav, a one-shot OS flash, and a Bluetooth profile
@@ -618,6 +620,7 @@ default; see Mac and Windows.
 | . / | ? | same |
 | , . | _ | same |
 | U Y | - (a roll is the adaptive `UE` instead) | same |
+| Y ; | Backspace. Hold both keys and the host repeats it. A slower roll types Y then `;` | same |
 | E I | = | same |
 | T G | @ | same |
 | H , | `"` | same |
@@ -647,8 +650,8 @@ column, and both encoders had to move.
   left, numpad and operators on the right. The Leeloo mouse stays off this
   layer. Raise, on the outer right thumb, puts that mouse block on the
   left hand and media on the right.
-- Left thumbs are Enter/Command, Space/Lower, and Tab/Command+Alt.
-  Right thumbs are backtick, Backspace/Lower, and Delete/Raise. The Leeloo's
+- Left thumbs are Enter/Command, Backspace/Lower, and Tab/Command+Alt.
+  Right thumbs are backtick, Space/Lower, and Delete/Raise. The Leeloo's
   repeat thumb is on Adjust, and play/pause is on Raise.
 - The left outer pinky is Esc/Hyper, `q` is also Hyper, position 21 is
   Shift (Colemak and QWERTY Z, Canary W), and the right outer pinky is
@@ -734,8 +737,8 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
    let go. A paused hold of the left pinky plus a letter is Hyper:
    Ctrl+Alt+Shift+Cmd in Mac mode and in Windows mode.
 5. Enter on the outer left thumb, Command while it is held. On Raise that
-   same thumb is Cmd+Enter, or Ctrl+Enter in Windows mode. Space/Lower
-   on the middle left thumb, Backspace/Lower on the middle right.
+   same thumb is Cmd+Enter, or Ctrl+Enter in Windows mode. Backspace/Lower
+   on the middle left thumb, Space/Lower on the middle right.
    Tab on the inner left thumb, Command+Alt while it is held (Win+Alt in
    Windows mode). Backtick, then Delete/Raise, on the other right thumbs.
    Hold `a` and a right-hand arrow for Nav from the pinky.
@@ -744,7 +747,8 @@ Ctrl, Alt, and Cmd suppress a substitution. Shift does not.
    Cmd in Mac mode and Ctrl in Windows mode. Hold `a` and tap a right-hand
    key for Nav.
 7. Caps word from the two middle fingers (they are Shift), then a shifted bigram.
-8. `U` and `Y` together produce `-`. A roll produces `UE`.
+8. `U` and `Y` together produce `-`. A roll produces `UE`. `Y` and `;`
+   together are Backspace, and holding both keeps deleting.
 9. Hold Adjust, tap Lower, release Adjust. Lower should stay. `&to Base` clears it.
 10. Hold either Lower thumb and the outer right Delete/Raise thumb together.
     System should come up. A fresh

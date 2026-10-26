@@ -496,6 +496,18 @@
             key-positions = <7 8>;
             bindings = <&kp MINUS>;
         };
+        /*
+         * Colemak Y + semicolon (positions 8 and 9). U+Y stays dash above
+         * (positions 7 and 8); this chord does not include U. &kp holds
+         * Backspace while both keys are down, so the host key-repeat
+         * keeps deleting. Release either key and it stops.
+         */
+        combo_bspc {
+            timeout-ms = <50>;
+            layers = <BASE QWERTY CANARY>;
+            key-positions = <8 9>;
+            bindings = <&kp BSPC>;
+        };
         combo_equal {
             timeout-ms = <50>;
             layers = <BASE QWERTY CANARY>;
@@ -589,8 +601,8 @@
                 &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
                 &eh 0 ESC  &mt LSHFT Z  &ak_x  &kp C  &kp D  &ak_v
                 &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &apos_bspc 0 0
-                &mt LGUI ENTER  &lt LOWER SPACE  &os_galt_tab 0 TAB
-                &kp GRAVE  &lt LOWER BSPC  &lt RAISE DEL
+                &mt LGUI ENTER  &lt LOWER BSPC  &os_galt_tab 0 TAB
+                &kp GRAVE  &lt LOWER SPACE  &lt RAISE DEL
             >;
         };
 
