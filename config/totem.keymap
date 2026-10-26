@@ -249,6 +249,23 @@
             bindings = <&exp_bspc>, <&quop>;
         };
 
+        /*
+         * Left middle thumb. Tap is next sentence (&next_sentence): period,
+         * space, one-shot Shift. Hold is Lower. Balanced, 200 ms, 120 ms
+         * quick-tap, the same timing as &lt. &mo takes the layer.
+         * &next_sentence takes no parameter, so the second cell is unused.
+         * Usage: &ns_lower LOWER 0
+         */
+        ns_lower: ns_lower {
+            compatible = "zmk,behavior-hold-tap";
+            label = "NS_LOWER";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <120>;
+            bindings = <&mo>, <&next_sentence>;
+        };
+
         brc_morph: brc_morph {
             compatible = "zmk,behavior-mod-morph";
             label = "BRACES";
@@ -601,7 +618,7 @@
                 &hrm_in_r RGUI M  &hrm_r RCTRL N  &hrm_r RSHFT E  &hrm_r RALT I  &kp O
                 &eh 0 ESC  &mt LSHFT Z  &ak_x  &kp C  &kp D  &ak_v
                 &kp K  &kp H  &kp COMMA  &kp DOT  &ak_sl  &apos_bspc 0 0
-                &mt LGUI ENTER  &lt LOWER BSPC  &os_galt_tab 0 TAB
+                &mt LGUI ENTER  &ns_lower LOWER 0  &os_galt_tab 0 TAB
                 &kp GRAVE  &lt LOWER SPACE  &lt RAISE DEL
             >;
         };
@@ -640,7 +657,9 @@
          * far-left Leeloo column (outer thumb, middle thumb, outer pinky).
          * Right hand is the Leeloo numpad. + and - sit on the outer column
          * where the markup put them. / is where &ak_0 was. | is the pinky.
-         * ~ is where 0 was. The right thumbs are next sentence, dot, and 0.
+         * 0 sits where ~ was, beside 1. ~ is the inner right thumb.
+         * The other right thumbs are transparent. Next sentence is the
+         * base left middle thumb, not this layer.
          */
         lower_layer {
             label = "Lower";
@@ -650,9 +669,9 @@
                 &kp HASH  &kp LBKT  &kp LPAR  &kp RPAR  &kp RBKT
                 &kp AMPS  &kp N4  &kp N5  &kp N6  &kp MINUS
                 &kp LSHFT  &kp AT  &kp DLLR  &kp LBRC  &kp RBRC  &kp PRCNT
-                &kp LS(GRAVE)  &kp N1  &kp N2  &kp N3  &kp FSLH  &kp PIPE
+                &kp N0  &kp N1  &kp N2  &kp N3  &kp FSLH  &kp PIPE
                 &kp GRAVE  &kp LS(TAB)  &trans
-                &next_sentence  &kp DOT  &kp N0
+                &kp LS(GRAVE)  &trans  &trans
             >;
         };
 
@@ -660,7 +679,7 @@
          * F9–F12 and F5–F8 are the four inner columns. F1–F4 sit one key
          * to the right of that, so the key beside the outer pinky is blank.
          * The home pinky stays transparent (the Nav hold). Apps, Space, and
-         * Switch are the left thumbs.
+         * Switch are the left thumbs. The outer right thumb is period.
          */
         nav_layer {
             label = "Nav";
@@ -672,7 +691,7 @@
                 &trans  &none  &kp F1  &kp F2  &kp F3  &kp F4
                 &os_back  &kp PG_UP  &kp LG(LA(DOWN))  &kp PG_DN  &os_fwd  &none
                 &os_apps  &kp SPACE  &os_switch
-                &kp RET  &kp BSPC  &kp DEL
+                &kp RET  &kp BSPC  &kp DOT
             >;
         };
 
